@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Users, Mail, Phone, MapPin, Clock, Globe, Building } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { useNavigate } from 'react-router-dom';
 
 interface FacultyUnion {
   id: number;
@@ -23,6 +24,7 @@ const ProfPage: React.FC = () => {
   const [facultyUnions, setFacultyUnions] = useState<FacultyUnion[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchFacultyUnions();
@@ -302,17 +304,15 @@ const ProfPage: React.FC = () => {
       <section className="bg-white py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Потрібна допомога від профбюро?
+            Потрібна допомога від профбюро вашого факультету?
           </h2>
           <p className="text-gray-600 mb-6">
-            Зв'яжіться з профбюро вашого факультету або з головним профкомом студентів
+            Зв'яжіться з представниками профбюро або з головним профкомом студентів, щоб отримати консультацію та підтримку.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
-              Зв'язатися з головним профкомом
-            </button>
-            <button className="border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
-              Дізнатися більше
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
+             onClick={() => { navigate('/contacts');}}>
+              Зв'язатися з нами
             </button>
           </div>
         </div>

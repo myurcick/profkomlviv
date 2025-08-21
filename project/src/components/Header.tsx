@@ -124,15 +124,15 @@ const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
-  const navigation = [
-    { name: 'Головна', href: '/' },
-    { name: 'Послуги', href: '/services' },
-    { name: 'Документи', href: '/documents' },
-    { name: 'Наша команда', href: '/team' },
-    { name: 'Профбюро', href: '/fuck' },
-    { name: 'Новини', href: '/news' },
-    { name: 'Контакти', href: '/contacts' },
-  ];
+const navigation = [
+  { name: 'Головна', href: '/' },
+  { name: 'Про нас', href: '/about-us' },
+  { name: 'Послуги', href: '/services' },
+  { name: 'Документи', href: '/documents' },
+  { name: 'Профбюро', href: '/fuck' },
+  { name: 'Новини', href: '/news' },
+  { name: 'Контакти', href: '/contacts' },
+];
 
   const isActive = (path: string) => location.pathname === path;
 

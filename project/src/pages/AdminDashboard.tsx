@@ -1,19 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  PlusCircle, 
-  Edit, 
-  Trash2, 
-  LogOut, 
-  Eye, 
-  Calendar,
-  Users,
-  FileText,
-  Star,
-  X,
-  UserPlus,
-  Building
-} from 'lucide-react';
+import { PlusCircle, Edit, Trash2, LogOut, Eye, Users, FileText, Star, X, UserPlus, Building, Layers } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 
@@ -56,18 +43,31 @@ interface FacultyUnion {
   created_at: string;
 }
 
+interface Department {
+  id: number;
+  name: string;
+  description?: string;
+  icon_url?: string;
+  order_index: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 const AdminDashboard: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'news' | 'team' | 'faculties'>('news');
+  const [activeTab, setActiveTab] = useState<'news' | 'team' | 'faculties' | 'departments'>('news');
   const [news, setNews] = useState<News[]>([]);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [facultyUnions, setFacultyUnions] = useState<FacultyUnion[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingNews, setEditingNews] = useState<News | null>(null);
   const [editingTeamMember, setEditingTeamMember] = useState<TeamMember | null>(null);
   const [editingFacultyUnion, setEditingFacultyUnion] = useState<FacultyUnion | null>(null);
+  const [editingDepartment, setEditingDepartment] = useState<Department | null>(null);
   
   const [newsFormData, setNewsFormData] = useState({
     title: '',
@@ -101,6 +101,14 @@ const AdminDashboard: React.FC = () => {
     is_active: true
   });
 
+  const [departmentFormData, setDepartmentFormData] = useState({
+    name: '',
+    description: '',
+    icon_url: '',
+    order_index: 0,
+    is_active: true
+  });
+
   useEffect(() => {
     if (!user) {
       navigate('/admin/login');
@@ -110,7 +118,7 @@ const AdminDashboard: React.FC = () => {
   }, [user, navigate]);
 
   const fetchData = async () => {
-    await Promise.all([fetchNews(), fetchTeamMembers(), fetchFacultyUnions()]);
+    await Promise.all([fetchNews(), fetchTeamMembers(), fetchFacultyUnions(), fetchDepartments()]);
     setLoading(false);
   };
 
@@ -156,25 +164,35 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const fetchDepartments = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('departments')
+        .select('*')
+        .order('order_index', { ascending: true });
+
+      if (error) throw error;
+      setDepartments(data || []);
+    } catch (error) {
+      console.error('Error fetching departments:', error);
+    }
+  };
+
   const handleNewsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     try {
       if (editingNews) {
         const { error } = await supabase
           .from('news')
           .update(newsFormData)
           .eq('id', editingNews.id);
-        
         if (error) throw error;
       } else {
         const { error } = await supabase
           .from('news')
           .insert([newsFormData]);
-        
         if (error) throw error;
       }
-      
       fetchNews();
       handleCloseModal();
     } catch (error) {
@@ -184,28 +202,24 @@ const AdminDashboard: React.FC = () => {
 
   const handleTeamSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     try {
       if (editingTeamMember) {
         const { error } = await supabase
           .from('team_members')
           .update(teamFormData)
           .eq('id', editingTeamMember.id);
-        
         if (error) throw error;
       } else {
         if (teamFormData.order_index === 0) {
           const maxOrder = Math.max(...teamMembers.map(m => m.order_index), 0);
           teamFormData.order_index = maxOrder + 1;
         }
-        
         const { error } = await supabase
           .from('team_members')
           .insert([teamFormData]);
         
         if (error) throw error;
       }
-      
       fetchTeamMembers();
       handleCloseModal();
     } catch (error) {
@@ -215,7 +229,6 @@ const AdminDashboard: React.FC = () => {
 
   const handleFacultySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     try {
       if (editingFacultyUnion) {
         const { error } = await supabase
@@ -229,18 +242,42 @@ const AdminDashboard: React.FC = () => {
           const maxOrder = Math.max(...facultyUnions.map(f => f.order_index), 0);
           facultyFormData.order_index = maxOrder + 1;
         }
-        
         const { error } = await supabase
           .from('faculty_unions')
           .insert([facultyFormData]);
         
         if (error) throw error;
       }
-      
       fetchFacultyUnions();
       handleCloseModal();
     } catch (error) {
       console.error('Error saving faculty union:', error);
+    }
+  };
+
+  const handleDepartmentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (editingDepartment) {
+        const { error } = await supabase
+          .from('departments')
+          .update(departmentFormData)
+          .eq('id', editingDepartment.id);
+        if (error) throw error;
+      } else {
+        if (departmentFormData.order_index === 0) {
+          const maxOrder = Math.max(...departments.map(d => d.order_index), 0);
+          departmentFormData.order_index = maxOrder + 1;
+        }
+        const { error } = await supabase
+          .from('departments')
+          .insert([departmentFormData]);
+        if (error) throw error;
+      }
+      fetchDepartments();
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error saving department:', error);
     }
   };
 
@@ -292,6 +329,21 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const handleDeleteDepartment = async (id: number) => {
+    if (confirm('Ви впевнені, що хочете видалити цей відділ?')) {
+      try {
+        const { error } = await supabase
+          .from('departments')
+          .delete()
+          .eq('id', id);
+        if (error) throw error;
+        fetchDepartments();
+      } catch (error) {
+        console.error('Error deleting department:', error);
+      }
+    }
+  };
+
   const handleEditNews = (newsItem: News) => {
     setEditingNews(newsItem);
     setNewsFormData({
@@ -339,11 +391,25 @@ const AdminDashboard: React.FC = () => {
     setShowAddModal(true);
   };
 
+  const handleEditDepartment = (dep: Department) => {
+    setEditingDepartment(dep);
+    setDepartmentFormData({
+      name: dep.name,
+      description: dep.description || '',
+      icon_url: dep.icon_url || '',
+      order_index: dep.order_index,
+      is_active: dep.is_active
+    });
+    setActiveTab('departments');
+    setShowAddModal(true);
+  };
+
   const handleCloseModal = () => {
     setShowAddModal(false);
     setEditingNews(null);
     setEditingTeamMember(null);
     setEditingFacultyUnion(null);
+    setEditingDepartment(null);
     setNewsFormData({
       title: '',
       content: '',
@@ -373,6 +439,13 @@ const AdminDashboard: React.FC = () => {
       order_index: 0,
       is_active: true
     });
+    setDepartmentFormData({
+      name: '',
+      description: '',
+      icon_url: '',
+      order_index: 0,
+      is_active: true
+    });
   };
 
   const handleLogout = async () => {
@@ -391,9 +464,7 @@ const AdminDashboard: React.FC = () => {
     });
   };
 
-  if (!user) {
-    return null;
-  }
+  if (!user) { return null; }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -439,20 +510,6 @@ const AdminDashboard: React.FC = () => {
               </div>
             </div>
           </div>
-          
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="bg-yellow-100 p-3 rounded-lg">
-                <Star className="h-6 w-6 text-yellow-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Важливі новини</p>
-                <p className="text-2xl font-semibold text-gray-900">
-                  {news.filter(n => n.is_important).length}
-                </p>
-              </div>
-            </div>
-          </div>
 
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
@@ -477,6 +534,20 @@ const AdminDashboard: React.FC = () => {
                 <p className="text-sm font-medium text-gray-600">Профбюро факультетів</p>
                 <p className="text-2xl font-semibold text-gray-900">
                   {facultyUnions.filter(f => f.is_active).length}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
+              <div className="bg-purple-100 p-3 rounded-lg">
+                <Layers className="h-6 w-6 text-purple-600" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600">Всього відділів</p>
+                <p className="text-2xl font-semibold text-gray-900">
+                  {departments.filter(f => f.is_active).length}
                 </p>
               </div>
             </div>
@@ -520,6 +591,17 @@ const AdminDashboard: React.FC = () => {
                 <Building className="h-5 w-5 inline mr-2" />
                 Профбюро факультетів
               </button>
+              <button
+                onClick={() => setActiveTab('departments')}
+                className={`py-4 px-6 text-sm font-medium border-b-2 ${
+                  activeTab === 'departments'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <Layers className="h-5 w-5 inline mr-2" />
+                Управління відділами
+              </button>
             </nav>
           </div>
 
@@ -529,6 +611,7 @@ const AdminDashboard: React.FC = () => {
                 {activeTab === 'news' && 'Управління новинами'}
                 {activeTab === 'team' && 'Управління командою'}
                 {activeTab === 'faculties' && 'Управління профбюро факультетів'}
+                {activeTab === 'departments' && 'Управління відділами'}
               </h2>
               <button
                 onClick={() => setShowAddModal(true)}
@@ -550,6 +633,12 @@ const AdminDashboard: React.FC = () => {
                   <>
                     <Building className="h-5 w-5" />
                     <span>Додати профбюро</span>
+                  </>
+                )}
+                {activeTab === 'departments' && (
+                  <>
+                    <Layers className="h-5 w-5" />
+                    <span>Додати відділ</span>
                   </>
                 )}
               </button>
@@ -800,6 +889,56 @@ const AdminDashboard: React.FC = () => {
                 </table>
               </div>
             )}
+
+            {activeTab === 'departments' && (
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Назва</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Порядок</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Статус</th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Дії</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {loading ? (
+                      <tr>
+                        <td colSpan={4} className="px-6 py-4 text-center text-gray-500">Завантаження...</td>
+                      </tr>
+                    ) : departments.length === 0 ? (
+                      <tr>
+                        <td colSpan={4} className="px-6 py-4 text-center text-gray-500">Відділів поки немає</td>
+                      </tr>
+                    ) : (
+                      departments.map(dep => (
+                        <tr key={dep.id} className="hover:bg-gray-50">
+                          <td className="px-6 py-4">{dep.name}</td>
+                          <td className="px-6 py-4">{dep.order_index}</td>
+                          <td className="px-6 py-4">
+                            <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                              dep.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                            }`}>
+                              {dep.is_active ? 'Активний' : 'Неактивний'}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 text-right">
+                            <div className="flex justify-end space-x-2">
+                              <button onClick={() => handleEditDepartment(dep)} className="text-blue-600 hover:text-blue-900 p-1">
+                                <Edit className="h-4 w-4" />
+                              </button>
+                              <button onClick={() => handleDeleteDepartment(dep.id)} className="text-red-600 hover:text-red-900 p-1">
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -813,6 +952,7 @@ const AdminDashboard: React.FC = () => {
                 {activeTab === 'news' && (editingNews ? 'Редагувати новину' : 'Додати новину')}
                 {activeTab === 'team' && (editingTeamMember ? 'Редагувати члена команди' : 'Додати члена команди')}
                 {activeTab === 'faculties' && (editingFacultyUnion ? 'Редагувати профбюро' : 'Додати профбюро')}
+                {activeTab === 'departments' && (editingFacultyUnion ? 'Редагувати відділ' : 'Додати відділ')}
               </h2>
               <button
                 onClick={handleCloseModal}
@@ -826,7 +966,7 @@ const AdminDashboard: React.FC = () => {
               <form onSubmit={handleNewsSubmit} className="p-6 space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Заголовок
+                    Заголовок *
                   </label>
                   <input
                     type="text"
@@ -853,7 +993,7 @@ const AdminDashboard: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Контент
+                    Контент *
                   </label>
                   <textarea
                     required
@@ -907,7 +1047,10 @@ const AdminDashboard: React.FC = () => {
                       type="text"
                       required
                       value={teamFormData.name}
-                      onChange={(e) => setTeamFormData({ ...teamFormData, name: e.target.value })}
+                      onChange={(e) => {
+                        const lettersOnly = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁЇїІіЄєҐґ\s]/g, '');
+                        setTeamFormData({ ...teamFormData, name: lettersOnly })
+                      }}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Іван Петренко"
                     />
@@ -921,7 +1064,10 @@ const AdminDashboard: React.FC = () => {
                       type="text"
                       required
                       value={teamFormData.position}
-                      onChange={(e) => setTeamFormData({ ...teamFormData, position: e.target.value })}
+                      onChange={(e) => {
+                        const lettersOnly = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁЇїІіЄєҐґ\s]/g, '');
+                        setTeamFormData({ ...teamFormData, position: lettersOnly })
+                      }}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Голова профкому"
                     />
@@ -943,10 +1089,11 @@ const AdminDashboard: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Опис/Біографія
+                    Опис/Біографія *
                   </label>
                   <textarea
                     rows={4}
+                    required
                     value={teamFormData.description}
                     onChange={(e) => setTeamFormData({ ...teamFormData, description: e.target.value })}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -957,10 +1104,11 @@ const AdminDashboard: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email
+                      Email *
                     </label>
                     <input
                       type="email"
+                      required
                       value={teamFormData.email}
                       onChange={(e) => setTeamFormData({ ...teamFormData, email: e.target.value })}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -970,12 +1118,18 @@ const AdminDashboard: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Телефон
+                      Телефон *
                     </label>
                     <input
                       type="tel"
+                      required
                       value={teamFormData.phone}
-                      onChange={(e) => setTeamFormData({ ...teamFormData, phone: e.target.value })}
+                      onChange={(e) => {
+                        const cleaned = e.target.value.replace(/[^0-9+()\-\s]/g, '');
+                        setTeamFormData({ ...teamFormData, phone: cleaned })
+                      }}
+                      pattern="\+38\d{10}"
+                      maxLength={13}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="+38 (067) 123-45-67"
                     />
@@ -1040,7 +1194,10 @@ const AdminDashboard: React.FC = () => {
                       type="text"
                       required
                       value={facultyFormData.faculty_name}
-                      onChange={(e) => setFacultyFormData({ ...facultyFormData, faculty_name: e.target.value })}
+                      onChange={(e) => {
+                        const lettersOnly = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁЇїІіЄєҐґ\s]/g, '');
+                        setFacultyFormData({ ...facultyFormData, faculty_name: lettersOnly })
+                      }}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Філологічний факультет"
                     />
@@ -1054,7 +1211,10 @@ const AdminDashboard: React.FC = () => {
                       type="text"
                       required
                       value={facultyFormData.union_head_name}
-                      onChange={(e) => setFacultyFormData({ ...facultyFormData, union_head_name: e.target.value })}
+                      onChange={(e) => {
+                        const lettersOnly = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁЇїІіЄєҐґ\s]/g, '');
+                        setFacultyFormData({ ...facultyFormData, union_head_name: lettersOnly })
+                      }}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Оксана Литвиненко"
                     />
@@ -1076,10 +1236,11 @@ const AdminDashboard: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Опис діяльності
+                    Опис діяльності *
                   </label>
                   <textarea
                     rows={3}
+                    required
                     value={facultyFormData.description}
                     onChange={(e) => setFacultyFormData({ ...facultyFormData, description: e.target.value })}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -1090,10 +1251,11 @@ const AdminDashboard: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email
+                      Email *
                     </label>
                     <input
                       type="email"
+                      required
                       value={facultyFormData.contact_email}
                       onChange={(e) => setFacultyFormData({ ...facultyFormData, contact_email: e.target.value })}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -1103,12 +1265,18 @@ const AdminDashboard: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Телефон
+                      Телефон *
                     </label>
                     <input
                       type="tel"
+                      required
                       value={facultyFormData.contact_phone}
-                      onChange={(e) => setFacultyFormData({ ...facultyFormData, contact_phone: e.target.value })}
+                      onChange={(e) => {
+                        const cleaned = e.target.value.replace(/[^0-9+]/g, '');
+                        setFacultyFormData({ ...facultyFormData, contact_phone: cleaned })
+                      }}
+                      pattern="\+38\d{10}"
+                      maxLength={13}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="+38 (032) 239-42-10"
                     />
@@ -1118,10 +1286,11 @@ const AdminDashboard: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Розташування офісу
+                      Розташування офісу *
                     </label>
                     <input
                       type="text"
+                      required
                       value={facultyFormData.office_location}
                       onChange={(e) => setFacultyFormData({ ...facultyFormData, office_location: e.target.value })}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -1131,7 +1300,7 @@ const AdminDashboard: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Години роботи
+                      Години роботи *
                     </label>
                     <input
                       type="text"
@@ -1202,6 +1371,88 @@ const AdminDashboard: React.FC = () => {
                 </div>
               </form>
             )}
+
+            {activeTab === 'departments' && (
+              <form onSubmit={handleDepartmentSubmit} className="p-6 space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Назва відділу *</label>
+                  <input
+                    type="text"
+                    required
+                    value={departmentFormData.name}
+                    onChange={(e) => {
+                        const lettersOnly = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁЇїІіЄєҐґ\s]/g, '');
+                        setDepartmentFormData({ ...departmentFormData, name: lettersOnly })
+                    }}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Відділ цифровізації"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Зображення URL (необов'язково)</label>
+                  <input
+                    type="url"
+                    value={departmentFormData.icon_url}
+                    onChange={(e) => setDepartmentFormData({ ...departmentFormData, icon_url: e.target.value })}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="https://example.com/image.jpg"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Опис діяльності *</label>
+                  <textarea
+                    rows={4}
+                    required
+                    value={departmentFormData.description}
+                    onChange={(e) => {
+                        const lettersOnly = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁЇїІіЄєҐґ\s]/g, '');
+                        setDepartmentFormData({ ...departmentFormData, description: lettersOnly })
+                    }}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Короткий опис діяльності відділу"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Порядок</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={departmentFormData.order_index}
+                    onChange={(e) => setDepartmentFormData({ ...departmentFormData, order_index: parseInt(e.target.value) || 0 })}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={departmentFormData.is_active}
+                    onChange={(e) => setDepartmentFormData({ ...departmentFormData, is_active: e.target.checked })}
+                    className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                  />
+                  <label className="ml-2 text-sm font-medium text-gray-700">Активний відділ</label>
+                </div>
+
+                <div className="flex justify-end space-x-4">
+                  <button
+                    type="button"
+                    onClick={handleCloseModal}
+                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors duration-200"
+                  >
+                    Скасувати
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+                  >
+                    {editingDepartment ? 'Зберегти зміни' : 'Додати відділ'}
+                  </button>
+                </div>
+              </form>
+            )}        
           </div>
         </div>
       )}

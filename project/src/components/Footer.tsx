@@ -109,19 +109,12 @@ const Footer: React.FC = () => {
               Профспілкова організація студентів ЛНУ імені Івана Франка захищає права та інтереси студентів, 
               надає соціальну підтримку та організовує культурно-освітні заходи.
             </p>
-            <Link
-              to="/admin/login"
-              className="inline-flex items-center space-x-1 text-sm text-blue-400 hover:underline transition"
-            >
-              <User className="h-4 w-4" />
-              <span>Перейти до адмін панелі</span>
-            </Link>
           </div>
         </div>
         
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400 text-sm">
-            © 2024 Профком студентів ЛНУ імені Івана Франка. Всі права захищені.
+            © 2025 Профком студентів ЛНУ імені Івана Франка. Всі права захищені.
           </p>
         </div>
       </div>

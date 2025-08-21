@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FileText, Download, Search, Filter, Calendar } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Document {
   id: number;
@@ -12,6 +13,7 @@ interface Document {
 }
 
 const DocumentsPage: React.FC = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
@@ -203,7 +205,8 @@ const DocumentsPage: React.FC = () => {
             Зв'яжіться з нами, і ми допоможемо знайти необхідну інформацію або документ
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
+            onClick={() => { navigate('/contacts');}}>
               Зв'язатися з нами
             </button>
             <button className="border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">

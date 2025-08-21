@@ -18,7 +18,7 @@ const ContactsPage: React.FC = () => {
       office: "Головний корпус, авдиторія 125"
     },
     {
-      name: "Юра Маузр",
+      name: "Юра Мазур",
       position: "Юра Мазур",
       phone: "+38 (032) 239-41-34",
       email: "legal@lnu.edu.ua",
