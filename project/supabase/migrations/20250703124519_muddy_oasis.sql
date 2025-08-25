@@ -31,7 +31,6 @@ CREATE TABLE IF NOT EXISTS faculty_unions (
   union_head_name TEXT NOT NULL,
   union_head_photo TEXT,
   contact_email TEXT,
-  contact_phone TEXT,
   office_location TEXT,
   working_hours TEXT DEFAULT 'Пн-Пт: 9:00-17:00',
   description TEXT,

@@ -27,11 +27,11 @@ const ContactsPage: React.FC = () => {
   ];
 
   const workingHours = [
-    { day: "Понеділок", hours: "9:00 - 18:00" },
-    { day: "Вівторок", hours: "9:00 - 18:00" },
-    { day: "Середа", hours: "9:00 - 18:00" },
-    { day: "Четвер", hours: "9:00 - 18:00" },
-    { day: "П'ятниця", hours: "9:00 - 17:00" },
+    { day: "Понеділок", hours: "10:00 - 16:00" },
+    { day: "Вівторок", hours: "10:00 - 16:00" },
+    { day: "Середа", hours: "10:00 - 16:00" },
+    { day: "Четвер", hours: "10:00 - 16:00" },
+    { day: "П'ятниця", hours: "10:00 - 16:00" },
     { day: "Субота", hours: "Вихідний" },
     { day: "Неділя", hours: "Вихідний" }
   ];
@@ -107,8 +107,7 @@ const ContactsPage: React.FC = () => {
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">Режим роботи</h3>
                     <p className="text-gray-600">
-                      Пн-Чт: 9:00 - 18:00<br />
-                      П'ятниця: 9:00 - 17:00<br />
+                      Пн-Пт: 10:00 - 16:00<br />
                       Сб-Нд: вихідні
                     </p>
                   </div>

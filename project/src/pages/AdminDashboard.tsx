@@ -32,7 +32,6 @@ interface FacultyUnion {
   union_head_name: string;
   union_head_photo?: string;
   contact_email?: string;
-  contact_phone?: string;
   office_location?: string;
   working_hours?: string;
   description?: string;
@@ -92,9 +91,8 @@ const AdminDashboard: React.FC = () => {
     union_head_name: '',
     union_head_photo: '',
     contact_email: '',
-    contact_phone: '',
     office_location: '',
-    working_hours: 'Пн-Пт: 9:00-17:00',
+    working_hours: 'Пн-Пт: 10:00-16:00',
     description: '',
     website_url: '',
     order_index: 0,
@@ -379,7 +377,6 @@ const AdminDashboard: React.FC = () => {
       union_head_name: union.union_head_name,
       union_head_photo: union.union_head_photo || '',
       contact_email: union.contact_email || '',
-      contact_phone: union.contact_phone || '',
       office_location: union.office_location || '',
       working_hours: union.working_hours || 'Пн-Пт: 9:00-17:00',
       description: union.description || '',
@@ -431,7 +428,6 @@ const AdminDashboard: React.FC = () => {
       union_head_name: '',
       union_head_photo: '',
       contact_email: '',
-      contact_phone: '',
       office_location: '',
       working_hours: 'Пн-Пт: 9:00-17:00',
       description: '',
@@ -855,7 +851,7 @@ const AdminDashboard: React.FC = () => {
                             <div className="text-sm text-gray-900">{union.union_head_name}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-500">{union.contact_email || union.contact_phone || 'Не вказано'}</div>
+                            <div className="text-sm text-gray-500">{union.contact_email || 'Не вказано'}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -1265,27 +1261,6 @@ const AdminDashboard: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Телефон *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={facultyFormData.contact_phone}
-                      onChange={(e) => {
-                        const cleaned = e.target.value.replace(/[^0-9+]/g, '');
-                        setFacultyFormData({ ...facultyFormData, contact_phone: cleaned })
-                      }}
-                      pattern="\+38\d{10}"
-                      maxLength={13}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="+38 (032) 239-42-10"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Розташування офісу *
                     </label>
                     <input
@@ -1297,7 +1272,9 @@ const AdminDashboard: React.FC = () => {
                       placeholder="Головний корпус, кімната 301"
                     />
                   </div>
+                </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Години роботи *
@@ -1310,9 +1287,7 @@ const AdminDashboard: React.FC = () => {
                       placeholder="Пн-Пт: 9:00-17:00"
                     />
                   </div>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Сайт факультету
@@ -1325,7 +1300,9 @@ const AdminDashboard: React.FC = () => {
                       placeholder="https://faculty.lnu.edu.ua"
                     />
                   </div>
+                </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Порядок відображення
