@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowRight, Users, FileText, Phone, Star } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ArrowRight, Users, Building, HandCoins, CreditCard, TentTree } from 'lucide-react';
 import NewsCard from '../components/NewsCard';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
@@ -24,21 +24,25 @@ interface HeroSlide {
 
 const HomePage: React.FC = () => {
   const [news, setNews] = useState<News[]>([]);
-  const [loading, setLoading] = useState(true);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [scrollY, setScrollY] = useState(0);
   const navigate = useNavigate();
+
+//hero section functions
 
     const heroSlides: HeroSlide[] = [
     {
       id: 1,
-      image: 'https://images.pexels.com/photos/207692/pexels-photo-207692.jpeg',
+      image: 'https://lviv.travel/image/locations/ef/56/ef568b5e29ab5441bdb4db25428f531e91880ed7_1674562854.jpg?crop=2987%2C1607%2C4%2C72',
       title: 'Профком студентів',
       subtitle: 'Львівський національний університет імені Івана Франка',
       description: 'Захищаємо права студентів, надаємо підтримку та створюємо можливості для розвитку'
     },
     {
       id: 2,
-      image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg',
+      image: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg',
       title: 'Соціальна підтримка',
       subtitle: 'Матеріальна допомога та стипендії',
       description: 'Надаємо фінансову підтримку студентам у складних життєвих ситуаціях'
@@ -52,21 +56,21 @@ const HomePage: React.FC = () => {
     },
     {
       id: 4,
-      image: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg',
+      image: 'https://dw1.s81c.com/developer-static-pages/default/en/default_images/course.jpg',
       title: 'Освітні програми',
       subtitle: 'Додаткові можливості розвитку',
       description: 'Курси, тренінги та програми особистісного зростання'
     },
     {
       id: 5,
-      image: 'https://images.pexels.com/photos/918281/pexels-photo-918281.jpeg',
+      image: 'https://www.fivb.com/wp-content/uploads/2025/04/101767.jpeg',
       title: 'Спортивне життя',
       subtitle: 'Змагання та спортивні секції',
       description: 'Підтримуємо здоровий спосіб життя та спортивні досягнення'
     },
     {
       id: 6,
-      image: 'https://images.pexels.com/photos/1454360/pexels-photo-1454360.jpeg',
+      image: 'https://lnu.edu.ua/wp-content/uploads/2018/06/8.jpg',
       title: 'Студентські гуртожитки',
       subtitle: 'Комфортні умови проживання',
       description: 'Забезпечуємо якісні умови проживання для студентів'
@@ -74,27 +78,132 @@ const HomePage: React.FC = () => {
   ];
 
   useEffect(() => {
-    fetchNews();
+    startAutoPlay();
+    return () => stopAutoPlay();
+  }, []);
+
+  const startAutoPlay = () => {
+    stopAutoPlay();
+    intervalRef.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+  };
+
+  const stopAutoPlay = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+    startAutoPlay();
+  };
+
+ //service scrollbar functions
+
+  const services = [
+    {
+      icon: <Building className="h-8 w-8" />,
+      title: "Звільнення від оплати",
+      subtitle: "Гуртожиток",
+      description:
+        "Профком студентів оформлює звільнення від оплати за проживання в гуртожитках для дітей-пільговиків",
+      color: "from-blue-500 to-blue-700",
+      url: "https://forms.office.com/e/enQBJqB4SN",
+    },
+    {
+      icon: <HandCoins className="h-8 w-8" />,
+      title: "Матеріальна допомога",
+      subtitle: "Підтримка",
+      description: "Надання матеріальної допомоги студентам у скрутних життєвих випадках",
+      color: "from-pink-500 to-pink-700",
+      url: "https://www.google.com/maps",
+    },
+    {
+      icon: <TentTree className="h-8 w-8" />,
+      title: "Відпочинок у таборі",
+      subtitle: "Дозвілля",
+      description: "Організований відпочинок у спортивно-оздоровчому таборі «Карпати» з активними іграми та спортивними заходами",
+      color: "from-green-500 to-green-700",
+      url: "https://forms.office.com/e/enQBJqB4SN",
+    },
+    {
+      icon: <Users className="h-8 w-8" />,
+      title: "Консультації та захист прав",
+      subtitle: "Права",
+      description:
+        "Консультації щодо оформлення соціальних стипендій та захист прав студентів (звернення щодо корупції, харасменту та булінгу)",
+      color: "from-red-500 to-red-700",
+      url: "https://www.google.com/maps",
+    },
+    {
+      icon: <CreditCard className="h-8 w-8" />,
+      title: "Студентська смарт-картка",
+      subtitle: "Леокарт",
+      description: "Оформлення та виготовлення безконтактної смарт-картки для оплати у громадському транспорті Львова",
+      color: "from-purple-500 to-purple-700",
+      url: "https://forms.office.com/e/enQBJqB4SN",
+    }
+  ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [heroSlides.length]);
+    const stackArea = document.querySelector('.stack-area');
+    const cards = document.querySelectorAll('.stack-card');
+    
+    if (!stackArea || !cards.length) return;
 
-  const goToSlide = (index: number) => setCurrentSlide(index);
+    // Adjust for header height (64px = h-16)
+    const headerHeight = 64;
+    const distance = window.innerHeight * 0.5;
+    const topVal = stackArea.getBoundingClientRect().top - headerHeight;
+    const index = Math.floor(-1 * (topVal / distance) - 1);
+
+    cards.forEach((card, i) => {
+      const cardElement = card as HTMLElement;
+      if (i <= index) {
+        cardElement.classList.add('away');
+      } else {
+        cardElement.classList.remove('away');
+      }
+    });
+
+    let angle = 0;
+    cards.forEach((card, i) => {
+      const cardElement = card as HTMLElement;
+      if (cardElement.classList.contains('away')) {
+        cardElement.style.transform = `translateY(-120vh) rotate(-48deg)`;
+      } else {
+        cardElement.style.transform = `rotate(${angle}deg)`;
+        cardElement.style.zIndex = `${cards.length - i}`;
+        angle -= 10;
+      }
+    });
+  }, [scrollY]);
+
+  // news functions
+
+  useEffect(() => {
+    fetchNews();
+  }, []);
+
 
   const fetchNews = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(6);
+  try {
+    const { data, error } = await supabase
+      .from('news')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(6);
 
-      if (error) throw error;
+    if (error) throw error;
       setNews(data || []);
     } catch (error) {
       console.error('Error fetching news:', error);
@@ -103,36 +212,11 @@ const HomePage: React.FC = () => {
     }
   };
 
-  const services = [
-    {
-      icon: <Users className="h-8 w-8" />,
-      title: "Соціальна підтримка",
-      description: "Матеріальна допомога студентам у складних життєвих ситуаціях"
-    },
-    {
-      icon: <FileText className="h-8 w-8" />,
-      title: "Юридичні консультації",
-      description: "Безкоштовні консультації з правових питань для студентів"
-    },
-    {
-      icon: <Phone className="h-8 w-8" />,
-      title: "Гаряча лінія",
-      description: "Цілодобова підтримка студентів у критичних ситуаціях"
-    }
-  ];
-
-  const links = [
-    {label: "Заява на матеріальну допомогу", path: ""},
-    {label: "Розклад прийому", path: ""},
-    {label: "Документи", path: "/documents"},
-    {label: "Контакти", path: "/contacts"},
-  ];
-
   return (
     <div className="min-h-screen">
 
       {/* Hero Section with Slideshow */}
-      <section className="relative h-screen overflow-hidden">
+      <section className="relative overflow-hidden" style={{ height: "calc(100vh - 64px)" }}>
         {heroSlides.map((slide, index) => (
           <div
             key={slide.id}
@@ -202,35 +286,90 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Services Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Наші послуги
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Ми надаємо широкий спектр послуг для підтримки студентів під час навчання
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <div key={index} className="text-center p-8 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors duration-200 group">
-                <div className="text-blue-600 mb-4 flex justify-center group-hover:scale-110 transition-transform duration-200">
-                  {service.icon}
+      <section className="py-16 bg-gray-50">
+        <div className="relative">
+          {/* Stacked Cards Section - now takes full viewport minus header */}
+            <div className="stack-area relative w-full bg-gray-50 flex" style={{ height: `calc(${services.length * 70}vh + 20vh)` }}>
+              {/* Left side - Text content */}
+                <div className="left sticky h-screen flex-1 flex items-center justify-center box-border px-8" style={{ top: '64px' }}>
+                  <div className="max-w-lg">
+                    <h2 className="text-6xl lg:text-7xl font-bold text-gray-900 leading-tight mb-8">
+                      Наші послуги
+                    </h2>
+                    <p className="text-gray-600 text-base mb-6">
+                      Ми надаємо комплексну підтримку студентам у різних сферах життя. 
+                      Від соціальної допомоги до правового захисту — завжди поруч з вами.
+                    </p>
+                    <div className="flex gap-4">
+                      <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
+                        Дізнатися більше
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{service.title}</h3>
-                <p className="text-gray-600">{service.description}</p>
+
+                {/* Right side - Stacked cards */}
+                <div className="right sticky h-screen flex-1 relative" style={{ top: '64px' }}>
+                  {services.map((service, index) => (
+                    <div
+                      key={index}
+                      className={`stack-card absolute w-80 h-80 rounded-3xl shadow-lg transition-all duration-500 ease-in-out cursor-pointer bg-gradient-to-br ${service.color}`}
+                      style={{
+                        top: 'calc(50% - 160px)',
+                        left: 'calc(50% - 160px)',
+                        transformOrigin: 'bottom left'
+                      }}
+                      onClick={() => window.open(service.url, "_blank")}
+                    >
+                      <div className="p-8 h-full flex flex-col justify-between text-white">
+                        <div className="flex items-center mb-4">
+                          {service.icon}
+                          <span className="ml-3 text-lg font-semibold opacity-90">
+                            {service.subtitle}
+                          </span>
+                        </div>
+                      <div>
+                        <h3 className="text-3xl font-bold leading-tight mb-4">
+                          {service.title}
+                        </h3>
+                        <p className="text-sm opacity-90 leading-relaxed">
+                          {service.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+
+            <style>{`
+              .stack-card.away {
+                transform-origin: bottom left;
+              }
+        
+              .stack-card {
+                transition: transform 0.5s ease-in-out;
+              }
+        
+              /* Ensure smooth scrolling from the start */
+              html {
+                scroll-behavior: smooth;
+              }
+        
+              /* Prevent initial jump by properly positioning sticky elements */
+              .stack-area {
+                margin-top: -64px;
+                padding-top: 64px;
+              }
+            `}</style>
         </div>
       </section>
 
       {/* News Section */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-12">
+          <div className="flex justify-between items-center mb-12 transform transition-transform duration-500 ease-in-out
+                hover:-translate-y-2 hover:shadow-lg">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 Останні новини
@@ -251,7 +390,7 @@ const HomePage: React.FC = () => {
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[...Array(6)].map((_, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
+                <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
                   <div className="h-48 bg-gray-300"></div>
                   <div className="p-6">
                     <div className="h-4 bg-gray-300 rounded mb-2"></div>
@@ -282,62 +421,7 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Events Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-12">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Останні події
-              </h2>
-              <p className="text-lg text-gray-600">
-                Будьте в курсі всіх важливих подій на нашому університеті
-              </p>
-            </div>
-            <Link
-              to="/news"
-              className="hidden sm:flex items-center text-blue-600 hover:text-blue-800 font-semibold transition-colors duration-200"
-            >
-              Всі події
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </div>
-
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[...Array(6)].map((_, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
-                  <div className="h-48 bg-gray-300"></div>
-                  <div className="p-6">
-                    <div className="h-4 bg-gray-300 rounded mb-2"></div>
-                    <div className="h-4 bg-gray-300 rounded mb-4 w-3/4"></div>
-                    <div className="h-3 bg-gray-300 rounded mb-2"></div>
-                    <div className="h-3 bg-gray-300 rounded w-1/2"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {news.slice(0, 3).map((article) => (
-                <NewsCard key={article.id} news={article} />
-              ))}
-            </div>
-          )}
-
-          <div className="text-center mt-8 sm:hidden">
-            <Link
-              to="/news"
-              className="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold transition-colors duration-200"
-            >
-              Всі новини
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Links Section */}
+      {/* Quick Links Section 
       <section className="py-16 bg-blue-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -367,6 +451,8 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
+      */}
+
     </div>
   );
 };

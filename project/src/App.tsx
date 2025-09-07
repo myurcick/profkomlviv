@@ -1,11 +1,9 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import AboutUsPage from './pages/AboutUsPage';
 import ProfPage from './pages/ProfPage';
-import ServicesPage from './pages/ServicesPage';
 import DocumentsPage from './pages/DocumentsPage';
 import ContactsPage from './pages/ContactsPage';
 import AdminLogin from './pages/AdminLogin';
@@ -24,7 +22,6 @@ function App() {
             <ScrollToTop />
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/services" element={<ServicesPage />} />
               <Route path="/documents" element={<DocumentsPage />} />
               <Route path="/contacts" element={<ContactsPage />} />
               <Route path="/news" element={<NewsPage />} />

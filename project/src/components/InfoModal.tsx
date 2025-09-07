@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { X, MapPin, Mail, Clock, Globe } from "lucide-react";
 
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
-
 
 interface ModalProps {
   item: {
@@ -33,13 +32,17 @@ export const Modal: React.FC<ModalProps> = ({
   onClose,
 }) => {
   const [animate, setAnimate] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(false);
+  const [showReadMore, setShowReadMore] = useState(false);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
-  if (isOpen) {
-    requestAnimationFrame(() => setAnimate(true));
-  } else {
-    setAnimate(false);
-  }
+    if (isOpen) {
+      setExpanded(false);
+      requestAnimationFrame(() => setAnimate(true));
+    } else {
+      setAnimate(false);
+    }
   }, [isOpen]);
 
   useEffect(() => {
@@ -56,11 +59,47 @@ export const Modal: React.FC<ModalProps> = ({
     return () => window.removeEventListener("keydown", handleEsc);
   }, [isOpen, onClose]);
 
+  useEffect(() => {
+    if (item?.description && descriptionRef.current && !expanded) {
+      const element = descriptionRef.current;
+      const lineHeight = parseInt(window.getComputedStyle(element).lineHeight);
+      const maxHeight = lineHeight * 5;
+      
+      element.style.maxHeight = 'none';
+      element.style.overflow = 'visible';
+      
+      const fullHeight = element.scrollHeight;
+      
+      if (fullHeight > maxHeight) {
+        setShowReadMore(true);
+        element.style.maxHeight = `${maxHeight}px`;
+        element.style.overflow = 'hidden';
+      } else {
+        setShowReadMore(false);
+      }
+    }
+  }, [item?.description, expanded, isOpen]);
+
   const handleClose = () => {
     setAnimate(false);
     setTimeout(() => {
       onClose();
-    }, 300)
+    }, 300);
+  };
+
+  const toggleExpanded = () => {
+    setExpanded(!expanded);
+    if (descriptionRef.current) {
+      if (!expanded) {
+        descriptionRef.current.style.maxHeight = 'none';
+        descriptionRef.current.style.overflow = 'visible';
+      } else {
+        const lineHeight = parseInt(window.getComputedStyle(descriptionRef.current).lineHeight);
+        const maxHeight = lineHeight * 6;
+        descriptionRef.current.style.maxHeight = `${maxHeight}px`;
+        descriptionRef.current.style.overflow = 'hidden';
+      }
+    }
   };
 
   if (!item) return null;
@@ -72,7 +111,7 @@ export const Modal: React.FC<ModalProps> = ({
     >
       {/* Upper Section */}
       <div
-        className={`bg-white rounded-lg shadow-lg w-full max-w-[80vw] md:max-w-[50vw] lg:max-w-[40vw] xl:max-w-[20vw] max-h-[80vh] mx-auto transform transition-transform duration-300 ${animate ? "translate-y-0" : "translate-y-[100vh]"}`}
+        className={`bg-white rounded-lg shadow-lg w-full max-w-[75vw] md:max-w-[55vw] lg:max-w-[45vw] xl:max-w-[25vw] max-h-[85vh] mx-auto transform transition-transform duration-300 ${animate ? "translate-y-0" : "translate-y-[100vh]"}`}
         onClick={(e) => e.stopPropagation()}
       >
         <SimpleBar style={{ maxHeight: '80vh'}}>
@@ -119,16 +158,45 @@ export const Modal: React.FC<ModalProps> = ({
             <span className="text-gray-600 block">{item.post}</span>
           </h4>
           {item.description && (
-            <p className="text-gray-700 text-sm">{item.description}</p>
+            <div className="w-full">
+              <p 
+                ref={descriptionRef}
+                className={`text-gray-700 text-sm ${
+                  !expanded ? 'relative' : ''
+                }`}
+                style={{
+                  lineHeight: '1.4',
+                  ...(showReadMore && !expanded ? {
+                    display: '-webkit-box',
+                    WebkitLineClamp: 6,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden'
+                  } : {})
+                }}
+              >
+                {item.description}
+              </p>
+              {showReadMore && (
+                <button
+                  onClick={toggleExpanded}
+                  className="text-gray-500 text-xs mt-1 flex items-center transition-all duration-300 transform hover:translate-x-1 hover:text-blue-600"
+                >
+                  {expanded ? 'приховати' : 'читати ще'}
+                  <span className="ml-1 inline-block">
+                    {expanded ? '↑' : '→'}
+                  </span>
+                </button>
+              )}
+            </div>
           )}
           {item.office_location && item.building_location && (
             <div className="flex items-center text-gray-600 text-sm">
               <MapPin className="h-4 w-4 mr-2 text-blue-600" />
               <a
                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.building_location)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
               >
                 {item.office_location}
               </a>

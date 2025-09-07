@@ -9,7 +9,6 @@ const Header: React.FC = () => {
 const navigation = [
   { name: 'Головна', href: '/' },
   { name: 'Про нас', href: '/about-us' },
-  { name: 'Послуги', href: '/services' },
   { name: 'Документи', href: '/documents' },
   { name: 'Профбюро', href: '/fuck' },
   { name: 'Новини', href: '/news' },
