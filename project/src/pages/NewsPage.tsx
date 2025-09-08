@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, Calendar, Star } from 'lucide-react';
+import { Search, Filter, Calendar, ChevronLeft, ChevronsLeft, ChevronRight, ChevronsRight } from 'lucide-react';
 import NewsCard from '../components/NewsCard';
 import { supabase } from '../lib/supabase';
 
@@ -17,10 +17,16 @@ const NewsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const newsPerPage = 9;
 
   useEffect(() => {
     fetchNews();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterType]);
 
   const fetchNews = async () => {
     try {
@@ -46,6 +52,98 @@ const NewsPage: React.FC = () => {
                          (filterType === 'regular' && !article.is_important);
     return matchesSearch && matchesFilter;
   });
+
+  const totalPages = Math.ceil(filteredNews.length / newsPerPage);
+  const startIndex = (currentPage - 1) * newsPerPage;
+  const endIndex = startIndex + newsPerPage;
+  const currentNews = filteredNews.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+const renderPaginationButtons = () => {
+  const maxVisibleButtons = 5;
+  
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
+  let endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
+  
+  if (endPage - startPage + 1 < maxVisibleButtons) {
+    startPage = Math.max(1, endPage - maxVisibleButtons + 1);
+  }
+
+  // Ліві кнопки: First + Prev
+  const leftButtons = (
+    <div key="left" className="flex gap-1">
+      <button
+        onClick={() => handlePageChange(1)}
+        disabled={currentPage === 1}
+        className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+      >
+        <ChevronsLeft className="h-4 w-4" />
+      </button>
+      <button
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </button>
+    </div>
+  );
+
+  // Центральні кнопки: номери сторінок
+  const centerButtons = (
+    <div key="center" className="flex gap-1">
+      {Array.from({ length: endPage - startPage + 1 }, (_, idx) => {
+        const page = startPage + idx;
+        return (
+          <button
+            key={page}
+            onClick={() => handlePageChange(page)}
+            className={`w-8 h-10 flex justify-center items-center rounded-lg border font-medium transition-colors duration-200 ${
+              page === currentPage
+                ? 'bg-blue-600 text-white border-blue-600'
+                : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'
+            }`}
+          >
+            {page}
+          </button>
+        );
+      })}
+    </div>
+  );
+
+  // Праві кнопки: Next + Last
+  const rightButtons = (
+    <div key="right" className="flex gap-1">
+      <button
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+      >
+        <ChevronRight className="h-4 w-4" />
+      </button>
+      <button
+        onClick={() => handlePageChange(totalPages)}
+        disabled={currentPage === totalPages}
+        className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+      >
+        <ChevronsRight className="h-4 w-4" />
+      </button>
+    </div>
+  );
+
+  // Повертаємо всі три групи в один контейнер
+  return (
+    <div className="flex items-center justify-center gap-4">
+      {leftButtons}
+      {centerButtons}
+      {rightButtons}
+    </div>
+  );
+};
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -94,6 +192,11 @@ const NewsPage: React.FC = () => {
           
           <div className="mt-4 text-sm text-gray-600">
             Знайдено новин: {filteredNews.length}
+            {totalPages > 1 && (
+              <span className="ml-2">
+                (сторінка {currentPage} з {totalPages})
+              </span>
+            )}
           </div>
         </div>
       </section>
@@ -128,11 +231,20 @@ const NewsPage: React.FC = () => {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredNews.map((article) => (
-                <NewsCard key={article.id} news={article} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {currentNews.map((article) => (
+                  <NewsCard key={article.id} news={article} />
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="mt-12 flex justify-center items-center space-x-2">
+                  {renderPaginationButtons()}
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
