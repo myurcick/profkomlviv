@@ -4,6 +4,7 @@ import { supabase } from "../lib/supabase";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay, Pagination, EffectFade } from "swiper/modules";
+import TeamMemberCard from "../components/TeamMemberCard";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -210,117 +211,53 @@ const TeamPage: React.FC = () => {
 
       {/* Team Swiper Section */}
       <section className="relative py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {loading ? (
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: 6 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="h-[450px] animate-pulse overflow-hidden rounded-lg bg-white shadow-md"
-                />
-              ))}
-            </div>
-          ) : filteredMembers.length === 0 ? (
-            <div className="py-12 text-center">
-              <h3 className="mb-2 text-lg font-medium text-gray-900">
-                {searchTerm ? "Учасників не знайдено" : "Команда ще не сформована"}
-              </h3>
-              <p className="text-gray-500">
-                {searchTerm
-                  ? "Спробуйте змінити критерії пошуку"
-                  : "Інформація про команду буде додана найближчим часом"}
-              </p>
-            </div>
-          ) : (
-            <Swiper
-              modules={[Autoplay, Pagination]}
-              spaceBetween={20}
-              slidesPerView={3}
-              loop
-              speed={800}
-              autoplay={{ delay: 5000, disableOnInteraction: false }}
-              pagination={{ clickable: true }}
-              className="team-swiper relative pb-12"
-              breakpoints={{
-                0: { slidesPerView: 1 },
-                640: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 },
-              }}
-              wrapperClass="items-stretch"
-            >
-              {filteredMembers.map((teamMember) => (
-                <SwiperSlide key={teamMember.id} className="h-full">
-                  <div
-                    onClick={() => handleMemberClick(teamMember)}
-                    className="mx-auto flex h-full max-w-sm cursor-pointer flex-col items-center overflow-hidden rounded-lg bg-white shadow-md transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl"
-                  >
-                    <div className="w-full aspect-[3/4] max-h-64 bg-gray-200 overflow-hidden">
-                      {teamMember.photo_url ? (
-                        <img
-                          src={teamMember.photo_url}
-                          alt={teamMember.name}
-                          className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-blue-500 text-2xl font-bold text-white">
-                          {getInitials(teamMember.name)}
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-4 flex flex-col justify-center text-center w-full">
-                      <h3 className="text-lg font-bold text-gray-900">{teamMember.name}</h3>
-                      <p className="mt-1 font-medium text-blue-600 leading-snug break-words">
-                        {teamMember.position}
-                      </p>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          )}
-        </div>
-
-        <Modal isOpen={!!selectedMember} onClose={() => setSelectedMember(null)}>
-          <div className="relative w-full overflow-hidden bg-gray-200">
-            {selectedMember?.photo_url ? (
-              <img
-                src={selectedMember.photo_url}
-                alt={selectedMember.name}
-                className="h-auto max-h-64 w-full object-cover"
-              />
-            ) : (
-              <div className="flex h-64 w-full items-center justify-center bg-blue-500 text-4xl font-bold text-white">
-                {selectedMember && getInitials(selectedMember.name)}
-              </div>
-            )}
-            <button
-              onClick={() => setSelectedMember(null)}
-              className="absolute right-2 top-2 flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-white/20 text-xl font-bold text-white backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white hover:text-blue-800"
-            >
-              <X size={24} />
-            </button>
-          </div>
-          <div className="p-4 text-left overflow-y-auto">
-            <h2 className="mb-1 text-2xl font-bold">{selectedMember?.name}</h2>
-            <p className="mb-3 font-medium text-blue-600">
-              {selectedMember?.position}
-            </p>
-            {selectedMember?.description && (
-              <p className="mb-2 text-gray-700">{selectedMember.description}</p>
-            )}
-            {selectedMember?.phone && (
-              <p className="mb-1 text-gray-800">
-                <strong>Телефон:</strong> {selectedMember.phone}
-              </p>
-            )}
-            {selectedMember?.email && (
-              <p className="text-gray-800">
-                <strong>Email:</strong> {selectedMember.email}
-              </p>
-            )}
-          </div>
-        </Modal>
-      </section>
+  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    {loading ? (
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div
+            key={index}
+            className="h-[450px] animate-pulse rounded-lg bg-white shadow-md"
+          />
+        ))}
+      </div>
+    ) : filteredMembers.length === 0 ? (
+      <div className="py-12 text-center">
+        <h3 className="mb-2 text-lg font-medium text-gray-900">
+          {searchTerm ? "Учасників не знайдено" : "Команда ще не сформована"}
+        </h3>
+        <p className="text-gray-500">
+          {searchTerm
+            ? "Спробуйте змінити критерії пошуку"
+            : "Інформація про команду буде додана найближчим часом"}
+        </p>
+      </div>
+    ) : (
+      <Swiper
+        modules={[Autoplay, Pagination]}
+        spaceBetween={20}
+        slidesPerView={3}
+        loop
+        speed={800}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        pagination={{ clickable: true }}
+        className="team-swiper relative pb-12"
+        breakpoints={{
+          0: { slidesPerView: 1 },
+          640: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        }}
+        wrapperClass="items-stretch overflow-visible"
+      >
+        {filteredMembers.map((teamMember) => (
+          <SwiperSlide key={teamMember.id} className="h-full overflow-visible">
+            <TeamMemberCard member={teamMember} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    )}
+  </div>
+</section>
 
       {/* Team Carousel Section */}
       <section className="relative h-screen overflow-hidden">

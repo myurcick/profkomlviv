@@ -56,7 +56,7 @@ const ContactsPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Contact Information */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+            <div className="bg-white rounded-lg shadow-md p-8 mb-8 transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-lg">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Основна інформація</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -116,7 +116,7 @@ const ContactsPage: React.FC = () => {
             </div>
 
             {/* Staff Contacts */}
-            <div className="bg-white rounded-lg shadow-md p-8">
+            <div className="bg-white rounded-lg shadow-md p-8 transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-lg">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Контакти співробітників</h2>
               
               <div className="space-y-6">
@@ -157,7 +157,7 @@ const ContactsPage: React.FC = () => {
           {/* Sidebar */}
           <div className="space-y-8">
             {/* Working Hours */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-6 transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-lg">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Розклад роботи</h3>
               <div className="space-y-3">
                 {workingHours.map((schedule, index) => (
@@ -174,7 +174,7 @@ const ContactsPage: React.FC = () => {
             </div>
 
             {/* Quick Contact */}
-            <div className="bg-blue-600 text-white rounded-lg p-6">
+            <div className="bg-blue-600 text-white rounded-lg p-6 transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-lg">
               <h3 className="text-lg font-semibold mb-4">Швидкий зв'язок</h3>
               <p className="text-blue-100 mb-4 text-sm">
                 Маєте термінове питання? Зв'яжіться з нами прямо зараз!
@@ -192,7 +192,7 @@ const ContactsPage: React.FC = () => {
             </div>
 
             {/* Map placeholder */}
-             <div className="bg-white rounded-lg shadow-md overflow-hidden">
+             <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-lg">
               <div className="p-6 pb-0">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                   <MapPin className="h-5 w-5 text-blue-600 mr-2" />

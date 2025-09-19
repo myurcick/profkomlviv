@@ -4,6 +4,9 @@ import NewsCard from '../components/NewsCard';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
+import 'swiper/css';
 
 interface News {
   id: number;
@@ -28,6 +31,7 @@ const HomePage: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
   const [scrollY, setScrollY] = useState(0);
+  const [showBackground, setShowBackground] = useState(false);
   const navigate = useNavigate();
 
 //hero section functions
@@ -176,6 +180,7 @@ const HomePage: React.FC = () => {
     });
 
     let angle = 0;
+    let visibleCount = 0;
     cards.forEach((card, i) => {
       const cardElement = card as HTMLElement;
       if (cardElement.classList.contains('away')) {
@@ -184,8 +189,17 @@ const HomePage: React.FC = () => {
         cardElement.style.transform = `rotate(${angle}deg)`;
         cardElement.style.zIndex = `${cards.length - i}`;
         angle -= 10;
+        visibleCount++;
       }
     });
+
+    if (visibleCount === 0) {
+      setShowBackground(true);
+    } else if (visibleCount === 1 && showBackground) {
+      setTimeout(() => {
+        setShowBackground(false);
+      }, 500);
+    }
   }, [scrollY]);
 
   // news functions
@@ -194,23 +208,22 @@ const HomePage: React.FC = () => {
     fetchNews();
   }, []);
 
-
   const fetchNews = async () => {
-  try {
-    const { data, error } = await supabase
-      .from('news')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(6);
+    try {
+      const { data, error } = await supabase
+        .from('news')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(6);
 
-    if (error) throw error;
-      setNews(data || []);
-    } catch (error) {
-      console.error('Error fetching news:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      if (error) throw error;
+        setNews(data || []);
+      } catch (error) {
+        console.error('Error fetching news:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
   return (
     <div className="min-h-screen">
@@ -287,47 +300,56 @@ const HomePage: React.FC = () => {
 
       {/* Services Section */}
       <section className="py-16 bg-gray-50">
-        <div className="relative">
-          {/* Stacked Cards Section - now takes full viewport minus header */}
+        <div className="max-w-7xl mx-auto">
+          <div className="relative">
+            {/* Stacked Cards Section */}
             <div className="stack-area relative w-full bg-gray-50 flex" style={{ height: `calc(${services.length * 70}vh + 20vh)` }}>
               {/* Left side - Text content */}
-                <div className="left sticky h-screen flex-1 flex items-center justify-center box-border px-8" style={{ top: '64px' }}>
-                  <div className="max-w-lg">
-                    <h2 className="text-6xl lg:text-7xl font-bold text-gray-900 leading-tight mb-8">
-                      Наші послуги
-                    </h2>
-                    <p className="text-gray-600 text-base mb-6">
-                      Ми надаємо комплексну підтримку студентам у різних сферах життя. 
-                      Від соціальної допомоги до правового захисту — завжди поруч з вами.
-                    </p>
-                    <div className="flex gap-4">
-                      <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
-                        Дізнатися більше
-                      </button>
-                    </div>
+              <div className="left sticky h-screen flex-1 flex items-center justify-center box-border" style={{ top: '64px' }}>
+                <div className="max-w-lg">
+                  <h2 className="text-6xl lg:text-7xl font-bold text-gray-900 leading-tight mb-8">
+                    Наші сервіси
+                  </h2>
+                  <p className="text-gray-600 text-base mb-6">
+                    Ми надаємо комплексну підтримку студентам у різних сферах життя. 
+                    Від соціальної допомоги до правового захисту — завжди поруч з вами.
+                  </p>
+                  <div className="flex gap-4">
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
+                      Дізнатися більше
+                    </button>
                   </div>
                 </div>
+              </div>
 
-                {/* Right side - Stacked cards */}
-                <div className="right sticky h-screen flex-1 relative" style={{ top: '64px' }}>
-                  {services.map((service, index) => (
-                    <div
-                      key={index}
-                      className={`stack-card absolute w-80 h-80 rounded-3xl shadow-lg transition-all duration-500 ease-in-out cursor-pointer bg-gradient-to-br ${service.color}`}
-                      style={{
-                        top: 'calc(50% - 160px)',
-                        left: 'calc(50% - 160px)',
-                        transformOrigin: 'bottom left'
-                      }}
-                      onClick={() => window.open(service.url, "_blank")}
-                    >
-                      <div className="p-8 h-full flex flex-col justify-between text-white">
-                        <div className="flex items-center mb-4">
-                          {service.icon}
-                          <span className="ml-3 text-lg font-semibold opacity-90">
-                            {service.subtitle}
-                          </span>
-                        </div>
+              {/* Right side - Stacked cards */}
+              <div className="right sticky h-screen flex-1 flex items-center justify-end relative ml-20" style={{ top: '64px' }}>
+                {showBackground && (
+                  <img 
+                    src="/under_cards.png" 
+                    alt="background"
+                    className="absolute left-1/2 -translate-x-1/2 w-80 h-80 pointer-events-none"
+                  />
+                )}
+
+                {services.map((service, index) => (
+                  <div
+                    key={index}
+                    className={`stack-card absolute w-80 h-80 rounded-3xl shadow-md transition-all duration-500 ease-in-out cursor-pointer bg-gradient-to-br ${service.color}`}
+                    style={{
+                      top: 'calc(50% - 160px)',
+                      left: 'calc(50% - 160px)',
+                      transformOrigin: 'bottom left'
+                    }}
+                    onClick={() => window.open(service.url, "_blank")}
+                  >
+                    <div className="p-8 h-full flex flex-col justify-between text-white">
+                      <div className="flex items-center mb-4">
+                        {service.icon}
+                        <span className="ml-3 text-lg font-semibold opacity-90">
+                          {service.subtitle}
+                        </span>
+                      </div>
                       <div>
                         <h3 className="text-3xl font-bold leading-tight mb-4">
                           {service.title}
@@ -362,14 +384,14 @@ const HomePage: React.FC = () => {
                 padding-top: 64px;
               }
             `}</style>
+          </div>
         </div>
       </section>
 
       {/* News Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-12 transform transition-transform duration-500 ease-in-out
-                hover:-translate-y-2 hover:shadow-lg">
+          <div className="flex justify-between items-center mb-12">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 Останні новини
@@ -388,26 +410,52 @@ const HomePage: React.FC = () => {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[...Array(6)].map((_, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
-                  <div className="h-48 bg-gray-300"></div>
-                  <div className="p-6">
-                    <div className="h-4 bg-gray-300 rounded mb-2"></div>
-                    <div className="h-4 bg-gray-300 rounded mb-4 w-3/4"></div>
-                    <div className="h-3 bg-gray-300 rounded mb-2"></div>
-                    <div className="h-3 bg-gray-300 rounded w-1/2"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {news.slice(0, 3).map((article) => (
-                <NewsCard key={article.id} news={article} />
-              ))}
-            </div>
-          )}
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {[...Array(6)].map((_, index) => (
+      <div 
+        key={index} 
+        className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse"
+        style={{ animationDelay: `${index * 100}ms` }}
+      >
+        <div className="h-48 bg-gray-300"></div>
+        <div className="p-6">
+          <div className="h-4 bg-gray-300 rounded mb-2"></div>
+          <div className="h-4 bg-gray-300 rounded mb-4 w-3/4"></div>
+          <div className="h-3 bg-gray-300 rounded mb-2"></div>
+          <div className="h-3 bg-gray-300 rounded w-1/2"></div>
+        </div>
+      </div>
+    ))}
+  </div>
+) : (
+  <Swiper
+    modules={[Autoplay]}
+    spaceBetween={20}
+    slidesPerView={3}
+    loop
+    speed={800}
+    autoplay={{ delay: 5000, disableOnInteraction: false }}
+    className="news-swiper relative pb-12"
+    breakpoints={{
+      0: { slidesPerView: 1 },
+      640: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 },
+    }}
+    wrapperClass="items-stretch"
+  >
+    {news.slice(0, 6).map((article, index) => (
+      <SwiperSlide key={article.id} className="h-full">
+        <div
+          className="news-card-animated h-full"
+          style={{ animationDelay: `${index * 150}ms` }}
+          onClick={() => navigate(`/news/${article.id}`)}
+        >
+          <NewsCard news={article} />
+        </div>
+      </SwiperSlide>
+    ))}
+  </Swiper>
+)}
 
           <div className="text-center mt-8 sm:hidden">
             <Link
@@ -421,37 +469,57 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Quick Links Section 
-      <section className="py-16 bg-blue-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Швидкі посилання
-            </h2>
-            <p className="text-lg text-blue-200">
-              Найчастіше використовувані ресурси
-            </p>
-          </div>
-    
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {links.map((item, index) => (
-              <div key={index} className="flex">
-                <button
-                  className="w-full bg-blue-800 hover:bg-blue-700 p-6 rounded-lg transition-colors duration-200 group flex flex-col items-center"
-                    onClick={() => { navigate(item.path) }}>
-                    <div className="flex items-center justify-center h-8">
-                      <Star className="h-6 w-6 text-yellow-400 group-hover:scale-110 transition-transform duration-200" />
-                    </div>
-                    <span className="text-sm font-medium text-center mt-2 leading-tight">
-                      {item.label}
-                    </span>
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      */}
+      <style>{`
+        /* News Cards Animation */
+        .news-card-animated {
+          opacity: 0;
+          transform: translateY(30px) scale(0.95);
+          animation: newsCardSlideIn 0.6s ease-out forwards;
+        }
+
+        @keyframes newsCardSlideIn {
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        /* Enhanced hover effects for news cards */
+        .news-card-animated:hover {
+          transform: translateY(-5px) scale(1.02);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .news-card-animated:hover .news-card-shadow {
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Staggered animation for news cards on scroll */
+        @media (prefers-reduced-motion: no-preference) {
+          .news-card-animated {
+            animation-fill-mode: both;
+          }
+        }
+
+        /* Loading animation improvements */
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.5;
+          }
+        }
+
+        .animate-pulse {
+          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Smooth transitions for all interactive elements */
+        .news-card-animated * {
+          transition: all 0.2s ease-in-out;
+        }
+      `}</style>
 
     </div>
   );

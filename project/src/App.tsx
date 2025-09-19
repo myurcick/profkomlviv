@@ -9,6 +9,7 @@ import ContactsPage from './pages/ContactsPage';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import NewsPage from './pages/NewsPage';
+import NewsDetailPage from './pages/NewsDetailPage';
 import { AuthProvider } from './context/AuthContext';
 import ScrollToTop from "./ScrollToTop";
 
@@ -25,6 +26,7 @@ function App() {
               <Route path="/documents" element={<DocumentsPage />} />
               <Route path="/contacts" element={<ContactsPage />} />
               <Route path="/news" element={<NewsPage />} />
+              <Route path="/news/:id/:slug?" element={<NewsDetailPage />} />
               <Route path="/about-us" element={<AboutUsPage />} />
               <Route path="/fuck" element={<ProfPage />} />
               <Route path="/admin/login" element={<AdminLogin />} />

@@ -15,47 +15,55 @@ const navigation = [
   { name: 'Контакти', href: '/contacts' },
 ];
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+  if (path === '/') {
+    return location.pathname === '/';
+  }
+  return location.pathname.startsWith(path);
+};
 
   return (
-    <header className="bg-white shadow-lg sticky top-0 z-50">
+    <header className="bg-white/75 backdrop-blur-md border-b border-gray-200 shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-3">
               <img 
-                src="../../public/logo.jpg" 
+                src="/logo.png" 
                 alt="Логотип профкому студентів ЛНУ" 
-                className="h-10 w-10 object-contain"
+                className="h-14 w-14 object-contain"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
                   e.currentTarget.nextElementSibling?.classList.remove('hidden');
                 }}
               />
-              <div className="hidden h-10 w-10 bg-blue-600 rounded-lg items-center justify-center text-white font-bold text-lg">
+              <div className="hidden h-10 w-10 bg-white rounded-lg items-center justify-center text-[#1E2A5A] font-bold text-lg">
                 ЛНУ
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-lg font-bold text-gray-900">Профком студентів</h1>
-                <p className="text-xs text-gray-600">ЛНУ імені Івана Франка</p>
+                <h1 className="text-md font-bold text-[#1E2A5A]">Профком студентів</h1>
+                <p className="text-sm text-[#1E2A5A]">ЛНУ імені Івана Франка</p>
               </div>
             </Link>
           </div>
 
-          <nav className="hidden xl:flex space-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                  isActive(item.href)
-                    ? 'text-blue-600 bg-blue-50'
-                    : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
+          <nav className="hidden xl:flex space-x-6">
+            {navigation.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`px-3 py-1 rounded-2xl text-sm font-medium transition-all duration-300 border hover:-translate-y-0.5
+                    ${active
+                    ? 'text-blue-600 bg-white shadow-md border-gray-300'
+                    : 'text-[#1E2A5A] border-transparent hover:border-gray-300 hover:shadow-md hover:bg-white'
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              );
+           })}
           </nav>
 
           <div className="xl:hidden">

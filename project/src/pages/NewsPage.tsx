@@ -28,6 +28,10 @@ const NewsPage: React.FC = () => {
     setCurrentPage(1);
   }, [searchTerm, filterType]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
+
   const fetchNews = async () => {
     try {
       const { data, error } = await supabase
@@ -36,7 +40,7 @@ const NewsPage: React.FC = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setNews(data || []);
+      setNews((data as News[]) || []);
     } catch (error) {
       console.error('Error fetching news:', error);
     } finally {
@@ -45,11 +49,13 @@ const NewsPage: React.FC = () => {
   };
 
   const filteredNews = news.filter(article => {
-    const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         article.content.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = filterType === 'all' || 
-                         (filterType === 'important' && article.is_important) ||
-                         (filterType === 'regular' && !article.is_important);
+    const matchesSearch =
+      article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      article.content.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter =
+      filterType === 'all' ||
+      (filterType === 'important' && article.is_important) ||
+      (filterType === 'regular' && !article.is_important);
     return matchesSearch && matchesFilter;
   });
 
@@ -58,42 +64,43 @@ const NewsPage: React.FC = () => {
   const endIndex = startIndex + newsPerPage;
   const currentNews = filteredNews.slice(startIndex, endIndex);
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const handlePageChange = (page: number) => setCurrentPage(page);
 
-const renderPaginationButtons = () => {
+  const renderPaginationButtons = () => {
+  if (totalPages <= 1) return null;
   const maxVisibleButtons = 5;
-  
+
   let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
   let endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
-  
   if (endPage - startPage + 1 < maxVisibleButtons) {
     startPage = Math.max(1, endPage - maxVisibleButtons + 1);
   }
 
-  // Ліві кнопки: First + Prev
+  // Left Buttons
   const leftButtons = (
     <div key="left" className="flex gap-1">
-      <button
-        onClick={() => handlePageChange(1)}
-        disabled={currentPage === 1}
-        className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-      >
-        <ChevronsLeft className="h-4 w-4" />
-      </button>
-      <button
-        onClick={() => handlePageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-      >
-        <ChevronLeft className="h-4 w-4" />
-      </button>
+      {totalPages > 5 && (
+        <button
+          onClick={() => handlePageChange(1)}
+          disabled={currentPage === 1}
+          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+        >
+          <ChevronsLeft className="h-4 w-4" />
+        </button>
+      )}
+      {totalPages > 1 && (
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </button>
+      )}
     </div>
   );
 
-  // Центральні кнопки: номери сторінок
+  // Center Buttons
   const centerButtons = (
     <div key="center" className="flex gap-1">
       {Array.from({ length: endPage - startPage + 1 }, (_, idx) => {
@@ -102,10 +109,10 @@ const renderPaginationButtons = () => {
           <button
             key={page}
             onClick={() => handlePageChange(page)}
-            className={`w-8 h-10 flex justify-center items-center rounded-lg border font-medium transition-colors duration-200 ${
+            className={`w-8 h-8 flex justify-center items-center rounded-lg border font-medium transition-colors duration-200 ${
               page === currentPage
-                ? 'bg-blue-600 text-white border-blue-600'
-                : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'
+                ? "bg-blue-600 text-white border-blue-600"
+                : "border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
             }`}
           >
             {page}
@@ -115,29 +122,32 @@ const renderPaginationButtons = () => {
     </div>
   );
 
-  // Праві кнопки: Next + Last
+  // Right Buttons
   const rightButtons = (
     <div key="right" className="flex gap-1">
-      <button
-        onClick={() => handlePageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-      >
-        <ChevronRight className="h-4 w-4" />
-      </button>
-      <button
-        onClick={() => handlePageChange(totalPages)}
-        disabled={currentPage === totalPages}
-        className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-      >
-        <ChevronsRight className="h-4 w-4" />
-      </button>
+      {totalPages > 1 && (
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </button>
+      )}
+      {totalPages > 5 && (
+        <button
+          onClick={() => handlePageChange(totalPages)}
+          disabled={currentPage === totalPages}
+          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+        >
+          <ChevronsRight className="h-4 w-4" />
+        </button>
+      )}
     </div>
   );
 
-  // Повертаємо всі три групи в один контейнер
   return (
-    <div className="flex items-center justify-center gap-4">
+    <div className="flex justify-center items-center gap-2 mt-8">
       {leftButtons}
       {centerButtons}
       {rightButtons}
@@ -147,21 +157,17 @@ const renderPaginationButtons = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header Section */}
+      {/* Header */}
       <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Новини
-            </h1>
-            <p className="text-xl text-blue-200 max-w-3xl mx-auto">
-              Слідкуйте за останніми подіями та оголошеннями профкому студентів
-            </p>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">Новини</h1>
+          <p className="text-xl text-blue-200 max-w-3xl mx-auto">
+            Слідкуйте за останніми подіями та оголошеннями профкому студентів
+          </p>
         </div>
       </section>
 
-      {/* Search and Filter Section */}
+      {/* Search & Filter */}
       <section className="bg-white py-8 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row gap-4 items-center">
@@ -175,7 +181,7 @@ const renderPaginationButtons = () => {
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
-            
+
             <div className="relative">
               <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <select
@@ -189,13 +195,11 @@ const renderPaginationButtons = () => {
               </select>
             </div>
           </div>
-          
+
           <div className="mt-4 text-sm text-gray-600">
             Знайдено новин: {filteredNews.length}
             {totalPages > 1 && (
-              <span className="ml-2">
-                (сторінка {currentPage} з {totalPages})
-              </span>
+              <span className="ml-2">(сторінка {currentPage} з {totalPages})</span>
             )}
           </div>
         </div>
@@ -208,12 +212,12 @@ const renderPaginationButtons = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[...Array(9)].map((_, index) => (
                 <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
-                  <div className="h-48 bg-gray-300"></div>
+                  <div className="h-48 bg-gray-300" />
                   <div className="p-6">
-                    <div className="h-4 bg-gray-300 rounded mb-2"></div>
-                    <div className="h-4 bg-gray-300 rounded mb-4 w-3/4"></div>
-                    <div className="h-3 bg-gray-300 rounded mb-2"></div>
-                    <div className="h-3 bg-gray-300 rounded w-1/2"></div>
+                    <div className="h-4 bg-gray-300 rounded mb-2" />
+                    <div className="h-4 bg-gray-300 rounded mb-4 w-3/4" />
+                    <div className="h-3 bg-gray-300 rounded mb-2" />
+                    <div className="h-3 bg-gray-300 rounded w-1/2" />
                   </div>
                 </div>
               ))}
@@ -225,8 +229,8 @@ const renderPaginationButtons = () => {
                 {searchTerm || filterType !== 'all' ? 'Новини не знайдено' : 'Новин поки немає'}
               </h3>
               <p className="text-gray-500">
-                {searchTerm || filterType !== 'all' 
-                  ? 'Спробуйте змінити критерії пошуку' 
+                {searchTerm || filterType !== 'all'
+                  ? 'Спробуйте змінити критерії пошуку'
                   : 'Слідкуйте за оновленнями на нашому сайті'}
               </p>
             </div>
@@ -234,16 +238,12 @@ const renderPaginationButtons = () => {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {currentNews.map((article) => (
-                  <NewsCard key={article.id} news={article} />
+                  <NewsCard key={article.id} news={article}/>
                 ))}
               </div>
 
               {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="mt-12 flex justify-center items-center space-x-2">
-                  {renderPaginationButtons()}
-                </div>
-              )}
+              {totalPages > 1 && renderPaginationButtons()}
             </>
           )}
         </div>
