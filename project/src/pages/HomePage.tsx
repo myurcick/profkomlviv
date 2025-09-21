@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight, Users, Building, HandCoins, CreditCard, TentTree } from 'lucide-react';
 import NewsCard from '../components/NewsCard';
-import { supabase } from '../lib/supabase';
+import  axios  from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -13,8 +13,8 @@ interface News {
   title: string;
   content: string;
   image_url?: string;
-  created_at: string;
-  is_important: boolean;
+  publishedAt: string;
+  isImportant: boolean;
 }
 
 interface HeroSlide {
@@ -210,20 +210,16 @@ const HomePage: React.FC = () => {
 
   const fetchNews = async () => {
     try {
-      const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(6);
+      setLoading(true);
+      const response = await axios.get('http://localhost:5068/api/news');
+      setNews(response.data.slice(0, 6)); // Обмежуємо до 6 новин
+    } catch (error) {
+      console.error('Помилка при отриманні новин:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      if (error) throw error;
-        setNews(data || []);
-      } catch (error) {
-        console.error('Error fetching news:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
   return (
     <div className="min-h-screen">

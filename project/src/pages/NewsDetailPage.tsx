@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, Star, Share2, Clock } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import axios from 'axios';
 
 // Типи даних
 interface News {
   id: number;
   title: string;
   content: string;
-  image_url?: string;
-  created_at: string;
-  is_important: boolean;
+  imageUrl?: string | null;
+  publishedAt: string; // Змінено з createdAt
+  isImportant: boolean;
 }
 
 // Компонент картки новини для сайдбару
-const RelatedNewsCard: React.FC<{ news: News; onClick: () => void; index: number; animate: boolean }> = ({ 
-  news, 
-  onClick, 
-  index, 
-  animate 
+const RelatedNewsCard: React.FC<{ news: News; onClick: () => void; index: number; animate: boolean }> = ({
+  news,
+  onClick,
+  index,
+  animate,
 }) => {
   const formatDateShort = (dateString: string) => {
     const date = new Date(dateString);
@@ -32,20 +32,18 @@ const RelatedNewsCard: React.FC<{ news: News; onClick: () => void; index: number
     <div
       onClick={onClick}
       className={`group cursor-pointer bg-white hover:bg-blue-50 rounded-xl p-4 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-lg border border-gray-200 hover:border-blue-300 ${
-        animate 
-          ? 'opacity-100 translate-y-0' 
-          : 'opacity-0 translate-y-8'
+        animate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}
-      style={{ 
-        transitionDelay: animate ? `${index * 150}ms` : '0ms' 
+      style={{
+        transitionDelay: animate ? `${index * 150}ms` : '0ms',
       }}
     >
       {/* Image Section */}
       <div className="relative mb-3">
-        {news.image_url ? (
+        {news.imageUrl ? (
           <div className="aspect-[4/3] rounded-lg overflow-hidden">
             <img
-              src={news.image_url}
+              src={`http://localhost:5068${news.imageUrl}`}
               alt={news.title}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             />
@@ -56,7 +54,7 @@ const RelatedNewsCard: React.FC<{ news: News; onClick: () => void; index: number
           </div>
         )}
 
-        {news.is_important && (
+        {news.isImportant && (
           <div className="absolute top-2 right-2 text-white bg-blue-600 p-1.5 rounded-full shadow-md">
             <Star className="h-3 w-3 fill-current" />
           </div>
@@ -76,7 +74,7 @@ const RelatedNewsCard: React.FC<{ news: News; onClick: () => void; index: number
         <div className="flex items-center justify-between">
           <div className="flex items-center text-xs text-gray-500">
             <Calendar className="h-3 w-3 mr-1" />
-            {formatDateShort(news.created_at)}
+            {formatDateShort(news.publishedAt)}
           </div>
 
           <span className="text-xs text-blue-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -105,16 +103,14 @@ const NewsDetailPage: React.FC = () => {
   const fetchCurrentNews = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .eq('id', newsId)
-        .single();
-
-      if (error) throw error;
-      setCurrentNews(data as News);
+      const response = await axios.get<News>(`http://localhost:5068/api/news/${newsId}`);
+      console.log('Current News:', response.data); // Логування для діагностики
+      setCurrentNews(response.data);
     } catch (error) {
-      console.error('Error fetching current news:', error);
+      console.error('Помилка при отриманні поточної новини:', error);
+      if (axios.isAxiosError(error)) {
+        console.error('Деталі помилки:', error.response?.data);
+      }
     } finally {
       setLoading(false);
     }
@@ -122,19 +118,20 @@ const NewsDetailPage: React.FC = () => {
 
   const fetchRelatedNews = async () => {
     try {
-      const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .neq('id', newsId)
-        .order('created_at', { ascending: false })
-        .limit(6);
-
-      if (error) throw error;
-      setRelatedNews((data as News[]) || []);
-      
+      const response = await axios.get<News[]>('http://localhost:5068/api/news', {
+        params: {
+          excludeId: newsId,
+          limit: 6,
+        },
+      });
+      console.log('Related News:', response.data); // Логування для діагностики
+      setRelatedNews(response.data || []);
       setTimeout(() => setAnimateRelated(true), 300);
     } catch (error) {
-      console.error('Error fetching related news:', error);
+      console.error('Помилка при отриманні пов’язаних новин:', error);
+      if (axios.isAxiosError(error)) {
+        console.error('Деталі помилки:', error.response?.data);
+      }
     }
   };
 
@@ -160,7 +157,7 @@ const NewsDetailPage: React.FC = () => {
           url: window.location.href,
         });
       } catch (err) {
-        console.log("Error sharing:", err);
+        console.error("Помилка при спробі поділитися:", err);
       }
     } else {
       navigator.clipboard.writeText(`${currentNews.title}\n\n${currentNews.content}`);
@@ -251,7 +248,7 @@ const NewsDetailPage: React.FC = () => {
       <div className="shadow-sm h-16 flex items-center sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <button
-            onClick={handleBackToNews} 
+            onClick={handleBackToNews}
             className="flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200 group"
           >
             <ArrowLeft className="h-5 w-5 mr-2 transform group-hover:-translate-x-1 transition-transform duration-200" />
@@ -270,21 +267,21 @@ const NewsDetailPage: React.FC = () => {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-4">
-                      {currentNews.is_important && (
+                      {currentNews.isImportant && (
                         <div className="bg-blue-600 text-white p-2 rounded-full shadow-md">
                           <Star className="h-4 w-4 fill-current" />
                         </div>
                       )}
                       <div className="flex items-center text-gray-500 text-sm">
                         <Calendar className="h-4 w-4 mr-2" />
-                        {formatDate(currentNews.created_at)}
+                        {formatDate(currentNews.publishedAt)}
                       </div>
                     </div>
                     <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
                       {currentNews.title}
                     </h1>
                   </div>
-                  
+
                   <button
                     onClick={handleShare}
                     className="ml-4 p-3 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-all duration-200 transform hover:scale-105"
@@ -297,10 +294,10 @@ const NewsDetailPage: React.FC = () => {
 
               {/* Article Image */}
               <div className="px-6 pt-6">
-                {currentNews.image_url ? (
+                {currentNews.imageUrl ? (
                   <div className="aspect-[16/9] rounded-lg overflow-hidden shadow-md">
                     <img
-                      src={currentNews.image_url}
+                      src={`http://localhost:5068${currentNews.imageUrl}`}
                       alt={currentNews.title}
                       className="w-full h-full object-cover transition-transform duration-700"
                     />
@@ -335,28 +332,28 @@ const NewsDetailPage: React.FC = () => {
             <div className="bg-white rounded-lg shadow-sm p-6 transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-lg">
               <div className="flex items-center mb-6">
                 <Clock className="h-5 w-5 text-blue-600 mr-2" />
-                  <h2 className="text-xl font-bold text-gray-900">Інші новини</h2>
-                </div>
-
-                <div className="space-y-4">
-                  {relatedNews.slice(0, 4).map((news, index) => (
-                    <RelatedNewsCard
-                      key={news.id}
-                      news={news}
-                      onClick={() => handleRelatedNewsClick(news)}
-                      index={index}
-                      animate={animateRelated}
-                    />
-                  ))}
-                </div>
-
-                {relatedNews.length === 0 && !loading && (
-                  <div className="text-center py-8 text-gray-500">
-                    <Clock className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                    <p className="text-sm">Інші новини завантажуються...</p>
-                  </div>
-                )}
+                <h2 className="text-xl font-bold text-gray-900">Інші новини</h2>
               </div>
+
+              <div className="space-y-4">
+                {relatedNews.slice(0, 4).map((news, index) => (
+                  <RelatedNewsCard
+                    key={news.id}
+                    news={news}
+                    onClick={() => handleRelatedNewsClick(news)}
+                    index={index}
+                    animate={animateRelated}
+                  />
+                ))}
+              </div>
+
+              {relatedNews.length === 0 && !loading && (
+                <div className="text-center py-8 text-gray-500">
+                  <Clock className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm">Інші новини завантажуються...</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

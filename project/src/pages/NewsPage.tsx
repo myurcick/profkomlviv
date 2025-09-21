@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, Calendar, ChevronLeft, ChevronsLeft, ChevronRight, ChevronsRight } from 'lucide-react';
 import NewsCard from '../components/NewsCard';
-import { supabase } from '../lib/supabase';
+import axios from 'axios';
 
 interface News {
   id: number;
   title: string;
   content: string;
-  image_url?: string;
-  created_at: string;
-  is_important: boolean;
+  imageUrl?: string | null; // Змінено з image_url
+  publishedAt: string; // Змінено з created_at
+  isImportant: boolean; // Змінено з is_important
 }
 
 const NewsPage: React.FC = () => {
@@ -34,15 +34,21 @@ const NewsPage: React.FC = () => {
 
   const fetchNews = async () => {
     try {
-      const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const response = await axios.get<News[]>('http://localhost:5068/api/news', {
+        params: {
+          orderBy: 'publishedAt',
+          order: 'desc',
+        },
+      });
+      console.log('News:', response.data); // Логування для діагностики
+      console.log("Fetched news:", response.data.map(n => n.imageUrl));
 
-      if (error) throw error;
-      setNews((data as News[]) || []);
+      setNews(response.data || []);
     } catch (error) {
-      console.error('Error fetching news:', error);
+      console.error('Помилка при отриманні новин:', error);
+      if (axios.isAxiosError(error)) {
+        console.error('Деталі помилки:', error.response?.data);
+      }
     } finally {
       setLoading(false);
     }
@@ -54,8 +60,8 @@ const NewsPage: React.FC = () => {
       article.content.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter =
       filterType === 'all' ||
-      (filterType === 'important' && article.is_important) ||
-      (filterType === 'regular' && !article.is_important);
+      (filterType === 'important' && article.isImportant) ||
+      (filterType === 'regular' && !article.isImportant);
     return matchesSearch && matchesFilter;
   });
 
@@ -67,93 +73,93 @@ const NewsPage: React.FC = () => {
   const handlePageChange = (page: number) => setCurrentPage(page);
 
   const renderPaginationButtons = () => {
-  if (totalPages <= 1) return null;
-  const maxVisibleButtons = 5;
+    if (totalPages <= 1) return null;
+    const maxVisibleButtons = 5;
 
-  let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
-  let endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
-  if (endPage - startPage + 1 < maxVisibleButtons) {
-    startPage = Math.max(1, endPage - maxVisibleButtons + 1);
-  }
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
+    if (endPage - startPage + 1 < maxVisibleButtons) {
+      startPage = Math.max(1, endPage - maxVisibleButtons + 1);
+    }
 
-  // Left Buttons
-  const leftButtons = (
-    <div key="left" className="flex gap-1">
-      {totalPages > 5 && (
-        <button
-          onClick={() => handlePageChange(1)}
-          disabled={currentPage === 1}
-          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-        >
-          <ChevronsLeft className="h-4 w-4" />
-        </button>
-      )}
-      {totalPages > 1 && (
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </button>
-      )}
-    </div>
-  );
-
-  // Center Buttons
-  const centerButtons = (
-    <div key="center" className="flex gap-1">
-      {Array.from({ length: endPage - startPage + 1 }, (_, idx) => {
-        const page = startPage + idx;
-        return (
+    // Left Buttons
+    const leftButtons = (
+      <div key="left" className="flex gap-1">
+        {totalPages > 5 && (
           <button
-            key={page}
-            onClick={() => handlePageChange(page)}
-            className={`w-8 h-8 flex justify-center items-center rounded-lg border font-medium transition-colors duration-200 ${
-              page === currentPage
-                ? "bg-blue-600 text-white border-blue-600"
-                : "border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
-            }`}
+            onClick={() => handlePageChange(1)}
+            disabled={currentPage === 1}
+            className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
           >
-            {page}
+            <ChevronsLeft className="h-4 w-4" />
           </button>
-        );
-      })}
-    </div>
-  );
+        )}
+        {totalPages > 1 && (
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+    );
 
-  // Right Buttons
-  const rightButtons = (
-    <div key="right" className="flex gap-1">
-      {totalPages > 1 && (
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </button>
-      )}
-      {totalPages > 5 && (
-        <button
-          onClick={() => handlePageChange(totalPages)}
-          disabled={currentPage === totalPages}
-          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-        >
-          <ChevronsRight className="h-4 w-4" />
-        </button>
-      )}
-    </div>
-  );
+    // Center Buttons
+    const centerButtons = (
+      <div key="center" className="flex gap-1">
+        {Array.from({ length: endPage - startPage + 1 }, (_, idx) => {
+          const page = startPage + idx;
+          return (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`w-8 h-8 flex justify-center items-center rounded-lg border font-medium transition-colors duration-200 ${
+                page === currentPage
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+              }`}
+            >
+              {page}
+            </button>
+          );
+        })}
+      </div>
+    );
 
-  return (
-    <div className="flex justify-center items-center gap-2 mt-8">
-      {leftButtons}
-      {centerButtons}
-      {rightButtons}
-    </div>
-  );
-};
+    // Right Buttons
+    const rightButtons = (
+      <div key="right" className="flex gap-1">
+        {totalPages > 1 && (
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        )}
+        {totalPages > 5 && (
+          <button
+            onClick={() => handlePageChange(totalPages)}
+            disabled={currentPage === totalPages}
+            className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+          >
+            <ChevronsRight className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+    );
+
+    return (
+      <div className="flex justify-center items-center gap-2 mt-8">
+        {leftButtons}
+        {centerButtons}
+        {rightButtons}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -238,7 +244,7 @@ const NewsPage: React.FC = () => {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {currentNews.map((article) => (
-                  <NewsCard key={article.id} news={article}/>
+                  <NewsCard key={article.id} news={article} />
                 ))}
               </div>
 

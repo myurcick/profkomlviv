@@ -1,23 +1,20 @@
 import React, { useState, useRef, useLayoutEffect } from "react";
 import { Mail, MapPin, Clock, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-/* import { SiTelegram, SiInstagram } from 'react-icons/si'; */
 
 export interface FacultyUnion {
   id: number;
-  faculty_name: string;
-  union_head_name: string;
-  union_head_photo?: string;
-  contact_email?: string;
-  office_location?: string;
-  building_location?: string;
-  working_hours?: string;
-  description?: string;
-  website_url?: string;
-  social_links?: any;
-  order_index: number;
-  is_active: boolean;
-  created_at: string;
+  name: string; // Змінено з faculty_name
+  head: string; // Змінено з union_head_name
+  imageUrl?: string | null; // Змінено з union_head_photo
+  email?: string; // Змінено з contact_email
+  adress?: string; // Змінено з office_location/building_location
+  schedule?: string | null; // Змінено з working_hours
+  summary?: string; // Змінено з description
+  facultyURL?: string; // Змінено з website_url
+  link?: string; // Змінено з social_links
+  orderInd: number; // Змінено з order_index
+  isActive: boolean; // Змінено з is_active
 }
 
 interface CardProps {
@@ -85,7 +82,7 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
       {/* Top card */}
       <div
         className="flex items-center cursor-pointer"
-        style={{ height: "140px" }} 
+        style={{ height: "140px" }}
         onClick={toggle}
       >
         {/* Color line */}
@@ -97,10 +94,10 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
         {/* Photo */}
         <div className="relative flex-shrink-0" style={{ width: "140px", height: "140px" }}>
           <div className="w-full h-full bg-gray-100 overflow-hidden">
-            {union.union_head_photo ? (
+            {union.imageUrl && union.imageUrl !== "" ? (
               <img
-                src={union.union_head_photo}
-                alt={union.union_head_name}
+                src={`http://localhost:5068${union.imageUrl}`} // Додано базовий URL
+                alt={union.head}
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
@@ -113,7 +110,7 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
                   index
                 )} flex items-center justify-center text-white font-bold text-2xl`}
               >
-                {getInitials(union.union_head_name)}
+                {getInitials(union.head)}
               </div>
             )}
           </div>
@@ -122,12 +119,13 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
         {/* Description */}
         <div className="flex-1 min-w-0 p-4 md:p-6 flex flex-col justify-center">
           <h3 className="font-bold text-lg md:text-xl text-gray-900 mb-2 leading-tight">
-            {union.faculty_name}
+            {union.name}
           </h3>
-          {union.description && (
+          {union.summary && (
             <p
-              className={"text-gray-600 text-sm md:text-base leading-relaxed line-clamp-3"}>
-              {union.description}
+              className="text-gray-600 text-sm md:text-base leading-relaxed line-clamp-3"
+            >
+              {union.summary}
             </p>
           )}
         </div>
@@ -146,7 +144,6 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
           >
             <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100 bg-gray-50">
               <div className="pt-4 md:pt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-blue-100 rounded-lg">
@@ -155,12 +152,12 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
                     <div>
                       <p className="text-sm text-gray-500">Голова профбюро</p>
                       <p className="font-medium text-gray-900 flex-shrink-0">
-                        {union.union_head_name}
+                        {union.head}
                       </p>
                     </div>
                   </div>
 
-                  {union.contact_email && (
+                  {union.email && (
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-green-100 rounded-lg">
                         <Mail className="w-5 h-5 text-green-600" />
@@ -168,10 +165,10 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
                       <div>
                         <p className="text-sm text-gray-500">Електронна пошта</p>
                         <a
-                          href={`mailto:${union.contact_email}`}
+                          href={`mailto:${union.email}`}
                           className="font-medium text-gray-900 hover:text-blue-600 transition-colors flex-shrink-0"
                         >
-                          {union.contact_email}
+                          {union.email}
                         </a>
                       </div>
                     </div>
@@ -179,7 +176,7 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
                 </div>
 
                 <div className="space-y-3">
-                  {(union.office_location || union.building_location) && (
+                  {union.adress && (
                     <div className="flex items-start gap-3">
                       <div className="p-2 bg-purple-100 rounded-lg">
                         <MapPin className="w-5 h-5 text-purple-600" />
@@ -187,20 +184,18 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
                       <div>
                         <p className="text-sm text-gray-500">Місцезнаходження</p>
                         <a
-                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(union.building_location || "")}`}
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(union.adress)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
                         >
-                          {union.office_location
-                          ? `${union.office_location}`
-                          : union.office_location}
+                          {union.adress}
                         </a>
                       </div>
                     </div>
                   )}
 
-                  {union.working_hours && (
+                  {union.schedule && (
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-orange-100 rounded-lg">
                         <Clock className="w-5 h-5 text-orange-600" />
@@ -208,13 +203,26 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
                       <div>
                         <p className="text-sm text-gray-500">Години роботи</p>
                         <p className="font-medium text-gray-900">
-                          {union.working_hours}
+                          {union.schedule}
                         </p>
                       </div>
                     </div>
                   )}
                 </div>
               </div>
+
+              {union.facultyURL && (
+                <div className="pt-4">
+                  <a
+                    href={union.facultyURL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                  >
+                    Вебсайт факультету
+                  </a>
+                </div>
+              )}
             </div>
           </motion.div>
         )}

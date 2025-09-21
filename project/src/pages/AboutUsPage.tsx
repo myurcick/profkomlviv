@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { ArrowRight, Search, Users, Mail, Phone, X } from "lucide-react";
-import { supabase } from "../lib/supabase";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay, Pagination, EffectFade } from "swiper/modules";
@@ -53,23 +53,23 @@ interface TeamMember {
   name: string;
   position: string;
   description?: string;
-  photo_url?: string;
+  photoUrl?: string | null;
   email?: string;
   phone?: string;
-  order_index: number;
-  is_active: boolean;
-  created_at: string;
+  orderIndex: number;
+  isActive: boolean;
+  createdAt: string;
 }
 
 interface Department {
   id: number;
   name: string;
-  description?: string;
-  icon_url?: string;
-  order_index: number;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
+  content?: string | null; // Змінено з description
+  imageUrl?: string | null; // Змінено з iconUrl
+  orderInd: number; // Змінено з orderIndex
+  is_active: boolean; // Змінено з isActive
+  createdAt: string;
+  updatedAt: string;
 }
 
 const TeamPage: React.FC = () => {
@@ -102,25 +102,18 @@ const TeamPage: React.FC = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const { data: membersData, error: membersError } = await supabase
-          .from("team_members")
-          .select("*")
-          .eq("is_active", true)
-          .order("order_index", { ascending: true });
+        const membersResponse = await axios.get<TeamMember[]>('http://localhost:5068/api/team');
+        console.log('Team Members:', membersResponse.data);
+        setTeamMembers(membersResponse.data.filter(member => member.isActive).sort((a, b) => a.orderIndex - b.orderIndex));
 
-        if (membersError) throw membersError;
-        setTeamMembers(membersData || []);
-
-        const { data: departmentsData, error: departmentsError } = await supabase
-          .from("departments")
-          .select("*")
-          .eq("is_active", true)
-          .order("order_index", { ascending: true });
-
-        if (departmentsError) throw departmentsError;
-        setDepartments(departmentsData || []);
+        const departmentsResponse = await axios.get<Department[]>('http://localhost:5068/api/unit');
+        console.log('Departments:', departmentsResponse.data);
+        setDepartments(departmentsResponse.data.filter(dept => dept.is_active).sort((a, b) => a.orderInd - b.orderInd));
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Помилка при отриманні даних:", error);
+        if (axios.isAxiosError(error)) {
+          console.error("Деталі помилки:", error.response?.data);
+        }
       } finally {
         setLoading(false);
       }
@@ -150,8 +143,8 @@ const TeamPage: React.FC = () => {
     return departments.filter(
       (department) =>
         department.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (department.description &&
-          department.description.toLowerCase().includes(searchTerm.toLowerCase()))
+        (department.content &&
+          department.content.toLowerCase().includes(searchTerm.toLowerCase()))
     );
   }, [departments, searchTerm]);
 
@@ -211,53 +204,53 @@ const TeamPage: React.FC = () => {
 
       {/* Team Swiper Section */}
       <section className="relative py-12">
-  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    {loading ? (
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {Array.from({ length: 6 }).map((_, index) => (
-          <div
-            key={index}
-            className="h-[450px] animate-pulse rounded-lg bg-white shadow-md"
-          />
-        ))}
-      </div>
-    ) : filteredMembers.length === 0 ? (
-      <div className="py-12 text-center">
-        <h3 className="mb-2 text-lg font-medium text-gray-900">
-          {searchTerm ? "Учасників не знайдено" : "Команда ще не сформована"}
-        </h3>
-        <p className="text-gray-500">
-          {searchTerm
-            ? "Спробуйте змінити критерії пошуку"
-            : "Інформація про команду буде додана найближчим часом"}
-        </p>
-      </div>
-    ) : (
-      <Swiper
-        modules={[Autoplay, Pagination]}
-        spaceBetween={20}
-        slidesPerView={3}
-        loop
-        speed={800}
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
-        pagination={{ clickable: true }}
-        className="team-swiper relative pb-12"
-        breakpoints={{
-          0: { slidesPerView: 1 },
-          640: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
-        }}
-        wrapperClass="items-stretch overflow-visible"
-      >
-        {filteredMembers.map((teamMember) => (
-          <SwiperSlide key={teamMember.id} className="h-full overflow-visible">
-            <TeamMemberCard member={teamMember} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    )}
-  </div>
-</section>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {loading ? (
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="h-[450px] animate-pulse rounded-lg bg-white shadow-md"
+                />
+              ))}
+            </div>
+          ) : filteredMembers.length === 0 ? (
+            <div className="py-12 text-center">
+              <h3 className="mb-2 text-lg font-medium text-gray-900">
+                {searchTerm ? "Учасників не знайдено" : "Команда ще не сформована"}
+              </h3>
+              <p className="text-gray-500">
+                {searchTerm
+                  ? "Спробуйте змінити критерії пошуку"
+                  : "Інформація про команду буде додана найближчим часом"}
+              </p>
+            </div>
+          ) : (
+            <Swiper
+              modules={[Autoplay, Pagination]}
+              spaceBetween={20}
+              slidesPerView={3}
+              loop
+              speed={800}
+              autoplay={{ delay: 5000, disableOnInteraction: false }}
+              pagination={{ clickable: true }}
+              className="team-swiper relative pb-12"
+              breakpoints={{
+                0: { slidesPerView: 1 },
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+              }}
+              wrapperClass="items-stretch overflow-visible"
+            >
+              {filteredMembers.map((teamMember) => (
+                <SwiperSlide key={teamMember.id} className="h-full overflow-visible">
+                  <TeamMemberCard member={teamMember} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
+        </div>
+      </section>
 
       {/* Team Carousel Section */}
       <section className="relative h-screen overflow-hidden">
@@ -434,9 +427,9 @@ const TeamPage: React.FC = () => {
                     className="mx-auto flex h-[300px] max-w-sm cursor-pointer flex-col items-center overflow-hidden rounded-lg bg-white shadow-md transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl"
                   >
                     <div className="h-4/5 w-full overflow-hidden bg-gray-200">
-                      {department.icon_url ? (
+                      {department.imageUrl ? (
                         <img
-                          src={department.icon_url}
+                          src={`http://localhost:5068${department.imageUrl}`}
                           alt={department.name}
                           className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                         />
@@ -458,9 +451,9 @@ const TeamPage: React.FC = () => {
 
         <Modal isOpen={!!selectedDepartment} onClose={() => setSelectedDepartment(null)}>
           <div className="relative w-full overflow-hidden bg-gray-200">
-            {selectedDepartment?.icon_url ? (
+            {selectedDepartment?.imageUrl ? (
               <img
-                src={selectedDepartment.icon_url}
+                src={selectedDepartment.imageUrl}
                 alt={selectedDepartment.name}
                 className="h-auto max-h-64 w-full object-cover"
               />
@@ -478,8 +471,8 @@ const TeamPage: React.FC = () => {
           </div>
           <div className="p-4 text-left overflow-y-auto">
             <h2 className="mb-2 text-2xl font-bold">{selectedDepartment?.name}</h2>
-            {selectedDepartment?.description && (
-              <p className="text-gray-700">{selectedDepartment.description}</p>
+            {selectedDepartment?.content && (
+              <p className="text-gray-700">{selectedDepartment.content}</p>
             )}
           </div>
         </Modal>

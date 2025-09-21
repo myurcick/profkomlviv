@@ -5,7 +5,7 @@ interface News {
   id: number;
   title: string;
   content: string;
-  image_url?: string;
+  imageUrl?: string | null;
   created_at: string;
   is_important: boolean;
 }
@@ -18,6 +18,8 @@ interface NewsModalProps {
 
 const NewsModal: React.FC<NewsModalProps> = ({ news, isOpen, onClose }) => {
   const [animate, setAnimate] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
 
   if (!news) return null;
 
@@ -40,6 +42,12 @@ const NewsModal: React.FC<NewsModalProps> = ({ news, isOpen, onClose }) => {
     return () => window.removeEventListener("keydown", handleEsc);
   }, [isOpen, onClose]);
 
+  // Скидання стану зображення при зміні новини
+  useEffect(() => {
+    setImageError(false);
+    setImageLoading(true);
+  }, [news.id]);
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("uk-UA", {
@@ -52,7 +60,7 @@ const NewsModal: React.FC<NewsModalProps> = ({ news, isOpen, onClose }) => {
   };
 
   const handleShare = async () => {
-    if (navigator.share && news) {
+    if (navigator.share) {
       try {
         await navigator.share({
           title: news.title,
@@ -63,11 +71,38 @@ const NewsModal: React.FC<NewsModalProps> = ({ news, isOpen, onClose }) => {
         console.log("Error sharing:", err);
       }
     } else {
-      if (news) {
-        navigator.clipboard.writeText(`${news.title}\n\n${news.content}`);
-        alert("Новину скопійовано в буфер обміну!");
-      }
+      navigator.clipboard.writeText(`${news.title}\n\n${news.content}`);
+      alert("Новину скопійовано в буфер обміну!");
     }
+  };
+
+  // Покращена логіка для URL зображення
+  const getImageUrl = (imageUrl: string | null | undefined): string | null => {
+    if (!imageUrl) return null;
+    
+    // Якщо це вже повний URL
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return imageUrl;
+    }
+    
+    // Якщо URL починається з '/', видаляємо його для уникнення подвоєння
+    const cleanPath = imageUrl.startsWith('/') ? imageUrl.slice(1) : imageUrl;
+    
+    // Формуємо повний URL
+    return `http://localhost:5068/${cleanPath}`;
+  };
+
+  const imageSrc = getImageUrl(news.imageUrl);
+
+  const handleImageLoad = () => {
+    setImageLoading(false);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.error('Image failed to load:', imageSrc);
+    console.error('Original imageUrl:', news.imageUrl);
+    setImageError(true);
+    setImageLoading(false);
   };
 
   return (
@@ -128,38 +163,46 @@ const NewsModal: React.FC<NewsModalProps> = ({ news, isOpen, onClose }) => {
             {news.title}
           </h1>
 
-          {/* Фото по центру */}
-          <div className="flex justify-center my-4">
-            {news.image_url ? (
-              <div className="w-full max-w-2xl">
-                <div className="aspect-[4/3]">
-                  <img
-                    src={news.image_url}
-                    alt={news.title}
-                    className="w-full h-full object-cover rounded-lg border shadow"
-                    loading="lazy"
-                  />
-                </div>
+          {/* Image Section */}
+          <div className="w-full mb-4">
+            {imageSrc && !imageError ? (
+              <div className="relative">
+                {imageLoading && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-lg">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                  </div>
+                )}
+                <img
+                  src={imageSrc}
+                  alt={news.title}
+                  className="w-full max-h-[500px] object-cover rounded-lg"
+                  onLoad={handleImageLoad}
+                  onError={handleImageError}
+                  style={{ display: imageLoading ? 'none' : 'block' }}
+                />
               </div>
             ) : (
-              <div className="w-full max-w-2xl aspect-[4/3] bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 flex items-center justify-center rounded-lg shadow">
-                <div className="text-center text-white z-10">
-                  <div className="text-6xl mb-4 opacity-90">📰</div>
-                  <span className="text-xl font-semibold opacity-90">Новина</span>
-                </div>
+              <div className="w-full h-[300px] bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-xl rounded-lg">
+                {imageError ? "Помилка завантаження зображення" : "Новина"}
               </div>
             )}
           </div>
 
-          {/* Text content */}
+          {/* Debug info - можете видалити після налагодження */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="mb-4 p-2 bg-gray-100 rounded text-xs text-gray-600">
+              <div>Original imageUrl: {news.imageUrl || 'null'}</div>
+              <div>Generated imageSrc: {imageSrc || 'null'}</div>
+              <div>Image error: {imageError ? 'true' : 'false'}</div>
+            </div>
+          )}
+
+          {/* Text */}
           <div className="prose prose-lg max-w-none text-gray-700">
             {news.content.split("\n").map(
               (paragraph, index) =>
                 paragraph.trim() && (
-                  <p
-                    key={index}
-                    className="mb-4 text-base md:text-md leading-tight"
-                  >
+                  <p key={index} className="mb-4 text-base md:text-md leading-tight">
                     {paragraph}
                   </p>
                 )

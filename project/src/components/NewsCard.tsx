@@ -6,9 +6,9 @@ interface News {
   id: number;
   title: string;
   content: string;
-  image_url?: string;
-  created_at: string;
-  is_important: boolean;
+  imageUrl?: string | null; // може бути null
+  publishedAt: string;
+  isImportant: boolean;
 }
 
 interface NewsCardProps {
@@ -26,11 +26,16 @@ const formatDate = (dateString: string) => {
 };
 
 const NewsCard: React.FC<NewsCardProps> = ({ news, onClick }) => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/news/${news.id}`);
   };
+
+  // Формуємо URL картинки
+  const imageSrc = news.imageUrl
+    ? `http://localhost:5068${news.imageUrl}` // бекенд повертає /Uploads/...
+    : undefined;
 
   return (
     <div
@@ -47,10 +52,10 @@ const NewsCard: React.FC<NewsCardProps> = ({ news, onClick }) => {
     >
       {/* Image Section */}
       <div className="relative">
-        {news.image_url ? (
+        {imageSrc ? (
           <div className="aspect-[4/3] overflow-hidden">
             <img
-              src={news.image_url}
+              src={imageSrc}
               alt={news.title}
               className="w-full h-full object-cover"
               loading="lazy"
@@ -62,7 +67,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ news, onClick }) => {
           </div>
         )}
 
-        {news.is_important && (
+        {news.isImportant && (
           <div className="absolute top-2 right-2 text-white bg-blue-600 p-2 rounded-full shadow-md">
             <Star className="h-3 w-3" fill="white" />
           </div>
@@ -92,7 +97,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ news, onClick }) => {
 
           <div className="flex items-center text-gray-500 text-sm">
             <Calendar className="h-4 w-4 mr-2" />
-            {formatDate(news.created_at)}
+            {formatDate(news.publishedAt)}
           </div>
         </div>
       </div>

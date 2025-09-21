@@ -2,55 +2,54 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PlusCircle, Edit, Trash2, LogOut, Eye, Users, FileText, Star, X, UserPlus, Building, Layers } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { supabase } from '../lib/supabase';
+import axios, { AxiosError } from 'axios'; // Import AxiosError
 
 interface News {
   id: number;
   title: string;
   content: string;
-  image_url?: string;
-  created_at: string;
-  is_important: boolean;
+  imageUrl?: string;
+  isImportant: boolean;
+  publishedAt: string;
 }
 
 interface TeamMember {
   id: number;
   name: string;
   position: string;
-  description?: string;
-  photo_url?: string;
+  content?: string;
+  imageUrl?: string;
   email?: string;
   phone?: string;
-  order_index: number;
-  is_active: boolean;
-  created_at: string;
+  orderInd: number;
+  isActive: boolean;
+  createdAt: string;
 }
 
 interface FacultyUnion {
   id: number;
-  faculty_name: string;
-  union_head_name: string;
-  union_head_photo?: string;
-  contact_email?: string;
-  office_location?: string;
-  working_hours?: string;
-  description?: string;
-  website_url?: string;
-  social_links?: any;
-  order_index: number;
-  is_active: boolean;
-  created_at: string;
+  name: string;
+  head: string;
+  imageUrl?: string;
+  email?: string;
+  address?: string;
+  schedule?: string;
+  summary?: string;
+  facultyURL?: string;
+  link?: string;
+  orderInd: number;
+  isActive: boolean;
 }
 
 interface Department {
   id: number;
   name: string;
-  description?: string;
-  icon_url?: string;
-  order_index: number;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
+  content?: string;
+  imageUrl?: string;
+  orderInd: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const AdminDashboard: React.FC = () => {
@@ -67,44 +66,42 @@ const AdminDashboard: React.FC = () => {
   const [editingTeamMember, setEditingTeamMember] = useState<TeamMember | null>(null);
   const [editingFacultyUnion, setEditingFacultyUnion] = useState<FacultyUnion | null>(null);
   const [editingDepartment, setEditingDepartment] = useState<Department | null>(null);
-  
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
   const [newsFormData, setNewsFormData] = useState({
     title: '',
     content: '',
-    image_url: '',
-    is_important: false
+    isImportant: false
   });
 
   const [teamFormData, setTeamFormData] = useState({
     name: '',
     position: '',
-    description: '',
-    photo_url: '',
+    content: '',
     email: '',
     phone: '',
-    order_index: 0,
-    is_active: true
+    orderInd: 0,
+    isActive: true
   });
 
   const [facultyFormData, setFacultyFormData] = useState({
-    faculty_name: '',
-    union_head_name: '',
-    union_head_photo: '',
-    contact_email: '',
-    office_location: '',
-    working_hours: 'Пн-Пт: 10:00-16:00',
-    description: '',
-    website_url: '',
-    order_index: 0,
-    is_active: true
+    name: '',
+    head: '',
+    email: '',
+    address: '',
+    schedule: 'Пн-Пт: 10:00-16:00',
+    summary: '',
+    facultyURL: '',
+    link: '',
+    orderInd: 0,
+    isActive: true
   });
 
   const [departmentFormData, setDepartmentFormData] = useState({
     name: '',
-    description: '',
-    icon_url: '',
-    order_index: 0,
-    is_active: true
+    content: '',
+    orderInd: 0,
+    isActive: true
   });
 
   useEffect(() => {
@@ -116,181 +113,318 @@ const AdminDashboard: React.FC = () => {
   }, [user, navigate]);
 
   const fetchData = async () => {
-    await Promise.all([fetchNews(), fetchTeamMembers(), fetchFacultyUnions(), fetchDepartments()]);
-    setLoading(false);
+    try {
+      await Promise.all([fetchNews(), fetchTeamMembers(), fetchFacultyUnions(), fetchDepartments()]);
+    } catch (error) {
+      console.error('Error fetching data:', (error as Error).message || error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const fetchNews = async () => {
     try {
-      const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setNews(data || []);
+      const res = await axios.get('http://localhost:5068/api/news');
+      setNews(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
-      console.error('Error fetching news:', error);
+      const axiosError = error as AxiosError;
+      console.error('Error fetching news:', axiosError.response?.data || axiosError.message);
+      setNews([]);
     }
   };
 
   const fetchTeamMembers = async () => {
     try {
-      const { data, error } = await supabase
-        .from('team_members')
-        .select('*')
-        .order('order_index', { ascending: true });
-
-      if (error) throw error;
-      setTeamMembers(data || []);
+      const res = await axios.get('http://localhost:5068/api/team');
+      setTeamMembers(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
-      console.error('Error fetching team members:', error);
+      const axiosError = error as AxiosError;
+      console.error('Error fetching team members:', axiosError.response?.data || axiosError.message);
+      setTeamMembers([]);
     }
   };
 
   const fetchFacultyUnions = async () => {
     try {
-      const { data, error } = await supabase
-        .from('faculty_unions')
-        .select('*')
-        .order('order_index', { ascending: true });
-
-      if (error) throw error;
-      setFacultyUnions(data || []);
+      const res = await axios.get('http://localhost:5068/api/prof');
+      setFacultyUnions(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
-      console.error('Error fetching faculty unions:', error);
+      const axiosError = error as AxiosError;
+      console.error('Error fetching faculty unions:', axiosError.response?.data || axiosError.message);
+      setFacultyUnions([]);
     }
   };
+const fetchDepartments = async () => {
+  try {
+    const res = await axios.get('http://localhost:5068/api/unit');
+    console.log('Raw API response for departments:', JSON.stringify(res.data, null, 2));
 
-  const fetchDepartments = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('departments')
-        .select('*')
-        .order('order_index', { ascending: true });
+    const mappedDepartments = Array.isArray(res.data)
+      ? res.data.map((dep: any) => {
+          console.log('Processing department:', JSON.stringify(dep, null, 2));
+          
+          return {
+            id: dep.id || dep.Id,
+            name: dep.name || dep.Name,
+            content: dep.content || dep.Content || '',
+            imageUrl: dep.imageUrl || dep.ImageUrl || null,
+            orderInd: dep.orderInd || dep.OrderInd || 0,
+            isActive: typeof dep.is_active === 'boolean' ? dep.is_active : false, // Map is_active to isActive
+            createdAt: dep.createdAt || dep.CreatedAt,
+            updatedAt: dep.updatedAt || dep.UpdatedAt || null
+          };
+        })
+      : [];
 
-      if (error) throw error;
-      setDepartments(data || []);
-    } catch (error) {
-      console.error('Error fetching departments:', error);
+    console.log('Mapped departments:', JSON.stringify(mappedDepartments, null, 2));
+    setDepartments(mappedDepartments);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error fetching departments:', axiosError.response?.data || axiosError.message);
+    setDepartments([]);
+  }
+};
+
+const handleNewsSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  try {
+    let imageUrl = editingNews?.imageUrl || '';
+
+    // Якщо є файл — спочатку заливаємо його
+    if (selectedFile) {
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', selectedFile);
+
+      const uploadRes = await axios.post('http://localhost:5068/api/uploads', uploadFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      imageUrl = uploadRes.data.path;
     }
-  };
 
-  const handleNewsSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      if (editingNews) {
-        const { error } = await supabase
-          .from('news')
-          .update(newsFormData)
-          .eq('id', editingNews.id);
-        if (error) throw error;
-      } else {
-        const { error } = await supabase
-          .from('news')
-          .insert([newsFormData]);
-        if (error) throw error;
-      }
-      fetchNews();
-      handleCloseModal();
-    } catch (error) {
-      console.error('Error saving news:', error);
+    // Формуємо правильні ключі для бекенду (PascalCase)
+    const formData = new FormData();
+
+    if (editingNews) {
+      formData.append('Id', editingNews.id.toString()); // 👈 важливо для PUT
     }
-  };
+
+    formData.append('Title', newsFormData.title);
+    formData.append('Content', newsFormData.content);
+    formData.append('IsImportant', newsFormData.isImportant.toString());
+
+    if (selectedFile) {
+      formData.append('Image', selectedFile); // 👈 якщо файл
+    } else {
+      formData.append('ImageUrl', imageUrl); // 👈 якщо url
+    }
+
+    const headers = {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    };
+
+    console.log('FormData payload:', Array.from(formData.entries())); // дебаг
+
+    if (editingNews) {
+      // PUT
+      const response = await axios.put(
+        `http://localhost:5068/api/news/${editingNews.id}`,
+        formData,
+        { headers }
+      );
+      console.log('PUT response:', response.data);
+    } else {
+      // POST
+      const response = await axios.post(
+        'http://localhost:5068/api/news',
+        formData,
+        { headers }
+      );
+      console.log('POST response:', response.data);
+    }
+
+    fetchNews();
+    handleCloseModal();
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error saving news:', {
+      message: axiosError.message,
+      response: axiosError.response?.data,
+      status: axiosError.response?.status,
+      headers: axiosError.response?.headers,
+    });
+  }
+};
 
   const handleTeamSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      let imageUrl = editingTeamMember?.imageUrl || '';
+      if (selectedFile) {
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', selectedFile);
+        const uploadRes = await axios.post('http://localhost:5068/api/uploads', uploadFormData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        imageUrl = uploadRes.data.path;
+      }
+      const formData = new FormData();
+      formData.append('Name', teamFormData.name);
+      formData.append('Position', teamFormData.position);
+      formData.append('Content', teamFormData.content || '');
+      formData.append('Email', teamFormData.email || '');
+      formData.append('Phone', teamFormData.phone || '');
+      formData.append('OrderInd', teamFormData.orderInd.toString());
+      formData.append('IsActive', teamFormData.isActive.toString());
+  
+ if (selectedFile) {
+      formData.append('Image', selectedFile); // 👈 якщо файл
+    } else {
+      formData.append('ImageUrl', imageUrl); // 👈 якщо url
+    }
+      const headers = {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      };
+
       if (editingTeamMember) {
-        const { error } = await supabase
-          .from('team_members')
-          .update(teamFormData)
-          .eq('id', editingTeamMember.id);
-        if (error) throw error;
+        await axios.put(`http://localhost:5068/api/team/${editingTeamMember.id}`, formData, { headers });
       } else {
-        if (teamFormData.order_index === 0) {
-          const maxOrder = Math.max(...teamMembers.map(m => m.order_index), 0);
-          teamFormData.order_index = maxOrder + 1;
+        if (teamFormData.orderInd === 0) {
+          const maxOrder = Math.max(...teamMembers.map(m => m.orderInd), 0);
+          formData.set('OrderInd', (maxOrder + 1).toString());
         }
-        const { error } = await supabase
-          .from('team_members')
-          .insert([teamFormData]);
-        
-        if (error) throw error;
+        await axios.post('http://localhost:5068/api/team', formData, { headers });
       }
       fetchTeamMembers();
       handleCloseModal();
     } catch (error) {
-      console.error('Error saving team member:', error);
+      const axiosError = error as AxiosError;
+      console.error('Error saving team member:', axiosError.response?.data || axiosError.message);
     }
   };
 
   const handleFacultySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      let imageUrl = editingFacultyUnion?.imageUrl || '';
+      if (selectedFile) {
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', selectedFile);
+        const uploadRes = await axios.post('http://localhost:5068/api/uploads', uploadFormData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        imageUrl = uploadRes.data.path;
+      }
+      const formData = new FormData();
+      formData.append('Name', facultyFormData.name);
+      formData.append('Head', facultyFormData.head);
+      formData.append('Email', facultyFormData.email || '');
+      formData.append('Address', facultyFormData.address || '');
+      formData.append('Schedule', facultyFormData.schedule || '');
+      formData.append('Summary', facultyFormData.summary || '');
+      formData.append('FacultyURL', facultyFormData.facultyURL || '');
+      formData.append('Link', facultyFormData.link || '');
+      formData.append('OrderInd', facultyFormData.orderInd.toString());
+      formData.append('IsActive', facultyFormData.isActive.toString());
+  
+ if (selectedFile) {
+      formData.append('Image', selectedFile); // 👈 якщо файл
+    } else {
+      formData.append('ImageUrl', imageUrl); // 👈 якщо url
+    }
+      const headers = {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      };
+
       if (editingFacultyUnion) {
-        const { error } = await supabase
-          .from('faculty_unions')
-          .update(facultyFormData)
-          .eq('id', editingFacultyUnion.id);
-        
-        if (error) throw error;
+        await axios.put(`http://localhost:5068/api/prof/${editingFacultyUnion.id}`, formData, { headers });
       } else {
-        if (facultyFormData.order_index === 0) {
-          const maxOrder = Math.max(...facultyUnions.map(f => f.order_index), 0);
-          facultyFormData.order_index = maxOrder + 1;
+        if (facultyFormData.orderInd === 0) {
+          const maxOrder = Math.max(...facultyUnions.map(f => f.orderInd), 0);
+          formData.set('OrderInd', (maxOrder + 1).toString());
         }
-        const { error } = await supabase
-          .from('faculty_unions')
-          .insert([facultyFormData]);
-        
-        if (error) throw error;
+        await axios.post('http://localhost:5068/api/prof', formData, { headers });
       }
       fetchFacultyUnions();
       handleCloseModal();
     } catch (error) {
-      console.error('Error saving faculty union:', error);
+      const axiosError = error as AxiosError;
+      console.error('Error saving faculty union:', axiosError.response?.data || axiosError.message);
     }
   };
 
   const handleDepartmentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      let imageUrl = editingDepartment?.imageUrl || '';
+      if (selectedFile) {
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', selectedFile);
+        const uploadRes = await axios.post('http://localhost:5068/api/uploads', uploadFormData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        imageUrl = uploadRes.data.path;
+      }
+      const formData = new FormData();
+      formData.append('Name', departmentFormData.name);
+      formData.append('Content', departmentFormData.content || '');
+      formData.append('OrderInd', departmentFormData.orderInd.toString());
+      formData.append('IsActive', departmentFormData.isActive.toString());
+    if (selectedFile) {
+      formData.append('Image', selectedFile); // 👈 якщо файл
+    } else {
+      formData.append('ImageUrl', imageUrl); // 👈 якщо url
+    }
+
+      const headers = {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      };
+
       if (editingDepartment) {
-        const { error } = await supabase
-          .from('departments')
-          .update(departmentFormData)
-          .eq('id', editingDepartment.id);
-        if (error) throw error;
+        await axios.put(`http://localhost:5068/api/unit/${editingDepartment.id}`, formData, { headers });
       } else {
-        if (departmentFormData.order_index === 0) {
-          const maxOrder = Math.max(...departments.map(d => d.order_index), 0);
-          departmentFormData.order_index = maxOrder + 1;
+        if (departmentFormData.orderInd === 0) {
+          const maxOrder = Math.max(...departments.map(d => d.orderInd), 0);
+          formData.set('OrderInd', (maxOrder + 1).toString());
         }
-        const { error } = await supabase
-          .from('departments')
-          .insert([departmentFormData]);
-        if (error) throw error;
+        await axios.post('http://localhost:5068/api/unit', formData, { headers });
       }
       fetchDepartments();
       handleCloseModal();
     } catch (error) {
-      console.error('Error saving department:', error);
+      const axiosError = error as AxiosError;
+      console.error('Error saving department:', axiosError.response?.data || axiosError.message);
     }
   };
 
   const handleDeleteNews = async (id: number) => {
     if (confirm('Ви впевнені, що хочете видалити цю новину?')) {
       try {
-        const { error } = await supabase
-          .from('news')
-          .delete()
-          .eq('id', id);
-        
-        if (error) throw error;
+        await axios.delete(`http://localhost:5068/api/news/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
         fetchNews();
       } catch (error) {
-        console.error('Error deleting news:', error);
+        const axiosError = error as AxiosError;
+        console.error('Error deleting news:', axiosError.response?.data || axiosError.message);
       }
     }
   };
@@ -298,15 +432,15 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteTeamMember = async (id: number) => {
     if (confirm('Ви впевнені, що хочете видалити цього члена команди?')) {
       try {
-        const { error } = await supabase
-          .from('team_members')
-          .delete()
-          .eq('id', id);
-        
-        if (error) throw error;
+        await axios.delete(`http://localhost:5068/api/team/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
         fetchTeamMembers();
       } catch (error) {
-        console.error('Error deleting team member:', error);
+        const axiosError = error as AxiosError;
+        console.error('Error deleting team member:', axiosError.response?.data || axiosError.message);
       }
     }
   };
@@ -314,15 +448,15 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteFacultyUnion = async (id: number) => {
     if (confirm('Ви впевнені, що хочете видалити це профбюро?')) {
       try {
-        const { error } = await supabase
-          .from('faculty_unions')
-          .delete()
-          .eq('id', id);
-        
-        if (error) throw error;
+        await axios.delete(`http://localhost:5068/api/prof/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
         fetchFacultyUnions();
       } catch (error) {
-        console.error('Error deleting faculty union:', error);
+        const axiosError = error as AxiosError;
+        console.error('Error deleting faculty union:', axiosError.response?.data || axiosError.message);
       }
     }
   };
@@ -330,14 +464,15 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteDepartment = async (id: number) => {
     if (confirm('Ви впевнені, що хочете видалити цей відділ?')) {
       try {
-        const { error } = await supabase
-          .from('departments')
-          .delete()
-          .eq('id', id);
-        if (error) throw error;
+        await axios.delete(`http://localhost:5068/api/unit/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
         fetchDepartments();
       } catch (error) {
-        console.error('Error deleting department:', error);
+        const axiosError = error as AxiosError;
+        console.error('Error deleting department:', axiosError.response?.data || axiosError.message);
       }
     }
   };
@@ -347,8 +482,7 @@ const AdminDashboard: React.FC = () => {
     setNewsFormData({
       title: newsItem.title,
       content: newsItem.content,
-      image_url: newsItem.image_url || '',
-      is_important: newsItem.is_important
+      isImportant: newsItem.isImportant
     });
     setActiveTab('news');
     setShowAddModal(true);
@@ -359,12 +493,11 @@ const AdminDashboard: React.FC = () => {
     setTeamFormData({
       name: member.name,
       position: member.position,
-      description: member.description || '',
-      photo_url: member.photo_url || '',
+      content: member.content || '',
       email: member.email || '',
       phone: member.phone || '',
-      order_index: member.order_index,
-      is_active: member.is_active
+      orderInd: member.orderInd,
+      isActive: member.isActive
     });
     setActiveTab('team');
     setShowAddModal(true);
@@ -373,16 +506,16 @@ const AdminDashboard: React.FC = () => {
   const handleEditFacultyUnion = (union: FacultyUnion) => {
     setEditingFacultyUnion(union);
     setFacultyFormData({
-      faculty_name: union.faculty_name,
-      union_head_name: union.union_head_name,
-      union_head_photo: union.union_head_photo || '',
-      contact_email: union.contact_email || '',
-      office_location: union.office_location || '',
-      working_hours: union.working_hours || 'Пн-Пт: 9:00-17:00',
-      description: union.description || '',
-      website_url: union.website_url || '',
-      order_index: union.order_index,
-      is_active: union.is_active
+      name: union.name,
+      head: union.head,
+      email: union.email || '',
+      address: union.address || '',
+      schedule: union.schedule || 'Пн-Пт: 9:00-17:00',
+      summary: union.summary || '',
+      facultyURL: union.facultyURL || '',
+      link: union.link || '',
+      orderInd: union.orderInd,
+      isActive: union.isActive
     });
     setActiveTab('faculties');
     setShowAddModal(true);
@@ -392,10 +525,9 @@ const AdminDashboard: React.FC = () => {
     setEditingDepartment(dep);
     setDepartmentFormData({
       name: dep.name,
-      description: dep.description || '',
-      icon_url: dep.icon_url || '',
-      order_index: dep.order_index,
-      is_active: dep.is_active
+      content: dep.content || '',
+      orderInd: dep.orderInd,
+      isActive: dep.isActive
     });
     setActiveTab('departments');
     setShowAddModal(true);
@@ -407,40 +539,38 @@ const AdminDashboard: React.FC = () => {
     setEditingTeamMember(null);
     setEditingFacultyUnion(null);
     setEditingDepartment(null);
+    setSelectedFile(null);
     setNewsFormData({
       title: '',
       content: '',
-      image_url: '',
-      is_important: false
+      isImportant: false
     });
     setTeamFormData({
       name: '',
       position: '',
-      description: '',
-      photo_url: '',
+      content: '',
       email: '',
       phone: '',
-      order_index: 0,
-      is_active: true
+      orderInd: 0,
+      isActive: true
     });
     setFacultyFormData({
-      faculty_name: '',
-      union_head_name: '',
-      union_head_photo: '',
-      contact_email: '',
-      office_location: '',
-      working_hours: 'Пн-Пт: 9:00-17:00',
-      description: '',
-      website_url: '',
-      order_index: 0,
-      is_active: true
+      name: '',
+      head: '',
+      email: '',
+      address: '',
+      schedule: 'Пн-Пт: 9:00-17:00',
+      summary: '',
+      facultyURL: '',
+      link: '',
+      orderInd: 0,
+      isActive: true
     });
     setDepartmentFormData({
       name: '',
-      description: '',
-      icon_url: '',
-      order_index: 0,
-      is_active: true
+      content: '',
+      orderInd: 0,
+      isActive: true
     });
   };
 
@@ -515,7 +645,7 @@ const AdminDashboard: React.FC = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Членів команди</p>
                 <p className="text-2xl font-semibold text-gray-900">
-                  {teamMembers.filter(m => m.is_active).length}
+                  {teamMembers.filter(m => m.isActive).length}
                 </p>
               </div>
             </div>
@@ -529,7 +659,7 @@ const AdminDashboard: React.FC = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Профбюро факультетів</p>
                 <p className="text-2xl font-semibold text-gray-900">
-                  {facultyUnions.filter(f => f.is_active).length}
+                  {facultyUnions.filter(f => f.isActive).length}
                 </p>
               </div>
             </div>
@@ -543,7 +673,7 @@ const AdminDashboard: React.FC = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Всього відділів</p>
                 <p className="text-2xl font-semibold text-gray-900">
-                  {departments.filter(f => f.is_active).length}
+                  {departments.filter(f => f.isActive).length}
                 </p>
               </div>
             </div>
@@ -678,7 +808,7 @@ const AdminDashboard: React.FC = () => {
                         <tr key={item.id} className="hover:bg-gray-50">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
-                              {item.is_important && (
+                              {item.isImportant && (
                                 <Star className="h-4 w-4 text-yellow-500 mr-2" />
                               )}
                               <div className="text-sm font-medium text-gray-900 max-w-xs truncate">
@@ -687,15 +817,15 @@ const AdminDashboard: React.FC = () => {
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {formatDate(item.created_at)}
+                            {formatDate(item.publishedAt)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                              item.is_important 
+                              item.isImportant 
                                 ? 'bg-red-100 text-red-800' 
                                 : 'bg-green-100 text-green-800'
                             }`}>
-                              {item.is_important ? 'Важлива' : 'Звичайна'}
+                              {item.isImportant ? 'Важлива' : 'Звичайна'}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -769,15 +899,15 @@ const AdminDashboard: React.FC = () => {
                             <div className="text-sm text-gray-900">{member.position}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-500">{member.order_index}</div>
+                            <div className="text-sm text-gray-500">{member.orderInd}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                              member.is_active 
+                              member.isActive 
                                 ? 'bg-green-100 text-green-800' 
                                 : 'bg-red-100 text-red-800'
                             }`}>
-                              {member.is_active ? 'Активний' : 'Неактивний'}
+                              {member.isActive ? 'Активний' : 'Неактивний'}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -833,7 +963,7 @@ const AdminDashboard: React.FC = () => {
                           Завантаження...
                         </td>
                       </tr>
-                    ) : facultyUnions.length === 0 ? (
+                    ) : !Array.isArray(facultyUnions) || facultyUnions.length === 0 ? (
                       <tr>
                         <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
                           Профбюро поки не додані
@@ -844,22 +974,22 @@ const AdminDashboard: React.FC = () => {
                         <tr key={union.id} className="hover:bg-gray-50">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm font-medium text-gray-900">
-                              {union.faculty_name}
+                              {union.name}
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">{union.union_head_name}</div>
+                            <div className="text-sm text-gray-900">{union.head}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-500">{union.contact_email || 'Не вказано'}</div>
+                            <div className="text-sm text-gray-500">{union.email || 'Не вказано'}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                              union.is_active 
+                              union.isActive 
                                 ? 'bg-green-100 text-green-800' 
                                 : 'bg-red-100 text-red-800'
                             }`}>
-                              {union.is_active ? 'Активне' : 'Неактивне'}
+                              {union.isActive ? 'Активне' : 'Неактивне'}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -902,7 +1032,7 @@ const AdminDashboard: React.FC = () => {
                       <tr>
                         <td colSpan={4} className="px-6 py-4 text-center text-gray-500">Завантаження...</td>
                       </tr>
-                    ) : departments.length === 0 ? (
+                    ) : !Array.isArray(departments) || departments.length === 0 ? (
                       <tr>
                         <td colSpan={4} className="px-6 py-4 text-center text-gray-500">Відділів поки немає</td>
                       </tr>
@@ -910,12 +1040,12 @@ const AdminDashboard: React.FC = () => {
                       departments.map(dep => (
                         <tr key={dep.id} className="hover:bg-gray-50">
                           <td className="px-6 py-4">{dep.name}</td>
-                          <td className="px-6 py-4">{dep.order_index}</td>
+                          <td className="px-6 py-4">{dep.orderInd}</td>
                           <td className="px-6 py-4">
                             <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                              dep.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                              dep.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                             }`}>
-                              {dep.is_active ? 'Активний' : 'Неактивний'}
+                              {dep.isActive ? 'Активний' : 'Неактивний'}
                             </span>
                           </td>
                           <td className="px-6 py-4 text-right">
@@ -948,7 +1078,7 @@ const AdminDashboard: React.FC = () => {
                 {activeTab === 'news' && (editingNews ? 'Редагувати новину' : 'Додати новину')}
                 {activeTab === 'team' && (editingTeamMember ? 'Редагувати члена команди' : 'Додати члена команди')}
                 {activeTab === 'faculties' && (editingFacultyUnion ? 'Редагувати профбюро' : 'Додати профбюро')}
-                {activeTab === 'departments' && (editingFacultyUnion ? 'Редагувати відділ' : 'Додати відділ')}
+                {activeTab === 'departments' && (editingDepartment ? 'Редагувати відділ' : 'Додати відділ')}
               </h2>
               <button
                 onClick={handleCloseModal}
@@ -976,15 +1106,17 @@ const AdminDashboard: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Зображення URL (необов'язково)
+                    Зображення (необов’язково)
                   </label>
                   <input
-                    type="url"
-                    value={newsFormData.image_url}
-                    onChange={(e) => setNewsFormData({ ...newsFormData, image_url: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="https://example.com/image.jpg"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
                   />
+                  {editingNews && editingNews.imageUrl && (
+                    <p className="mt-2 text-sm text-gray-500">Поточне: {editingNews.imageUrl}</p>
+                  )}
                 </div>
 
                 <div>
@@ -1004,12 +1136,12 @@ const AdminDashboard: React.FC = () => {
                 <div className="flex items-center">
                   <input
                     type="checkbox"
-                    id="is_important"
-                    checked={newsFormData.is_important}
-                    onChange={(e) => setNewsFormData({ ...newsFormData, is_important: e.target.checked })}
+                    id="isImportant"
+                    checked={newsFormData.isImportant}
+                    onChange={(e) => setNewsFormData({ ...newsFormData, isImportant: e.target.checked })}
                     className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
                   />
-                  <label htmlFor="is_important" className="ml-2 text-sm font-medium text-gray-700">
+                  <label htmlFor="isImportant" className="ml-2 text-sm font-medium text-gray-700">
                     Важлива новина
                   </label>
                 </div>
@@ -1072,15 +1204,17 @@ const AdminDashboard: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Фото URL (необов'язково)
+                    Фото (необов’язково)
                   </label>
                   <input
-                    type="url"
-                    value={teamFormData.photo_url}
-                    onChange={(e) => setTeamFormData({ ...teamFormData, photo_url: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="https://example.com/photo.jpg"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
                   />
+                  {editingTeamMember && editingTeamMember.imageUrl && (
+                    <p className="mt-2 text-sm text-gray-500">Поточне: {editingTeamMember.imageUrl}</p>
+                  )}
                 </div>
 
                 <div>
@@ -1090,8 +1224,8 @@ const AdminDashboard: React.FC = () => {
                   <textarea
                     rows={4}
                     required
-                    value={teamFormData.description}
-                    onChange={(e) => setTeamFormData({ ...teamFormData, description: e.target.value })}
+                    value={teamFormData.content}
+                    onChange={(e) => setTeamFormData({ ...teamFormData, content: e.target.value })}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Короткий опис діяльності та досвіду"
                   />
@@ -1140,8 +1274,8 @@ const AdminDashboard: React.FC = () => {
                     <input
                       type="number"
                       min="0"
-                      value={teamFormData.order_index}
-                      onChange={(e) => setTeamFormData({ ...teamFormData, order_index: parseInt(e.target.value) || 0 })}
+                      value={teamFormData.orderInd}
+                      onChange={(e) => setTeamFormData({ ...teamFormData, orderInd: parseInt(e.target.value) || 0 })}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="0"
                     />
@@ -1150,12 +1284,12 @@ const AdminDashboard: React.FC = () => {
                   <div className="flex items-center pt-6">
                     <input
                       type="checkbox"
-                      id="is_active_member"
-                      checked={teamFormData.is_active}
-                      onChange={(e) => setTeamFormData({ ...teamFormData, is_active: e.target.checked })}
+                      id="isActive_member"
+                      checked={teamFormData.isActive}
+                      onChange={(e) => setTeamFormData({ ...teamFormData, isActive: e.target.checked })}
                       className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
                     />
-                    <label htmlFor="is_active_member" className="ml-2 text-sm font-medium text-gray-700">
+                    <label htmlFor="isActive_member" className="ml-2 text-sm font-medium text-gray-700">
                       Активний член команди
                     </label>
                   </div>
@@ -1189,10 +1323,10 @@ const AdminDashboard: React.FC = () => {
                     <input
                       type="text"
                       required
-                      value={facultyFormData.faculty_name}
+                      value={facultyFormData.name}
                       onChange={(e) => {
                         const lettersOnly = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁЇїІіЄєҐґ\s]/g, '');
-                        setFacultyFormData({ ...facultyFormData, faculty_name: lettersOnly })
+                        setFacultyFormData({ ...facultyFormData, name: lettersOnly })
                       }}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Філологічний факультет"
@@ -1206,10 +1340,10 @@ const AdminDashboard: React.FC = () => {
                     <input
                       type="text"
                       required
-                      value={facultyFormData.union_head_name}
+                      value={facultyFormData.head}
                       onChange={(e) => {
                         const lettersOnly = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁЇїІіЄєҐґ\s]/g, '');
-                        setFacultyFormData({ ...facultyFormData, union_head_name: lettersOnly })
+                        setFacultyFormData({ ...facultyFormData, head: lettersOnly })
                       }}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Оксана Литвиненко"
@@ -1219,15 +1353,17 @@ const AdminDashboard: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Фото голови профбюро (необов'язково)
+                    Фото голови профбюро (необов’язково)
                   </label>
                   <input
-                    type="url"
-                    value={facultyFormData.union_head_photo}
-                    onChange={(e) => setFacultyFormData({ ...facultyFormData, union_head_photo: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="https://example.com/photo.jpg"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
                   />
+                  {editingFacultyUnion && editingFacultyUnion.imageUrl && (
+                    <p className="mt-2 text-sm text-gray-500">Поточне: {editingFacultyUnion.imageUrl}</p>
+                  )}
                 </div>
 
                 <div>
@@ -1237,8 +1373,8 @@ const AdminDashboard: React.FC = () => {
                   <textarea
                     rows={3}
                     required
-                    value={facultyFormData.description}
-                    onChange={(e) => setFacultyFormData({ ...facultyFormData, description: e.target.value })}
+                    value={facultyFormData.summary}
+                    onChange={(e) => setFacultyFormData({ ...facultyFormData, summary: e.target.value })}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Короткий опис діяльності профбюро факультету"
                   />
@@ -1252,8 +1388,8 @@ const AdminDashboard: React.FC = () => {
                     <input
                       type="email"
                       required
-                      value={facultyFormData.contact_email}
-                      onChange={(e) => setFacultyFormData({ ...facultyFormData, contact_email: e.target.value })}
+                      value={facultyFormData.email}
+                      onChange={(e) => setFacultyFormData({ ...facultyFormData, email: e.target.value })}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="profkom.faculty@lnu.edu.ua"
                     />
@@ -1266,8 +1402,8 @@ const AdminDashboard: React.FC = () => {
                     <input
                       type="text"
                       required
-                      value={facultyFormData.office_location}
-                      onChange={(e) => setFacultyFormData({ ...facultyFormData, office_location: e.target.value })}
+                      value={facultyFormData.address}
+                      onChange={(e) => setFacultyFormData({ ...facultyFormData, address: e.target.value })}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Головний корпус, кімната 301"
                     />
@@ -1281,8 +1417,8 @@ const AdminDashboard: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      value={facultyFormData.working_hours}
-                      onChange={(e) => setFacultyFormData({ ...facultyFormData, working_hours: e.target.value })}
+                      value={facultyFormData.schedule}
+                      onChange={(e) => setFacultyFormData({ ...facultyFormData, schedule: e.target.value })}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Пн-Пт: 9:00-17:00"
                     />
@@ -1294,12 +1430,25 @@ const AdminDashboard: React.FC = () => {
                     </label>
                     <input
                       type="url"
-                      value={facultyFormData.website_url}
-                      onChange={(e) => setFacultyFormData({ ...facultyFormData, website_url: e.target.value })}
+                      value={facultyFormData.facultyURL}
+                      onChange={(e) => setFacultyFormData({ ...facultyFormData, facultyURL: e.target.value })}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="https://faculty.lnu.edu.ua"
                     />
                   </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Соціальні посилання
+                  </label>
+                  <input
+                    type="text"
+                    value={facultyFormData.link}
+                    onChange={(e) => setFacultyFormData({ ...facultyFormData, link: e.target.value })}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="https://facebook.com/group"
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1310,8 +1459,8 @@ const AdminDashboard: React.FC = () => {
                     <input
                       type="number"
                       min="0"
-                      value={facultyFormData.order_index}
-                      onChange={(e) => setFacultyFormData({ ...facultyFormData, order_index: parseInt(e.target.value) || 0 })}
+                      value={facultyFormData.orderInd}
+                      onChange={(e) => setFacultyFormData({ ...facultyFormData, orderInd: parseInt(e.target.value) || 0 })}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="0"
                     />
@@ -1321,12 +1470,12 @@ const AdminDashboard: React.FC = () => {
                 <div className="flex items-center">
                   <input
                     type="checkbox"
-                    id="is_active_faculty"
-                    checked={facultyFormData.is_active}
-                    onChange={(e) => setFacultyFormData({ ...facultyFormData, is_active: e.target.checked })}
+                    id="isActive_faculty"
+                    checked={facultyFormData.isActive}
+                    onChange={(e) => setFacultyFormData({ ...facultyFormData, isActive: e.target.checked })}
                     className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
                   />
-                  <label htmlFor="is_active_faculty" className="ml-2 text-sm font-medium text-gray-700">
+                  <label htmlFor="isActive_faculty" className="ml-2 text-sm font-medium text-gray-700">
                     Активне профбюро
                   </label>
                 </div>
@@ -1358,8 +1507,8 @@ const AdminDashboard: React.FC = () => {
                     required
                     value={departmentFormData.name}
                     onChange={(e) => {
-                        const lettersOnly = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁЇїІіЄєҐґ\s]/g, '');
-                        setDepartmentFormData({ ...departmentFormData, name: lettersOnly })
+                      const lettersOnly = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁЇїІіЄєҐґ\s]/g, '');
+                      setDepartmentFormData({ ...departmentFormData, name: lettersOnly })
                     }}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Відділ цифровізації"
@@ -1367,14 +1516,16 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Зображення URL (необов'язково)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Зображення (необов’язково)</label>
                   <input
-                    type="url"
-                    value={departmentFormData.icon_url}
-                    onChange={(e) => setDepartmentFormData({ ...departmentFormData, icon_url: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="https://example.com/image.jpg"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
                   />
+                  {editingDepartment && editingDepartment.imageUrl && (
+                    <p className="mt-2 text-sm text-gray-500">Поточне: {editingDepartment.imageUrl}</p>
+                  )}
                 </div>
 
                 <div>
@@ -1382,11 +1533,8 @@ const AdminDashboard: React.FC = () => {
                   <textarea
                     rows={4}
                     required
-                    value={departmentFormData.description}
-                    onChange={(e) => {
-                        const lettersOnly = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁЇїІіЄєҐґ\s]/g, '');
-                        setDepartmentFormData({ ...departmentFormData, description: lettersOnly })
-                    }}
+                    value={departmentFormData.content}
+                    onChange={(e) => setDepartmentFormData({ ...departmentFormData, content: e.target.value })}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Короткий опис діяльності відділу"
                   />
@@ -1397,8 +1545,8 @@ const AdminDashboard: React.FC = () => {
                   <input
                     type="number"
                     min="0"
-                    value={departmentFormData.order_index}
-                    onChange={(e) => setDepartmentFormData({ ...departmentFormData, order_index: parseInt(e.target.value) || 0 })}
+                    value={departmentFormData.orderInd}
+                    onChange={(e) => setDepartmentFormData({ ...departmentFormData, orderInd: parseInt(e.target.value) || 0 })}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
@@ -1406,8 +1554,8 @@ const AdminDashboard: React.FC = () => {
                 <div className="flex items-center">
                   <input
                     type="checkbox"
-                    checked={departmentFormData.is_active}
-                    onChange={(e) => setDepartmentFormData({ ...departmentFormData, is_active: e.target.checked })}
+                    checked={departmentFormData.isActive}
+                    onChange={(e) => setDepartmentFormData({ ...departmentFormData, isActive: e.target.checked })}
                     className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
                   />
                   <label className="ml-2 text-sm font-medium text-gray-700">Активний відділ</label>
@@ -1429,7 +1577,7 @@ const AdminDashboard: React.FC = () => {
                   </button>
                 </div>
               </form>
-            )}        
+            )}
           </div>
         </div>
       )}

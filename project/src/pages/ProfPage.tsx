@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Search, Users, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { supabase } from "../lib/supabase";
+import axios from 'axios';
 import Card, { FacultyUnion } from "../components/ProfCard";
 
 const ProfPage: React.FC = () => {
@@ -14,16 +14,20 @@ const ProfPage: React.FC = () => {
   useEffect(() => {
     const fetchFacultyUnions = async () => {
       try {
-        const { data, error } = await supabase
-          .from("faculty_unions")
-          .select("*")
-          .eq("is_active", true)
-          .order("order_index", { ascending: true });
-
-        if (error) throw error;
-        setFacultyUnions(data || []);
+        const response = await axios.get<FacultyUnion[]>('http://localhost:5068/api/prof', {
+          params: {
+            isActive: true,
+            orderBy: 'orderInd',
+            order: 'asc',
+          },
+        });
+        console.log('Faculty Unions:', response.data); // Логування для діагностики
+        setFacultyUnions(response.data || []);
       } catch (err) {
-        console.error("Error fetching faculty unions:", err);
+        console.error("Помилка при отриманні профбюро:", err);
+        if (axios.isAxiosError(err)) {
+          console.error('Деталі помилки:', err.response?.data);
+        }
       } finally {
         setLoading(false);
       }
@@ -35,9 +39,9 @@ const ProfPage: React.FC = () => {
   const filteredUnions = facultyUnions.filter((union) => {
     const q = searchTerm.toLowerCase();
     return (
-      union.faculty_name.toLowerCase().includes(q) ||
-      union.union_head_name.toLowerCase().includes(q) ||
-      (union.description && union.description.toLowerCase().includes(q))
+      union.name.toLowerCase().includes(q) ||
+      union.head.toLowerCase().includes(q) ||
+      (union.summary && union.summary.toLowerCase().includes(q))
     );
   });
 
@@ -51,94 +55,94 @@ const ProfPage: React.FC = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-const renderPaginationButtons = () => {
-  if (totalPages <= 1) return null;
-  const maxVisibleButtons = 5;
+  const renderPaginationButtons = () => {
+    if (totalPages <= 1) return null;
+    const maxVisibleButtons = 5;
 
-  let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
-  let endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
-  if (endPage - startPage + 1 < maxVisibleButtons) {
-    startPage = Math.max(1, endPage - maxVisibleButtons + 1);
-  }
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
+    if (endPage - startPage + 1 < maxVisibleButtons) {
+      startPage = Math.max(1, endPage - maxVisibleButtons + 1);
+    }
 
-  // Left Buttons
-  const leftButtons = (
-    <div key="left" className="flex gap-1">
-      {totalPages > 5 && (
-        <button
-          onClick={() => handlePageChange(1)}
-          disabled={currentPage === 1}
-          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-        >
-          <ChevronsLeft className="h-4 w-4" />
-        </button>
-      )}
-      {totalPages > 1 && (
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </button>
-      )}
-    </div>
-  );
-
-  // Center Buttons
-  const centerButtons = (
-    <div key="center" className="flex gap-1">
-      {Array.from({ length: endPage - startPage + 1 }, (_, idx) => {
-        const page = startPage + idx;
-        return (
+    // Left Buttons
+    const leftButtons = (
+      <div key="left" className="flex gap-1">
+        {totalPages > 5 && (
           <button
-            key={page}
-            onClick={() => handlePageChange(page)}
-            className={`w-8 h-8 flex justify-center items-center rounded-lg border font-medium transition-colors duration-200 ${
-              page === currentPage
-                ? "bg-blue-600 text-white border-blue-600"
-                : "border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
-            }`}
+            onClick={() => handlePageChange(1)}
+            disabled={currentPage === 1}
+            className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
           >
-            {page}
+            <ChevronsLeft className="h-4 w-4" />
           </button>
-        );
-      })}
-    </div>
-  );
+        )}
+        {totalPages > 1 && (
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+    );
 
-  // Right Buttons
-  const rightButtons = (
-    <div key="right" className="flex gap-1">
-      {totalPages > 1 && (
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </button>
-      )}
-      {totalPages > 5 && (
-        <button
-          onClick={() => handlePageChange(totalPages)}
-          disabled={currentPage === totalPages}
-          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-        >
-          <ChevronsRight className="h-4 w-4" />
-        </button>
-      )}
-    </div>
-  );
+    // Center Buttons
+    const centerButtons = (
+      <div key="center" className="flex gap-1">
+        {Array.from({ length: endPage - startPage + 1 }, (_, idx) => {
+          const page = startPage + idx;
+          return (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`w-8 h-8 flex justify-center items-center rounded-lg border font-medium transition-colors duration-200 ${
+                page === currentPage
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+              }`}
+            >
+              {page}
+            </button>
+          );
+        })}
+      </div>
+    );
 
-  return (
-    <div className="flex justify-center items-center gap-2 mt-8">
-      {leftButtons}
-      {centerButtons}
-      {rightButtons}
-    </div>
-  );
-};
+    // Right Buttons
+    const rightButtons = (
+      <div key="right" className="flex gap-1">
+        {totalPages > 1 && (
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        )}
+        {totalPages > 5 && (
+          <button
+            onClick={() => handlePageChange(totalPages)}
+            disabled={currentPage === totalPages}
+            className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+          >
+            <ChevronsRight className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+    );
+
+    return (
+      <div className="flex justify-center items-center gap-2 mt-8">
+        {leftButtons}
+        {centerButtons}
+        {rightButtons}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
