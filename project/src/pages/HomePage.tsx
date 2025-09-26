@@ -39,42 +39,42 @@ const HomePage: React.FC = () => {
     const heroSlides: HeroSlide[] = [
     {
       id: 1,
-      image: 'https://lviv.travel/image/locations/ef/56/ef568b5e29ab5441bdb4db25428f531e91880ed7_1674562854.jpg?crop=2987%2C1607%2C4%2C72',
+      image: "/home_page/university.JPG",
       title: 'Профком студентів',
       subtitle: 'Львівський національний університет імені Івана Франка',
       description: 'Захищаємо права студентів, надаємо підтримку та створюємо можливості для розвитку'
     },
     {
       id: 2,
-      image: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg',
+      image: '/home_page/social.JPG',
       title: 'Соціальна підтримка',
       subtitle: 'Матеріальна допомога та стипендії',
       description: 'Надаємо фінансову підтримку студентам у складних життєвих ситуаціях'
     },
     {
       id: 3,
-      image: 'https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg',
+      image: '/home_page/entertainment.jpg',
       title: 'Культурне життя',
       subtitle: 'Фестивалі та творчі заходи',
       description: 'Організовуємо яскраві культурно-освітні події для всіх студентів'
     },
     {
       id: 4,
-      image: 'https://dw1.s81c.com/developer-static-pages/default/en/default_images/course.jpg',
+      image: '/home_page/education.JPG',
       title: 'Освітні програми',
       subtitle: 'Додаткові можливості розвитку',
       description: 'Курси, тренінги та програми особистісного зростання'
     },
     {
       id: 5,
-      image: 'https://www.fivb.com/wp-content/uploads/2025/04/101767.jpeg',
+      image: '/home_page/sport.png',
       title: 'Спортивне життя',
       subtitle: 'Змагання та спортивні секції',
       description: 'Підтримуємо здоровий спосіб життя та спортивні досягнення'
     },
     {
       id: 6,
-      image: 'https://lnu.edu.ua/wp-content/uploads/2018/06/8.jpg',
+      image: '/home_page/hostel.jpg',
       title: 'Студентські гуртожитки',
       subtitle: 'Комфортні умови проживання',
       description: 'Забезпечуємо якісні умови проживання для студентів'
@@ -85,6 +85,15 @@ const HomePage: React.FC = () => {
     startAutoPlay();
     return () => stopAutoPlay();
   }, []);
+
+  useEffect(() => {
+    stopAutoPlay();
+    intervalRef.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+
+    return () => stopAutoPlay();
+  }, [currentSlide]);
 
   const startAutoPlay = () => {
     stopAutoPlay();
@@ -241,7 +250,7 @@ const HomePage: React.FC = () => {
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: `url(${slide.image})` }}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-800/70 to-blue-700/60" />
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/70 via-blue-800/60 to-blue-700/50" />
           </div>
         ))}
 
@@ -435,7 +444,7 @@ const HomePage: React.FC = () => {
     loop
     speed={800}
     autoplay={{ delay: 5000, disableOnInteraction: false }}
-    className="news-swiper relative pb-12"
+    className="news-swiper relative pb-12 pt-4"
     breakpoints={{
       0: { slidesPerView: 1 },
       640: { slidesPerView: 2 },
@@ -446,7 +455,7 @@ const HomePage: React.FC = () => {
     {news.slice(0, 6).map((article, index) => (
       <SwiperSlide key={article.id} className="h-full">
         <div
-          className="news-card-animated h-full"
+          className="news-card-animated h-full will-change: transform"
           style={{ animationDelay: `${index * 150}ms` }}
           onClick={() => navigate(`/news/${article.id}`)}
         >

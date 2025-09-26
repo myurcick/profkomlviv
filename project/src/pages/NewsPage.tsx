@@ -18,7 +18,7 @@ const NewsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const newsPerPage = 9;
+  const newsPerPage = 6;
 
   useEffect(() => {
     fetchNews();
@@ -210,7 +210,7 @@ const NewsPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[...Array(9)].map((_, index) => (
+              {[...Array(6)].map((_, index) => (
                 <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
                   <div className="h-48 bg-gray-300" />
                   <div className="p-6">
@@ -236,7 +236,7 @@ const NewsPage: React.FC = () => {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 will-change-transform">
                 {currentNews.map((article) => (
                   <NewsCard key={article.id} news={article}/>
                 ))}

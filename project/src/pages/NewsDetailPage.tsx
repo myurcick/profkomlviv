@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, Star, Share2, Clock } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, Share2, Star } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import NewsCard from '../components/NewsCard';
 
-// Типи даних
 interface News {
   id: number;
   title: string;
@@ -13,81 +13,6 @@ interface News {
   is_important: boolean;
 }
 
-// Компонент картки новини для сайдбару
-const RelatedNewsCard: React.FC<{ news: News; onClick: () => void; index: number; animate: boolean }> = ({ 
-  news, 
-  onClick, 
-  index, 
-  animate 
-}) => {
-  const formatDateShort = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("uk-UA", {
-      day: "numeric",
-      month: "short",
-    });
-  };
-
-  return (
-    <div
-      onClick={onClick}
-      className={`group cursor-pointer bg-white hover:bg-blue-50 rounded-xl p-4 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-lg border border-gray-200 hover:border-blue-300 ${
-        animate 
-          ? 'opacity-100 translate-y-0' 
-          : 'opacity-0 translate-y-8'
-      }`}
-      style={{ 
-        transitionDelay: animate ? `${index * 150}ms` : '0ms' 
-      }}
-    >
-      {/* Image Section */}
-      <div className="relative mb-3">
-        {news.image_url ? (
-          <div className="aspect-[4/3] rounded-lg overflow-hidden">
-            <img
-              src={news.image_url}
-              alt={news.title}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-            />
-          </div>
-        ) : (
-          <div className="aspect-[4/3] bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-            <span className="text-white text-sm font-semibold">Новина</span>
-          </div>
-        )}
-
-        {news.is_important && (
-          <div className="absolute top-2 right-2 text-white bg-blue-600 p-1.5 rounded-full shadow-md">
-            <Star className="h-3 w-3 fill-current" />
-          </div>
-        )}
-      </div>
-
-      {/* Content Section */}
-      <div>
-        <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors duration-200 mb-2 min-h-[2.5rem]">
-          {news.title}
-        </h3>
-
-        <p className="text-xs text-gray-600 line-clamp-2 mb-3 leading-relaxed">
-          {news.content}
-        </p>
-
-        <div className="flex items-center justify-between">
-          <div className="flex items-center text-xs text-gray-500">
-            <Calendar className="h-3 w-3 mr-1" />
-            {formatDateShort(news.created_at)}
-          </div>
-
-          <span className="text-xs text-blue-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            Читати →
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const NewsDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -95,7 +20,6 @@ const NewsDetailPage: React.FC = () => {
   const [currentNews, setCurrentNews] = useState<News | null>(null);
   const [relatedNews, setRelatedNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
-  const [animateRelated, setAnimateRelated] = useState(false);
 
   useEffect(() => {
     fetchCurrentNews();
@@ -127,12 +51,10 @@ const NewsDetailPage: React.FC = () => {
         .select('*')
         .neq('id', newsId)
         .order('created_at', { ascending: false })
-        .limit(6);
+        .limit(3);
 
       if (error) throw error;
       setRelatedNews((data as News[]) || []);
-      
-      setTimeout(() => setAnimateRelated(true), 300);
     } catch (error) {
       console.error('Error fetching related news:', error);
     }
@@ -172,15 +94,9 @@ const NewsDetailPage: React.FC = () => {
     navigate(-1);
   };
 
-  const handleRelatedNewsClick = (news: News) => {
-    navigate(`/news/${news.id}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        {/* Header Skeleton */}
         <header className="bg-white shadow-sm h-16 flex items-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="h-6 bg-gray-300 rounded w-32 animate-pulse"></div>
@@ -189,7 +105,6 @@ const NewsDetailPage: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content Skeleton */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-lg shadow-sm overflow-hidden animate-pulse">
                 <div className="p-6 border-b bg-gray-50">
@@ -207,12 +122,11 @@ const NewsDetailPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Sidebar Skeleton */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-lg shadow-sm p-6 animate-pulse">
                 <div className="h-6 bg-gray-300 rounded mb-6 w-1/2"></div>
                 <div className="space-y-4">
-                  {[...Array(3)].map((_, i) => (
+                  {[...Array(4)].map((_, i) => (
                     <div key={i} className="bg-gray-50 rounded-lg p-4">
                       <div className="aspect-[4/3] bg-gray-300 rounded-lg mb-3"></div>
                       <div className="h-4 bg-gray-300 rounded mb-2"></div>
@@ -247,11 +161,10 @@ const NewsDetailPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="shadow-sm h-16 flex items-center sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <button
-            onClick={handleBackToNews} 
+            onClick={handleBackToNews}
             className="flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200 group"
           >
             <ArrowLeft className="h-5 w-5 mr-2 transform group-hover:-translate-x-1 transition-transform duration-200" />
@@ -262,10 +175,8 @@ const NewsDetailPage: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content - Left Side */}
           <div className="lg:col-span-2">
-            <article className="bg-white rounded-lg shadow-sm overflow-hidden transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-lg">
-              {/* Article Header */}
+            <article className="border bg-white rounded-lg shadow-sm overflow-hidden transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-lg">
               <div className="p-6 border-b bg-gray-50">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -284,7 +195,6 @@ const NewsDetailPage: React.FC = () => {
                       {currentNews.title}
                     </h1>
                   </div>
-                  
                   <button
                     onClick={handleShare}
                     className="ml-4 p-3 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-all duration-200 transform hover:scale-105"
@@ -295,10 +205,9 @@ const NewsDetailPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Article Image */}
               <div className="px-6 pt-6">
                 {currentNews.image_url ? (
-                  <div className="aspect-[16/9] rounded-lg overflow-hidden shadow-md">
+                  <div className="rounded-lg overflow-hidden shadow-md">
                     <img
                       src={currentNews.image_url}
                       alt={currentNews.title}
@@ -315,12 +224,11 @@ const NewsDetailPage: React.FC = () => {
                 )}
               </div>
 
-              {/* Article Content */}
               <div className="p-6">
                 <div className="prose prose-lg max-w-none text-gray-700">
                   {currentNews.content.split("\n").map((paragraph, index) =>
                     paragraph.trim() ? (
-                      <p key={index} className="mb-6 text-lg leading-relaxed">
+                      <p key={index} className="mb-6 text-lg leading-relaxed italic">
                         {paragraph}
                       </p>
                     ) : null
@@ -330,33 +238,24 @@ const NewsDetailPage: React.FC = () => {
             </article>
           </div>
 
-          {/* Sidebar - Right Side */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm p-6 transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-lg">
+            <div className="border bg-white rounded-lg shadow-sm p-6 transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-lg">
               <div className="flex items-center mb-6">
                 <Clock className="h-5 w-5 text-blue-600 mr-2" />
-                  <h2 className="text-xl font-bold text-gray-900">Інші новини</h2>
-                </div>
-
-                <div className="space-y-4">
-                  {relatedNews.slice(0, 4).map((news, index) => (
-                    <RelatedNewsCard
-                      key={news.id}
-                      news={news}
-                      onClick={() => handleRelatedNewsClick(news)}
-                      index={index}
-                      animate={animateRelated}
-                    />
-                  ))}
-                </div>
-
-                {relatedNews.length === 0 && !loading && (
-                  <div className="text-center py-8 text-gray-500">
-                    <Clock className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                    <p className="text-sm">Інші новини завантажуються...</p>
-                  </div>
-                )}
+                <h2 className="text-xl font-bold text-gray-900">Інші новини</h2>
               </div>
+              <div className="space-y-4">
+                {relatedNews.map((news) => (
+                  <NewsCard key={news.id} news={news} />
+                ))}
+              </div>
+              {relatedNews.length === 0 && !loading && (
+                <div className="text-center py-8 text-gray-500">
+                  <Clock className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm">Інші новини завантажуються...</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

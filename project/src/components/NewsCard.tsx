@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Calendar, Star } from 'lucide-react';
 
 interface News {
@@ -13,7 +13,6 @@ interface News {
 
 interface NewsCardProps {
   news: News;
-  onClick?: () => void;
 }
 
 const formatDate = (dateString: string) => {
@@ -25,78 +24,54 @@ const formatDate = (dateString: string) => {
   });
 };
 
-const NewsCard: React.FC<NewsCardProps> = ({ news, onClick }) => {
-  const navigate = useNavigate(); 
-
-  const handleClick = () => {
-    navigate(`/news/${news.id}`);
-  };
-
+const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
   return (
-    <div
-      className="bg-white rounded-lg shadow-md border overflow-hidden cursor-pointer transform transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col"
-      onClick={handleClick}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onClick?.();
-        }
-      }}
-      role="button"
-      tabIndex={0}
+    <Link
+      to={`/news/${news.id}`}
+      className="group relative flex flex-col p-4 bg-white hover:bg-blue-50 rounded-xl transition-all duration-300 hover:-translate-y-2 shadow-sm hover:shadow-lg border border-gray-200 hover:border-blue-300"
     >
       {/* Image Section */}
-      <div className="relative">
+      <div className="relative mb-3 aspect-[3/4] rounded-md overflow-hidden">
         {news.image_url ? (
-          <div className="aspect-[4/3] overflow-hidden">
-            <img
-              src={news.image_url}
-              alt={news.title}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </div>
+          <img
+            src={news.image_url}
+            alt={news.title}
+            loading="lazy"
+            className="w-full h-full object-cover"
+          />
         ) : (
-          <div className="relative aspect-[4/3] bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
-            <span className="text-white text-lg font-semibold">Новина</span>
-          </div>
-        )}
-
-        {news.is_important && (
-          <div className="absolute top-2 right-2 text-white bg-blue-600 p-2 rounded-full shadow-md">
-            <Star className="h-3 w-3" fill="white" />
+          <div className="w-full h-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+            <span className="text-white text-sm font-semibold">Новина</span>
           </div>
         )}
       </div>
 
+      {/* Star Icon */}
+      {news.is_important && (
+        <div className="absolute top-6 right-6 text-white bg-blue-600 p-1.5 rounded-full shadow-md">
+          <Star className="h-3 w-3 fill-current" />
+        </div>
+      )}
+
       {/* Content Section */}
-      <div className="p-6 flex flex-col flex-1 justify-between">
-        <h3 className="text-xl font-semibold text-gray-900 mb-3 leading-tight min-h-[3rem]">
+      <div className="flex flex-col flex-1">
+        <h3 className="text-xl font-semibold text-[#1E2A5A] group-hover:text-blue-600 mb-3 leading-tight min-h-[3rem]">
           {news.title}
         </h3>
-
-        <p className="text-gray-600 text-sm line-clamp-3 mb-4 leading-relaxed">
+        <p className="text-[#1E2A5A] text-sm line-clamp-3 mb-4 leading-relaxed italic">
           {news.content}
         </p>
-
-        <div className="flex justify-between items-center mt-2">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleClick();
-            }}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-xl font-medium text-sm transition-colors duration-200"
-          >
-            Читати далі →
-          </button>
-
-          <div className="flex items-center text-gray-500 text-sm">
+        <div className="flex justify-between items-center mt-auto pt-2">
+          <div className="flex items-center text-[#1E2A5A] text-sm font-semibold">
             <Calendar className="h-4 w-4 mr-2" />
             {formatDate(news.created_at)}
           </div>
+          <span className="text-sm font-medium text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            Читати →
+          </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

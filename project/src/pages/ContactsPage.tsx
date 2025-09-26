@@ -7,22 +7,29 @@ const ContactsPage: React.FC = () => {
       name: "Микола Спересенко",
       position: "Голова профкому",
       phone: "+38 (032) 239-41-32",
-      email: "chairman@lnu.edu.ua",
-      office: "Головний корпус, авдиторія 125"
+      email: "profkomhead@lnu.edu.ua",
+      office: "Головний корпус, аудиторія 125"
     },
     {
-      name: "Данило Дума",
-      position: "Зам по ніхуям",
-      phone: "+38 (032) 239-41-33",
+      name: "Катерина Старушенко",
+      position: "Заступниця з соціальних питань",
+      phone: "+38 (099) 201-01-30",
       email: "social@lnu.edu.ua",
-      office: "Головний корпус, авдиторія 125"
+      office: "Головний корпус, аудиторія 125"
     },
     {
-      name: "Юра Мазур",
-      position: "Юра Мазур",
-      phone: "+38 (032) 239-41-34",
-      email: "legal@lnu.edu.ua",
-      office: "Вул. Генерала Тарнавського 107, авдиторія 315 "
+      name: "Дарина Плитус",
+      position: "Заступниця з розвитку та співпраці",
+      phone: "+38 (066) 129-06-71",
+      email: "partnership@lnu.edu.ua",
+      office: "Головний корпус, аудиторія 125"
+    },
+    {
+      name: "Марія Тацинець",
+      position: "Заступниця з медіа та комунікацій",
+      phone: "+38 (098) 439-71-54",
+      email: "media@lnu.edu.ua",
+      office: "Головний корпус, аудиторія 125"
     }
   ];
 
@@ -56,64 +63,54 @@ const ContactsPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Contact Information */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-md p-8 mb-8 transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-lg">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Основна інформація</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="flex items-start space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-lg">
-                    <MapPin className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Адреса</h3>
-                    <p className="text-gray-600">
-                      вул. Університетська, 1<br />
-                      м. Львів, 79000<br />
-                      Головний корпус, 2 поверх
-                    </p>
-                  </div>
-                </div>
+<div className="bg-white rounded-lg shadow-md p-8 mb-8 transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-lg">
+  <h2 className="text-2xl font-bold text-gray-900 mb-6">Основна інформація</h2>
 
-                <div className="flex items-start space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-lg">
-                    <Phone className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Телефони</h3>
-                    <p className="text-gray-600">
-                      +38 (032) 239-41-32 (приймальня)<br />
-                      +38 (067) 123-45-67 (гаряча лінія)
-                    </p>
-                  </div>
-                </div>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {/* Адреса */}
+    <div className="flex items-center space-x-4">
+      <div className="bg-blue-100 p-3 rounded-lg">
+        <MapPin className="h-6 w-6 text-blue-600" />
+      </div>
+      <p className="text-gray-600">
+        вул. Університетська, 1, аудиторія 125<br />
+        м. Львів, 79000
+      </p>
+    </div>
 
-                <div className="flex items-start space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-lg">
-                    <Mail className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
-                    <p className="text-gray-600">
-                      profkom@lnu.edu.ua<br />
-                      info@lnu.edu.ua
-                    </p>
-                  </div>
-                </div>
+    {/* Телефон */}
+    <div className="flex items-center space-x-4">
+      <div className="bg-blue-100 p-3 rounded-lg">
+        <Phone className="h-6 w-6 text-blue-600" />
+      </div>
+      <p className="text-gray-600">
+        +38 (032) 239-41-32
+      </p>
+    </div>
 
-                <div className="flex items-start space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-lg">
-                    <Clock className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Режим роботи</h3>
-                    <p className="text-gray-600">
-                      Пн-Пт: 10:00 - 16:00<br />
-                      Сб-Нд: вихідні
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+    {/* Email */}
+    <div className="flex items-center space-x-4">
+      <div className="bg-blue-100 p-3 rounded-lg">
+        <Mail className="h-6 w-6 text-blue-600" />
+      </div>
+      <p className="text-gray-600">
+        profkom@lnu.edu.ua<br />
+        info@lnu.edu.ua
+      </p>
+    </div>
+
+    {/* Режим роботи */}
+    <div className="flex items-center space-x-4">
+      <div className="bg-blue-100 p-3 rounded-lg">
+        <Clock className="h-6 w-6 text-blue-600" />
+      </div>
+      <p className="text-gray-600">
+        Пн-Пт: 10:00 - 16:00<br />
+        Сб-Нд: вихідні
+      </p>
+    </div>
+  </div>
+</div>
 
             {/* Staff Contacts */}
             <div className="bg-white rounded-lg shadow-md p-8 transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-lg">

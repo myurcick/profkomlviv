@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Search, Users, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
-import { motion } from "framer-motion";
 import { supabase } from "../lib/supabase";
 import Card, { FacultyUnion } from "../components/ProfCard";
 
@@ -9,7 +8,7 @@ const ProfPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
 
   useEffect(() => {
     const fetchFacultyUnions = async () => {
@@ -51,98 +50,95 @@ const ProfPage: React.FC = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-const renderPaginationButtons = () => {
-  if (totalPages <= 1) return null;
-  const maxVisibleButtons = 5;
+  const renderPaginationButtons = () => {
+    if (totalPages <= 1) return null;
+    const maxVisibleButtons = 5;
 
-  let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
-  let endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
-  if (endPage - startPage + 1 < maxVisibleButtons) {
-    startPage = Math.max(1, endPage - maxVisibleButtons + 1);
-  }
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
+    if (endPage - startPage + 1 < maxVisibleButtons) {
+      startPage = Math.max(1, endPage - maxVisibleButtons + 1);
+    }
 
-  // Left Buttons
-  const leftButtons = (
-    <div key="left" className="flex gap-1">
-      {totalPages > 5 && (
-        <button
-          onClick={() => handlePageChange(1)}
-          disabled={currentPage === 1}
-          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-        >
-          <ChevronsLeft className="h-4 w-4" />
-        </button>
-      )}
-      {totalPages > 1 && (
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </button>
-      )}
-    </div>
-  );
-
-  // Center Buttons
-  const centerButtons = (
-    <div key="center" className="flex gap-1">
-      {Array.from({ length: endPage - startPage + 1 }, (_, idx) => {
-        const page = startPage + idx;
-        return (
+    const leftButtons = (
+      <div key="left" className="flex gap-1">
+        {totalPages > 5 && (
           <button
-            key={page}
-            onClick={() => handlePageChange(page)}
-            className={`w-8 h-8 flex justify-center items-center rounded-lg border font-medium transition-colors duration-200 ${
-              page === currentPage
-                ? "bg-blue-600 text-white border-blue-600"
-                : "border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
-            }`}
+            onClick={() => handlePageChange(1)}
+            disabled={currentPage === 1}
+            className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
           >
-            {page}
+            <ChevronsLeft className="h-4 w-4" />
           </button>
-        );
-      })}
-    </div>
-  );
+        )}
+        {totalPages > 1 && (
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+    );
 
-  // Right Buttons
-  const rightButtons = (
-    <div key="right" className="flex gap-1">
-      {totalPages > 1 && (
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </button>
-      )}
-      {totalPages > 5 && (
-        <button
-          onClick={() => handlePageChange(totalPages)}
-          disabled={currentPage === totalPages}
-          className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-        >
-          <ChevronsRight className="h-4 w-4" />
-        </button>
-      )}
-    </div>
-  );
+    const centerButtons = (
+      <div key="center" className="flex gap-1">
+        {Array.from({ length: endPage - startPage + 1 }, (_, idx) => {
+          const page = startPage + idx;
+          return (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`w-8 h-8 flex justify-center items-center rounded-lg border font-medium transition-colors duration-200 ${
+                page === currentPage
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+              }`}
+            >
+              {page}
+            </button>
+          );
+        })}
+      </div>
+    );
 
-  return (
-    <div className="flex justify-center items-center gap-2 mt-8">
-      {leftButtons}
-      {centerButtons}
-      {rightButtons}
-    </div>
-  );
-};
+    const rightButtons = (
+      <div key="right" className="flex gap-1">
+        {totalPages > 1 && (
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        )}
+        {totalPages > 5 && (
+          <button
+            onClick={() => handlePageChange(totalPages)}
+            disabled={currentPage === totalPages}
+            className="w-8 h-8 flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 hover:text-gray-700 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+          >
+            <ChevronsRight className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+    );
+
+    return (
+      <div className="flex justify-center items-center gap-2 mt-8">
+        {leftButtons}
+        {centerButtons}
+        {rightButtons}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+      {/* ... (Header and Search sections are the same) ... */}
       <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
@@ -153,8 +149,6 @@ const renderPaginationButtons = () => {
           </p>
         </div>
       </section>
-
-      {/* Search */}
       <section className="bg-white py-6 md:py-8 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row gap-4 items-center">
@@ -198,12 +192,7 @@ const renderPaginationButtons = () => {
               ))}
             </div>
           ) : currentUnions.length === 0 ? (
-            <motion.div
-              className="text-center py-16"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            >
+            <div className="text-center py-16">
               <Users className="mx-auto h-16 w-16 text-gray-400 mb-6" />
               <h3 className="text-xl font-medium text-gray-900 mb-2">
                 {searchTerm ? "Профбюро не знайдено" : "Профбюро поки не додані"}
@@ -213,15 +202,14 @@ const renderPaginationButtons = () => {
                   ? "Спробуйте змінити критерії пошуку або перевірте правильність написання"
                   : "Інформація про профбюро буде додана найближчим часом"}
               </p>
-            </motion.div>
+            </div>
           ) : (
             <>
-              <div className="space-y-4">
+              <div className="space-y-4 will-change: transform">
                 {currentUnions.map((union, idx) => (
                   <Card key={union.id} union={union} index={idx} />
                 ))}
               </div>
-              {/* Pagination */}
               {renderPaginationButtons()}
             </>
           )}

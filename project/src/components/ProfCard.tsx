@@ -1,13 +1,12 @@
-import React, { useState, useRef, useLayoutEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Mail, MapPin, Clock, User } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-/* import { SiTelegram, SiInstagram } from 'react-icons/si'; */
 
 export interface FacultyUnion {
   id: number;
   faculty_name: string;
   union_head_name: string;
   union_head_photo?: string;
+  faculty_logo?: string;
   contact_email?: string;
   office_location?: string;
   building_location?: string;
@@ -27,7 +26,6 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ union, index }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [height, setHeight] = useState<number | "auto">(0);
   const contentRef = useRef<HTMLDivElement>(null);
 
   const getInitials = (name: string) => {
@@ -53,40 +51,19 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
     return colors[i % colors.length];
   };
 
-  const toggle = () => {
-    if (!isExpanded && contentRef.current) {
-      setHeight(contentRef.current.scrollHeight);
-    }
-    setIsExpanded((v) => !v);
-  };
-
-  useLayoutEffect(() => {
-    if (isExpanded && contentRef.current) {
-      const timeout = setTimeout(() => setHeight("auto"), 300);
-      return () => clearTimeout(timeout);
-    }
-  }, [isExpanded]);
-
   return (
-    <motion.div
-      layout="size"
-      className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden"
-      style={{ minHeight: "140px" }}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.4, delay: index * 0.04 }}
-      whileHover={{
-        y: -2,
-        boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
-        transition: { type: "spring", stiffness: 300, damping: 20 },
+    <div
+      className="bg-white rounded-xl transition-all duration-300 hover:-translate-y-2 shadow-sm hover:shadow-lg border border-gray-200 hover:border-blue-300 overflow-hidden"
+      style={{
+        transitionDelay: `${index * 40}ms`,
+        animationDelay: `${index * 40}ms`,
       }}
     >
-      {/* Top card */}
+      {/* Top card - Clickable area */}
       <div
-        className="flex items-center cursor-pointer"
-        style={{ height: "140px" }} 
-        onClick={toggle}
+        className="flex items-center gap-4 md:gap-6"
+        style={{ minHeight: "140px" }}
+        onClick={() => setIsExpanded(!isExpanded)}
       >
         {/* Color line */}
         <div
@@ -95,12 +72,13 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
         />
 
         {/* Photo */}
-        <div className="relative flex-shrink-0" style={{ width: "140px", height: "140px" }}>
-          <div className="w-full h-full bg-gray-100 overflow-hidden">
-            {union.union_head_photo ? (
+        <div className="relative flex-shrink-0 " style={{ width: "140px", height: "140px" }}>
+          <div className="w-full h-full overflow-hidden">
+            {union.faculty_logo ? (
               <img
-                src={union.union_head_photo}
+                src={union.faculty_logo}
                 alt={union.union_head_name}
+                loading="lazy"
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
@@ -120,13 +98,12 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
         </div>
 
         {/* Description */}
-        <div className="flex-1 min-w-0 p-4 md:p-6 flex flex-col justify-center">
-          <h3 className="font-bold text-lg md:text-xl text-gray-900 mb-2 leading-tight">
+        <div className="flex-1 min-w-0 pr-4 md:pr-6 flex flex-col justify-center">
+          <h3 className="font-bold text-lg md:text-xl text-[#1E2A5A] leading-tight">
             {union.faculty_name}
           </h3>
           {union.description && (
-            <p
-              className={"text-gray-600 text-sm md:text-base leading-relaxed line-clamp-3"}>
+            <p className={"text-[#1E2A5A] italic text-sm md:text-base leading-relaxed mt-1"}>
               {union.description}
             </p>
           )}
@@ -134,92 +111,80 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
       </div>
 
       {/* Expanded card */}
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            ref={contentRef}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height, opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100 bg-gray-50">
-              <div className="pt-4 md:pt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-100 rounded-lg">
-                      <User className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Голова профбюро</p>
-                      <p className="font-medium text-gray-900 flex-shrink-0">
-                        {union.union_head_name}
-                      </p>
-                    </div>
-                  </div>
-
-                  {union.contact_email && (
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-green-100 rounded-lg">
-                        <Mail className="w-5 h-5 text-green-600" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Електронна пошта</p>
-                        <a
-                          href={`mailto:${union.contact_email}`}
-                          className="font-medium text-gray-900 hover:text-blue-600 transition-colors flex-shrink-0"
-                        >
-                          {union.contact_email}
-                        </a>
-                      </div>
-                    </div>
-                  )}
+      <div
+        ref={contentRef}
+        className={`overflow-hidden rounded-b-xl transition-all duration-700 ease-in-out ${
+          isExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100 bg-gray-50">
+          <div className="text-[#1E2A5A] pt-4 md:pt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <User className="w-5 h-5 text-blue-600" />
                 </div>
-
-                <div className="space-y-3">
-                  {(union.office_location || union.building_location) && (
-                    <div className="flex items-start gap-3">
-                      <div className="p-2 bg-purple-100 rounded-lg">
-                        <MapPin className="w-5 h-5 text-purple-600" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Місцезнаходження</p>
-                        <a
-                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(union.building_location || "")}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
-                        >
-                          {union.office_location
-                          ? `${union.office_location}`
-                          : union.office_location}
-                        </a>
-                      </div>
-                    </div>
-                  )}
-
-                  {union.working_hours && (
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-orange-100 rounded-lg">
-                        <Clock className="w-5 h-5 text-orange-600" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Години роботи</p>
-                        <p className="font-medium text-gray-900">
-                          {union.working_hours}
-                        </p>
-                      </div>
-                    </div>
-                  )}
+                <div>
+                  <p className="text-sm">Голова профбюро</p>
+                  <p className="font-medium flex-shrink-0 italic">
+                    {union.union_head_name}
+                  </p>
                 </div>
               </div>
+              {union.contact_email && (
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <Mail className="w-5 h-5 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm">Електронна пошта</p>
+                    <a
+                      href={`mailto:${union.contact_email}`}
+                      className="font-medium hover:text-blue-600 transition-colors flex-shrink-0 italic"
+                    >
+                      {union.contact_email}
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+            <div className="space-y-3">
+              {(union.office_location || union.building_location) && (
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-purple-100 rounded-lg">
+                    <MapPin className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm">Місцезнаходження</p>
+                    <a
+                      href={`http://maps.google.com/?q=${encodeURIComponent(union.building_location || "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium hover:text-blue-600 transition-colors italic"
+                    >
+                      {union.office_location}
+                    </a>
+                  </div>
+                </div>
+              )}
+              {union.working_hours && (
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-orange-100 rounded-lg">
+                    <Clock className="w-5 h-5 text-orange-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm">Години роботи</p>
+                    <p className="font-medium italic">
+                      {union.working_hours}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

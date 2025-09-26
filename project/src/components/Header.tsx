@@ -23,7 +23,7 @@ const navigation = [
 };
 
   return (
-    <header className="bg-white/75 backdrop-blur-md border-b border-gray-200 shadow-lg sticky top-0 z-50">
+    <header className="bg-white/60 backdrop-blur-md border-b border-gray-200 shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
@@ -57,7 +57,7 @@ const navigation = [
                   className={`px-3 py-1 rounded-2xl text-sm font-medium transition-all duration-300 border hover:-translate-y-0.5
                     ${active
                     ? 'text-blue-600 bg-white shadow-md border-gray-300'
-                    : 'text-[#1E2A5A] border-transparent hover:border-gray-300 hover:shadow-md hover:bg-white'
+                    : 'text-[#1E2A5A] border-transparent hover:border-gray-300 hover:shadow-md'
                   }`}
                 >
                   {item.name}
