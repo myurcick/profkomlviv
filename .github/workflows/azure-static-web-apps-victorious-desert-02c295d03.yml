@@ -20,11 +20,10 @@ jobs:
           submodules: true
           lfs: false
 
-      # Додаємо кроки для зборки фронтенду
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # або твоя версія
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
@@ -43,7 +42,7 @@ jobs:
           action: "upload"
           app_location: "./frontend"
           api_location: ""
-          output_location: "build"
+          output_location: "./frontend/build" # <-- змінив на повний шлях до збірки
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
