@@ -49,7 +49,7 @@ const ProfManager: React.FC<ProfManagerProps> = ({ data, loading, fetchData }) =
       if (selectedFile) {
         const uploadFormData = new FormData();
         uploadFormData.append('file', selectedFile);
-        const uploadRes = await axios.post('http://localhost:5068/api/uploads', uploadFormData, {
+        const uploadRes = await axios.post(`${import.meta.env.VITE_API_URL}/api/uploads`, uploadFormData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -80,13 +80,13 @@ const ProfManager: React.FC<ProfManagerProps> = ({ data, loading, fetchData }) =
       };
 
       if (editingFacultyUnion) {
-        await axios.put(`http://localhost:5068/api/prof/${editingFacultyUnion.id}`, formData, { headers });
+        await axios.put(`${import.meta.env.VITE_API_URL}/api/prof/${editingFacultyUnion.id}`, formData, { headers });
       } else {
         if (facultyFormData.orderInd === 0) {
           const maxOrder = Math.max(...data.map(f => f.orderInd), 0);
           formData.set('OrderInd', (maxOrder + 1).toString());
         }
-        await axios.post('http://localhost:5068/api/prof', formData, { headers });
+        await axios.post('${import.meta.env.VITE_API_URL}/api/prof', formData, { headers });
       }
       await fetchData();
       handleCloseModal();
@@ -99,7 +99,7 @@ const ProfManager: React.FC<ProfManagerProps> = ({ data, loading, fetchData }) =
   const handleDeleteFacultyUnion = async (id: number) => {
     if (confirm('Ви впевнені, що хочете видалити це профбюро?')) {
       try {
-        await axios.delete(`http://localhost:5068/api/prof/${id}`, {
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/prof/${id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },

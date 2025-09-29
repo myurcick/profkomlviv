@@ -81,11 +81,11 @@ const TeamPage: React.FC = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const membersResponse = await axios.get<TeamMember[]>('http://localhost:5068/api/team');
+        const membersResponse = await axios.get<TeamMember[]>(`${import.meta.env.VITE_API_URL}/api/team`);
         console.log('Team Members:', membersResponse.data);
         setTeamMembers(membersResponse.data.filter(member => member.isActive).sort((a, b) => a.orderIndex - b.orderIndex));
 
-        const departmentsResponse = await axios.get<Department[]>('http://localhost:5068/api/unit');
+        const departmentsResponse = await axios.get<Department[]>(`${import.meta.env.VITE_API_URL}/api/unit`);
         console.log('Departments:', departmentsResponse.data);
         setDepartments(departmentsResponse.data.filter(dept => dept.is_active).sort((a, b) => a.orderInd - b.orderInd));
       } catch (error) {

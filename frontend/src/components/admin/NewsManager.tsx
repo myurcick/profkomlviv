@@ -38,7 +38,7 @@ const NewsManager: React.FC<NewsManagerProps> = ({ data, loading, fetchData }) =
         const uploadFormData = new FormData();
         uploadFormData.append('file', selectedFile);
 
-        const uploadRes = await axios.post('http://localhost:5068/api/uploads', uploadFormData, {
+        const uploadRes = await axios.post(`${import.meta.env.VITE_API_URL}/api/uploads`, uploadFormData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -70,9 +70,9 @@ const NewsManager: React.FC<NewsManagerProps> = ({ data, loading, fetchData }) =
       };
 
       if (editingNews) {
-        await axios.put(`http://localhost:5068/api/news/${editingNews.id}`, formData, { headers });
+        await axios.put(`${import.meta.env.VITE_API_URL}/api/news/${editingNews.id}`, formData, { headers });
       } else {
-        await axios.post('http://localhost:5068/api/news', formData, { headers });
+        await axios.post('${import.meta.env.VITE_API_URL}/api/news', formData, { headers });
       }
 
       await fetchData();
@@ -91,7 +91,7 @@ const NewsManager: React.FC<NewsManagerProps> = ({ data, loading, fetchData }) =
   const handleDeleteNews = async (id: number) => {
     if (confirm('Ви впевнені, що хочете видалити цю новину?')) {
       try {
-        await axios.delete(`http://localhost:5068/api/news/${id}`, {
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/news/${id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },

@@ -220,7 +220,7 @@ const HomePage: React.FC = () => {
   const fetchNews = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5068/api/news');
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/news`);
       setNews(response.data.slice(0, 6)); // Обмежуємо до 6 новин
     } catch (error) {
       console.error('Помилка при отриманні новин:', error);

@@ -26,7 +26,7 @@ const formatDate = (dateString: string) => {
 
 const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
   const imageSrc = news.imageUrl
-    ? `http://localhost:5068${news.imageUrl}`
+    ? `${import.meta.env.VITE_API_URL}${news.imageUrl}`
     : undefined;
 
   return (

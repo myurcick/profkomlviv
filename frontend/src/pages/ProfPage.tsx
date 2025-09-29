@@ -14,7 +14,7 @@ const ProfPage: React.FC = () => {
   useEffect(() => {
     const fetchFacultyUnions = async () => {
       try {
-        const response = await axios.get<FacultyUnion[]>('http://localhost:5068/api/prof', {
+        const response = await axios.get<FacultyUnion[]>(`${import.meta.env.VITE_API_URL}/api/prof`, {
           params: {
             isActive: true,
             orderBy: 'orderInd',

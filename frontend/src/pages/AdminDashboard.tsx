@@ -87,7 +87,7 @@ const AdminDashboard: React.FC = () => {
 
   const fetchNews = async () => {
     try {
-      const res = await axios.get('http://localhost:5068/api/news');
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/news`);
       setNews(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -98,7 +98,7 @@ const AdminDashboard: React.FC = () => {
 
   const fetchTeamMembers = async () => {
     try {
-      const res = await axios.get('http://localhost:5068/api/team');
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/team`);
       setTeamMembers(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -109,7 +109,7 @@ const AdminDashboard: React.FC = () => {
 
   const fetchFacultyUnions = async () => {
     try {
-      const res = await axios.get('http://localhost:5068/api/prof');
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/prof`);
       setFacultyUnions(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -120,7 +120,7 @@ const AdminDashboard: React.FC = () => {
 
   const fetchDepartments = async () => {
     try {
-      const res = await axios.get('http://localhost:5068/api/unit');
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/unit`);
       const mappedDepartments = Array.isArray(res.data)
         ? res.data.map((dep: any) => ({
             id: dep.id || dep.Id,

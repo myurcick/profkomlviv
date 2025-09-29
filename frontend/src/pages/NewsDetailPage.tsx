@@ -30,7 +30,7 @@ const NewsDetailPage: React.FC = () => {
   const fetchCurrentNews = async () => {
     try {
       setLoading(true);
-      const response = await axios.get<News>(`http://localhost:5068/api/news/${newsId}`);
+      const response = await axios.get<News>(`${import.meta.env.VITE_API_URL}/api/news/${newsId}`);
       console.log('Current News:', response.data); // Логування для діагностики
       setCurrentNews(response.data);
     } catch (error) {
@@ -45,7 +45,7 @@ const NewsDetailPage: React.FC = () => {
 
   const fetchRelatedNews = async () => {
     try {
-      const response = await axios.get<News[]>('http://localhost:5068/api/news', {
+      const response = await axios.get<News[]>(`${import.meta.env.VITE_API_URL}/api/news`, {
         params: {
           excludeId: newsId,
           limit: 6,
@@ -210,7 +210,7 @@ const NewsDetailPage: React.FC = () => {
                 {currentNews.imageUrl ? (
                   <div className="rounded-lg aspect-[4/5] overflow-hidden shadow-md">
                     <img
-                      src={`http://localhost:5068${currentNews.imageUrl}`}
+                      src={`${import.meta.env.VITE_API_URL}${currentNews.imageUrl}`}
                       alt={currentNews.title}
                       className="w-full h-full object-cover transition-transform duration-700"
                     />

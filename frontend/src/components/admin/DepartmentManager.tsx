@@ -39,7 +39,7 @@ const DepartmentManager: React.FC<DepartmentManagerProps> = ({ data, loading, fe
       if (selectedFile) {
         const uploadFormData = new FormData();
         uploadFormData.append('file', selectedFile);
-        const uploadRes = await axios.post('http://localhost:5068/api/uploads', uploadFormData, {
+        const uploadRes = await axios.post(`${import.meta.env.VITE_API_URL}/api/uploads`, uploadFormData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -64,13 +64,13 @@ const DepartmentManager: React.FC<DepartmentManagerProps> = ({ data, loading, fe
       };
 
       if (editingDepartment) {
-        await axios.put(`http://localhost:5068/api/unit/${editingDepartment.id}`, formData, { headers });
+        await axios.put(`${import.meta.env.VITE_API_URL}/api/unit/${editingDepartment.id}`, formData, { headers });
       } else {
         if (departmentFormData.orderInd === 0) {
           const maxOrder = Math.max(...data.map(d => d.orderInd), 0);
           formData.set('OrderInd', (maxOrder + 1).toString());
         }
-        await axios.post('http://localhost:5068/api/unit', formData, { headers });
+        await axios.post('${import.meta.env.VITE_API_URL}/api/unit', formData, { headers });
       }
       await fetchData();
       handleCloseModal();
@@ -83,7 +83,7 @@ const DepartmentManager: React.FC<DepartmentManagerProps> = ({ data, loading, fe
   const handleDeleteDepartment = async (id: number) => {
     if (confirm('Ви впевнені, що хочете видалити цей відділ?')) {
       try {
-        await axios.delete(`http://localhost:5068/api/unit/${id}`, {
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/unit/${id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
