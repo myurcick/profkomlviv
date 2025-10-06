@@ -13,6 +13,7 @@ namespace ProfkomBackend.Data
         public DbSet<ContactMessage> ContactMessages { get; set; }
         public DbSet<Team> Team { get; set; }
         public DbSet<Prof> Prof { get; set; }
+        public DbSet<Department> Department { get; set; }
         public DbSet<Unit> Unit { get; set; }
     }
 }

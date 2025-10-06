@@ -244,7 +244,14 @@ const HomePage: React.FC = () => {
           >
             <div 
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${slide.image})` }}
+               style={{ 
+                backgroundImage: `url(${slide.image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                maxWidth: '1920px', // обмеження максимальної ширини
+                width: '100%',
+                height: '100%',
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-r from-blue-900/70 via-blue-800/60 to-blue-700/50" />
           </div>
@@ -289,14 +296,14 @@ const HomePage: React.FC = () => {
         {/* Navigation Arrows */}
         <button
           onClick={() => goToSlide((currentSlide - 1 + heroSlides.length) % heroSlides.length)}
-          className="hidden sm:flex absolute left-4 top-1/2 transform -translate-y-1/2 z-20 text-white/70 hover:text-white transition-all duration-200 p-2 rounded-full hover:bg-white/10 backdrop-blur-sm">
+          className="hidden mdl:flex absolute left-4 top-1/2 transform -translate-y-1/2 z-20 text-white/70 hover:text-white transition-all duration-200 p-2 rounded-full hover:bg-white/10 backdrop-blur-sm">
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
         <button
           onClick={() => goToSlide((currentSlide + 1) % heroSlides.length)}
-          className="hidden sm:flex absolute right-4 top-1/2 transform -translate-y-1/2 z-20 text-white/70 hover:text-white transition-all duration-200 p-2 rounded-full hover:bg-white/10 backdrop-blur-sm">
+          className="hidden mdl:flex absolute right-4 top-1/2 transform -translate-y-1/2 z-20 text-white/70 hover:text-white transition-all duration-200 p-2 rounded-full hover:bg-white/10 backdrop-blur-sm">
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
@@ -304,7 +311,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Services Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="hidden xl:block py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="relative">
             {/* Stacked Cards Section */}
@@ -394,85 +401,88 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* News Section */}
-      <section className="bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-12">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Останні новини
-              </h2>
-              <p className="text-lg text-gray-600">
-                Будьте в курсі всіх новин нашого університету
-              </p>
-            </div>
-            <Link
-              to="/news"
-              className="hidden sm:flex items-center text-blue-600 hover:text-blue-800 font-semibold transition-colors duration-200"
-            >
-              Всі новини
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </div>
-
-          {loading ? (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    {[...Array(6)].map((_, index) => (
-      <div 
-        key={index} 
-        className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse"
-        style={{ animationDelay: `${index * 100}ms` }}
-      >
-        <div className="h-48 bg-gray-300"></div>
-        <div className="p-6">
-          <div className="h-4 bg-gray-300 rounded mb-2"></div>
-          <div className="h-4 bg-gray-300 rounded mb-4 w-3/4"></div>
-          <div className="h-3 bg-gray-300 rounded mb-2"></div>
-          <div className="h-3 bg-gray-300 rounded w-1/2"></div>
-        </div>
+      {/* News Section */}
+<section className="bg-gray-50 py-12 sm:py-16">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {/* Header */}
+    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8 sm:mb-10">
+      <div>
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+          Останні новини
+        </h2>
+        <p className="text-base sm:text-lg text-gray-600">
+          Будьте в курсі всіх подій нашого університету
+        </p>
       </div>
-    ))}
-  </div>
-) : (
-  <Swiper
-    modules={[Autoplay]}
-    spaceBetween={20}
-    slidesPerView={3}
-    loop
-    speed={800}
-    autoplay={{ delay: 5000, disableOnInteraction: false }}
-    className="news-swiper relative pb-12 pt-4"
-    breakpoints={{
-      0: { slidesPerView: 1 },
-      640: { slidesPerView: 2 },
-      1024: { slidesPerView: 3 },
-    }}
-    wrapperClass="items-stretch"
-  >
-    {news.slice(0, 6).map((article, index) => (
-      <SwiperSlide key={article.id} className="h-full">
-        <div
-          className="news-card-animated h-full will-change: transform"
-          style={{ animationDelay: `${index * 150}ms` }}
-          onClick={() => navigate(`/news/${article.id}`)}
-        >
-          <NewsCard news={article} />
-        </div>
-      </SwiperSlide>
-    ))}
-  </Swiper>
-)}
 
-          <div className="text-center mt-8 sm:hidden">
-            <Link
-              to="/news"
-              className="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold transition-colors duration-200"
-            >
-              Всі новини
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
+      <Link
+        to="/news"
+        className="hidden sm:inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold transition-colors duration-200"
+      >
+        Всі новини
+        <ArrowRight className="ml-2 h-5 w-5" />
+      </Link>
+    </div>
+
+    {/* Loader / News */}
+    {loading ? (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className="bg-white rounded-xl shadow-sm overflow-hidden animate-pulse"
+            style={{ animationDelay: `${i * 100}ms` }}
+          >
+            <div className="h-40 bg-gray-200"></div>
+            <div className="p-5">
+              <div className="h-4 bg-gray-200 rounded mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded mb-4 w-3/4"></div>
+              <div className="h-3 bg-gray-200 rounded mb-2"></div>
+              <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+            </div>
           </div>
-        </div>
-      </section>
+        ))}
+      </div>
+    ) : (
+      <Swiper
+        modules={[Autoplay]}
+        spaceBetween={16}
+        slidesPerView={1}
+        breakpoints={{
+          640: { slidesPerView: 2, spaceBetween: 20 },
+          1024: { slidesPerView: 3, spaceBetween: 24 },
+        }}
+        loop
+        speed={700}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        className="pb-4"
+      >
+        {news.slice(0, 6).map((article, index) => (
+          <SwiperSlide key={article.id}>
+            <div
+              className="cursor-pointer h-full"
+              style={{ animationDelay: `${index * 150}ms` }}
+              onClick={() => navigate(`/news/${article.id}`)}
+            >
+              <NewsCard news={article} />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    )}
+
+    {/* Mobile link */}
+    <div className="text-center mt-6 sm:hidden">
+      <Link
+        to="/news"
+        className="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold transition-colors duration-200"
+      >
+        Всі новини
+        <ArrowRight className="ml-2 h-5 w-5" />
+      </Link>
+    </div>
+  </div>
+</section>
 
       <style>{`
         /* News Cards Animation */

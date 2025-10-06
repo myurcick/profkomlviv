@@ -1,56 +1,26 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import { ArrowRight, Search, X } from "lucide-react";
+import { ArrowRight, Search } from "lucide-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import TeamMemberCard from "../components/TeamMemberCard";
+import { TeamMember, PROFBURO_HEAD_TYPE, VIDDIL_HEAD_TYPE, APARAT_TYPE } from "../types/team";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 
-interface TeamMember {
-  id: number;
-  name: string;
-  position: string;
-  description?: string;
-  photoUrl?: string | null;
-  email?: string;
-  phone?: string;
-  orderIndex: number;
-  isActive: boolean;
-  createdAt: string;
-}
-
 interface Department {
   id: number;
   name: string;
-  content?: string | null; // Змінено з description
-  imageUrl?: string | null; // Змінено з iconUrl
-  orderInd: number; // Змінено з orderIndex
-  is_active: boolean; // Змінено з isActive
+  content?: string | null;
+  imageUrl?: string | null;
+  orderInd: number;
+  is_active: boolean;
   createdAt: string;
   updatedAt: string;
-}
-
-export interface FacultyUnion {
-  id: number;
-  faculty_name: string;
-  union_head_name: string;
-  union_head_photo?: string;
-  faculty_logo?: string;
-  contact_email?: string;
-  office_location?: string;
-  building_location?: string;
-  working_hours?: string;
-  description?: string;
-  website_url?: string;
-  social_links?: any;
-  order_index: number;
-  is_active: boolean;
-  created_at: string;
 }
 
 const TeamPage: React.FC = () => {
@@ -61,14 +31,13 @@ const TeamPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentSlide, setCurrentSlide] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const [viewMode, setViewMode] = useState<"team" | "union">("team");
-  const [unionMembers, setUnionMembers] = useState<any[]>([]);
+  const [selectedType, setSelectedType] = useState<number>(APARAT_TYPE);
   const swiperRef = useRef<any>(null);
 
   const teamSlides = useMemo(
     () => [
       { image: "/about_us/about-us-1.JPG" },
-      { image:"/about_us/about-us-2.JPG" },
+      { image: "/about_us/about-us-2.JPG" },
       { image: "/about_us/about-us-3.JPG" },
       { image: "/about_us/about-us-4.jpg" },
       { image: "/about_us/about-us-5.jpg" },
@@ -83,11 +52,21 @@ const TeamPage: React.FC = () => {
       try {
         const membersResponse = await axios.get<TeamMember[]>('http://localhost:5068/api/team');
         console.log('Team Members:', membersResponse.data);
-        setTeamMembers(membersResponse.data.filter(member => member.isActive).sort((a, b) => a.orderIndex - b.orderIndex));
+        
+        // Фільтруємо тільки активних і сортуємо по orderInd
+        const activeMembers = membersResponse.data
+          .filter(member => member.isActive)
+          .sort((a, b) => a.orderInd - b.orderInd);
+        
+        setTeamMembers(activeMembers);
 
         const departmentsResponse = await axios.get<Department[]>('http://localhost:5068/api/unit');
         console.log('Departments:', departmentsResponse.data);
-        setDepartments(departmentsResponse.data.filter(dept => dept.is_active).sort((a, b) => a.orderInd - b.orderInd));
+        setDepartments(
+          departmentsResponse.data
+            .filter(dept => dept.is_active)
+            .sort((a, b) => a.orderInd - b.orderInd)
+        );
       } catch (error) {
         console.error("Помилка при отриманні даних:", error);
         if (axios.isAxiosError(error)) {
@@ -101,33 +80,23 @@ const TeamPage: React.FC = () => {
     fetchData();
   }, []);
 
+  // Фільтруємо членів команди по типу та пошуку
   const displayMembers = useMemo(() => {
-    if (viewMode === "team") {
-      return teamMembers.filter(
-        (m) =>
-          m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          m.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (m.description &&
-            m.description.toLowerCase().includes(searchTerm.toLowerCase()))
+    return teamMembers
+      .filter(member => member.type === selectedType)
+      .filter(member =>
+        member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        member.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (member.email && member.email.toLowerCase().includes(searchTerm.toLowerCase()))
       );
-    } else {
-      return unionMembers
-        .filter((u) =>
-          u.union_head_name.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        .map((u) => ({
-          id: u.id,
-          name: u.union_head_name,
-          position: "Профспілковий організатор",
-          description: u.faculty_name || u.description || "",
-          photo_url: u.union_head_photo || null,
-          email: u.contact_email || null,
-          order_index: u.order_index || 0,
-          is_active: true,
-          created_at: u.created_at,
-        }));
-    }
-  }, [viewMode, teamMembers, unionMembers, searchTerm]);
+  }, [teamMembers, selectedType, searchTerm]);
+
+  // Назви типів для відображення
+  const typeNames: Record<number, string> = {
+    [APARAT_TYPE]: "Апарат Профкому",
+    [PROFBURO_HEAD_TYPE]: "Голови Профбюро",
+    [VIDDIL_HEAD_TYPE]: "Голови Відділів",
+  };
 
   const startAutoPlay = useCallback(() => {
     stopAutoPlay();
@@ -175,7 +144,7 @@ const TeamPage: React.FC = () => {
           <div className="text-center">
             <h1 className="mb-6 text-4xl font-bold md:text-5xl">Наша команда</h1>
             <p className="mx-auto max-w-3xl text-xl text-blue-200">
-              Познайомтеся зі студентами, які об’єдналися, щоб робити життя університетської спільноти яскравішим, справедливішим і насиченим новими можливостями.
+              Познайомтеся зі студентами, які об'єдналися, щоб робити життя університетської спільноти яскравішим, справедливішим і насиченим новими можливостями.
               Ми працюємо разом, щоб підтримувати, надихати та створювати простір, де кожен може реалізувати свої ідеї.
             </p>
           </div>
@@ -187,31 +156,33 @@ const TeamPage: React.FC = () => {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center gap-4 md:flex-row">
             <select
-              value={viewMode}
+              value={selectedType}
               onChange={(e) => {
-                setViewMode(e.target.value as "team" | "union");
+                setSelectedType(Number(e.target.value));
+                setSearchTerm("");
                 if (swiperRef.current) {
                   swiperRef.current.slideTo(0, 0);
                 }
               }}
-              className="rounded-lg border border-gray-300 py-2 px-3 focus:ring-2 focus:ring-blue-500"
+              className="rounded-lg border border-gray-300 py-2 px-4 font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              <option value="team">Апарат Профкому</option>
-              <option value="union">Профспілкові Організатори</option>
+              <option value={APARAT_TYPE}>Апарат Профкому</option>
+              <option value={PROFBURO_HEAD_TYPE}>Голови Профбюро</option>
+              <option value={VIDDIL_HEAD_TYPE}>Голови Відділів</option>
             </select>
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
-                placeholder="Пошук учасника..."
+                placeholder={`Пошук членів команди`}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full rounded-lg border border-gray-300 py-2 pl-10 pr-4 focus:border-transparent focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="text-sm text-gray-600">
-              Знайдено: {displayMembers.length}{" "}
-              {displayMembers.length === 1 ? "член" : "членів"} команди
+            <div className="text-sm text-gray-600 whitespace-nowrap">
+              Знайдено: <span className="font-semibold">{displayMembers.length}</span>{" "}
+              {displayMembers.length === 0 ? "людей" : displayMembers.length === 1 ? "людину" : displayMembers.length < 5 ? "людини" : "людей"}
             </div>
           </div>
         </div>
@@ -232,38 +203,43 @@ const TeamPage: React.FC = () => {
           ) : displayMembers.length === 0 ? (
             <div className="py-12 text-center">
               <h3 className="mb-2 text-lg font-medium text-gray-900">
-                {searchTerm ? "Учасників не знайдено" : "Команда ще не сформована"}
+                {searchTerm 
+                  ? `Не знайдено результатів у категорії "${typeNames[selectedType]}"` 
+                  : `Команда у категорії "${typeNames[selectedType]}" ще не сформована`
+                }
               </h3>
               <p className="text-gray-500">
                 {searchTerm
-                  ? "Спробуйте змінити критерії пошуку"
-                  : "Інформація про команду буде додана найближчим часом"}
+                  ? "Спробуйте змінити критерії пошуку або оберіть іншу категорію"
+                  : "Інформація буде додана найближчим часом"}
               </p>
             </div>
           ) : (
-            <Swiper
-              modules={[Autoplay, Pagination]}
-              spaceBetween={20}
-              slidesPerView={3}
-              loop
-              speed={800}
-              autoplay={{ delay: 5000, disableOnInteraction: false }}
-              onSwiper={(swiper) => (swiperRef.current = swiper)}
-              pagination={{ clickable: true }}
-              className="team-swiper relative pb-12 pt-4"
-              breakpoints={{
-                0: { slidesPerView: 1 },
-                640: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 },
-              }}
-              wrapperClass="items-stretch overflow-visible"
-            >
-              {displayMembers.map((member) => (
-                <SwiperSlide key={member.id}>
-                  <TeamMemberCard member={member} />
-                </SwiperSlide>
-              ))}
-            </Swiper>
+            <>
+              <Swiper
+                modules={[Autoplay, Pagination]}
+                spaceBetween={20}
+                slidesPerView={3}
+                loop={displayMembers.length > 3}
+                speed={800}
+                autoplay={{ delay: 5000, disableOnInteraction: false }}
+                onSwiper={(swiper) => (swiperRef.current = swiper)}
+                pagination={{ clickable: true }}
+                className="team-swiper relative pb-12 pt-4"
+                breakpoints={{
+                  0: { slidesPerView: 1 },
+                  640: { slidesPerView: 2 },
+                  1024: { slidesPerView: 3 },
+                }}
+                wrapperClass="items-stretch overflow-visible"
+              >
+                {displayMembers.map((member) => (
+                  <SwiperSlide key={member.id}>
+                    <TeamMemberCard member={member} />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </>
           )}
         </div>
       </section>

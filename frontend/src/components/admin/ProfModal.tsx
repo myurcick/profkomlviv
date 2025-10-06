@@ -1,32 +1,7 @@
-import React from 'react';
-
-interface FacultyFormData {
-  name: string;
-  head: string;
-  email: string;
-  address: string;
-  schedule: string;
-  summary: string;
-  facultyURL: string;
-  link: string;
-  orderInd: number;
-  isActive: boolean;
-}
-
-interface FacultyUnion {
-  id: number;
-  name: string;
-  head: string;
-  imageUrl?: string;
-  email?: string;
-  address?: string;
-  schedule?: string;
-  summary?: string;
-  facultyURL?: string;
-  link?: string;
-  orderInd: number;
-  isActive: boolean;
-}
+import React, { useEffect, useState ,useRef } from 'react';
+import axios from 'axios';
+import { FacultyUnion, FacultyFormData } from '../../types/faculty';
+import { TeamMember, PROFBURO_HEAD_TYPE } from '../../types/team';
 
 interface ProfModalProps {
   formData: FacultyFormData;
@@ -47,6 +22,50 @@ const ProfModal: React.FC<ProfModalProps> = ({
   onSubmit,
   onClose
 }) => {
+  const [availableHeads, setAvailableHeads] = useState<TeamMember[]>([]);
+  const [loadingHeads, setLoadingHeads] = useState(true);
+
+  // Завантажуємо вільних голів при відкритті модалки
+  useEffect(() => {
+    fetchAvailableHeads();
+  }, [editingItem]);
+
+  const fetchAvailableHeads = async () => {
+    try {
+      setLoadingHeads(true);
+      const response = await axios.get('http://localhost:5068/api/team', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      const allMembers: TeamMember[] = response.data;
+      
+      // Фільтруємо: тільки голови профбюро (type = 1), які вільні або це поточний голова
+      const freeHeads = allMembers.filter(member => 
+        member.type === PROFBURO_HEAD_TYPE && 
+        member.isActive && !member.isChoosed
+      );
+
+      if (editingItem?.headId) {
+        const currentHead = allMembers.find(h => h.id === editingItem.headId);
+        if (currentHead && !freeHeads.some(h => h.id === currentHead.id)) {
+          freeHeads.push(currentHead);
+        }
+      }
+
+      setAvailableHeads(freeHeads);
+    } catch (error) {
+      console.error('Помилка завантаження голів:', error);
+      setAvailableHeads([]);
+    } finally {
+      setLoadingHeads(false);
+    }
+  };
+
+  const selectedHead = availableHeads.find(h => h.id === formData.headId);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   return (
     <form onSubmit={onSubmit} className="p-6 space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -63,7 +82,7 @@ const ProfModal: React.FC<ProfModalProps> = ({
               setFormData({ ...formData, name: lettersOnly })
             }}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="Філологічний факультет"
+            placeholder="Факультет електроніки та КТ"
           />
         </div>
 
@@ -71,34 +90,64 @@ const ProfModal: React.FC<ProfModalProps> = ({
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Голова профбюро *
           </label>
-          <input
-            type="text"
-            required
-            value={formData.head}
-            onChange={(e) => {
-              const lettersOnly = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁ ЇїІіЄєҐґ\s]/g, '');
-              setFormData({ ...formData, head: lettersOnly })
-            }}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="Оксана Литвиненко"
-          />
+          {loadingHeads ? (
+            <div className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-50 text-gray-500">
+              Завантаження...
+            </div>
+          ) : availableHeads.length === 0 ? (
+            <div className="w-full border border-red-300 rounded-lg px-3 py-2 bg-red-50 text-red-600">
+              Немає вільних голів профбюро
+            </div>
+          ) : (
+            <select
+              required
+              value={formData.headId || ''}
+              onChange={(e) => setFormData({ 
+                ...formData, 
+                headId: e.target.value ? Number(e.target.value) : null 
+              })}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">Оберіть голову</option>
+                {availableHeads.map(head => (
+                  <option key={head.id} value={head.id}>
+                    {head.name}
+                  </option>
+                ))}
+            </select>
+          )}
+          {selectedHead && selectedHead.email && (
+            <p className="mt-1 text-xs text-gray-900">
+              Email: {selectedHead.email}
+            </p>
+          )}
         </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Фото голови профбюро (необов’язково)
-        </label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2"
-        />
-        {editingItem && editingItem.imageUrl && (
-          <p className="mt-2 text-sm text-gray-500">Поточне: {editingItem.imageUrl}</p>
-        )}
+     <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        Лого профбюро
+      </label>
+      <div className="flex items-center space-x-4">
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          className="px-3 py-2 bg-gray-200 rounded"
+        >
+          Обрати файл
+        </button>
+        <span className="text-sm text-gray-600">
+          {selectedFile ? selectedFile.name : editingItem?.imageUrl ? "Файл вибрано" : "Файл не вибрано"}
+        </span>
       </div>
+      <input
+        type="file"
+        accept="image/*"
+        ref={fileInputRef}
+        onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+        className="hidden"
+      />
+    </div>
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -117,21 +166,7 @@ const ProfModal: React.FC<ProfModalProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Email *
-          </label>
-          <input
-            type="email"
-            required
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="profkom.faculty@lnu.edu.ua"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Розташування офісу *
+            Адреса *
           </label>
           <input
             type="text"
@@ -139,7 +174,48 @@ const ProfModal: React.FC<ProfModalProps> = ({
             value={formData.address}
             onChange={(e) => setFormData({ ...formData, address: e.target.value })}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="Головний корпус, кімната 301"
+            placeholder="вул. Університетська, 1"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Додаткова адреса
+          </label>
+          <input
+            type="text"
+            value={formData.room}
+            onChange={(e) => setFormData({ ...formData, room: e.target.value })}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="2 поверх, аудиторія 125"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Телеграм
+          </label>
+          <input
+            type="url"
+            value={formData.telegram_link}
+            onChange={(e) => setFormData({ ...formData, telegram_link: e.target.value })}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="https://t.me/electronics_lnu"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Інстаграм
+          </label>
+          <input
+            type="url"
+            value={formData.instagram_link}
+            onChange={(e) => setFormData({ ...formData, instagram_link: e.target.value })}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="https://instagram.com/electronics_lnu"
           />
         </div>
       </div>
@@ -151,6 +227,7 @@ const ProfModal: React.FC<ProfModalProps> = ({
           </label>
           <input
             type="text"
+            required
             value={formData.schedule}
             onChange={(e) => setFormData({ ...formData, schedule: e.target.value })}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -158,60 +235,18 @@ const ProfModal: React.FC<ProfModalProps> = ({
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Сайт факультету
-          </label>
+        <div className="flex items-center">
           <input
-            type="url"
-            value={formData.facultyURL}
-            onChange={(e) => setFormData({ ...formData, facultyURL: e.target.value })}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="https://faculty.lnu.edu.ua"
+            type="checkbox"
+            id="isActive_faculty"
+            checked={formData.isActive}
+            onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+            className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
           />
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Соціальні посилання
-        </label>
-        <input
-          type="text"
-          value={formData.link}
-          onChange={(e) => setFormData({ ...formData, link: e.target.value })}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="https://facebook.com/group"
-        />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Порядок відображення
+          <label htmlFor="isActive_faculty" className="ml-2 text-sm font-medium text-gray-700">
+            Активне профбюро
           </label>
-          <input
-            type="number"
-            min="0"
-            value={formData.orderInd}
-            onChange={(e) => setFormData({ ...formData, orderInd: parseInt(e.target.value) || 0 })}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="0"
-          />
         </div>
-      </div>
-
-      <div className="flex items-center">
-        <input
-          type="checkbox"
-          id="isActive_faculty"
-          checked={formData.isActive}
-          onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-          className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-        />
-        <label htmlFor="isActive_faculty" className="ml-2 text-sm font-medium text-gray-700">
-          Активне профбюро
-        </label>
       </div>
 
       <div className="flex justify-end space-x-4">
@@ -224,7 +259,8 @@ const ProfModal: React.FC<ProfModalProps> = ({
         </button>
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+          disabled={loadingHeads || availableHeads.length === 0}
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           {editingItem ? 'Зберегти зміни' : 'Додати профбюро'}
         </button>

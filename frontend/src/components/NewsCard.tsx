@@ -59,12 +59,10 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
 
       {/* Content Section */}
       <div className="flex flex-col flex-1">
-        <h3 className="text-xl font-semibold text-[#1E2A5A] group-hover:text-blue-600 mb-3 leading-tight min-h-[3rem]">
+        <h3 className="text-xl font-semibold text-[#1E2A5A] group-hover:text-blue-600 mb-3 leading-tight min-h-[3rem] line-clamp-2">
           {news.title}
         </h3>
-        <p className="text-[#1E2A5A] text-sm line-clamp-3 mb-4 leading-relaxed italic">
-          {news.content}
-        </p>
+        <p className="text-[#1E2A5A] text-sm line-clamp-3 mb-4 leading-relaxed italic" dangerouslySetInnerHTML={{ __html: news.content }} />
         <div className="flex justify-between items-center mt-auto pt-2">
           <div className="flex items-center text-[#1E2A5A] text-sm font-semibold">
             <Calendar className="h-4 w-4 mr-2" />

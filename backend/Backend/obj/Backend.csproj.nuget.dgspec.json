@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\VSCode project\\profkomlviv\\backend\\Backend\\Backend.csproj": {}
+    "D:\\VSC Project\\profkomlviv\\backend\\Backend\\Backend.csproj": {}
   },
   "projects": {
-    "D:\\VSCode project\\profkomlviv\\backend\\Backend\\Backend.csproj": {
+    "D:\\VSC Project\\profkomlviv\\backend\\Backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\VSCode project\\profkomlviv\\backend\\Backend\\Backend.csproj",
+        "projectUniqueName": "D:\\VSC Project\\profkomlviv\\backend\\Backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "D:\\VSCode project\\profkomlviv\\backend\\Backend\\Backend.csproj",
-        "packagesPath": "C:\\Users\\Bohuslav\\.nuget\\packages\\",
-        "outputPath": "D:\\VSCode project\\profkomlviv\\backend\\Backend\\obj\\",
+        "projectPath": "D:\\VSC Project\\profkomlviv\\backend\\Backend\\Backend.csproj",
+        "packagesPath": "C:\\Users\\mazur\\.nuget\\packages\\",
+        "outputPath": "D:\\VSC Project\\profkomlviv\\backend\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Bohuslav\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\mazur\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -50,6 +50,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Azure.Identity": {
+              "target": "Package",
+              "version": "[1.16.0, )"
+            },
             "BCrypt.Net-Next": {
               "target": "Package",
               "version": "[4.0.3, )"
@@ -58,7 +62,21 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[7.0.0-preview1.25257.1, )"
+            },
             "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[8.0.0, )"
             },
@@ -68,6 +86,10 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "Microsoft.Extensions.Caching.Memory": {
+              "target": "Package",
+              "version": "[10.0.0-rc.1.25451.107, )"
+            },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[8.0.0, )"
@@ -75,6 +97,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[10.0.0-rc.1.25451.107, )"
             }
           },
           "imports": [

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Edit, Trash2, Star } from 'lucide-react';
+import { Edit, Trash2, Star, Image } from 'lucide-react';
 
 interface News {
   id: number;
@@ -18,22 +18,27 @@ interface NewsTableProps {
   formatDate: (dateString: string) => string;
 }
 
+const BACKEND_URL = 'http://localhost:5000';
+
 const NewsTable: React.FC<NewsTableProps> = ({ data, loading, onEdit, onDelete, formatDate }) => {
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto rounded-xl border">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider">
               Заголовок
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider">
+              Зображення
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider">
               Дата створення
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider">
               Статус
             </th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-right text-xs font-medium text-gray-900 uppercase tracking-wider">
               Дії
             </th>
           </tr>
@@ -59,10 +64,19 @@ const NewsTable: React.FC<NewsTableProps> = ({ data, loading, onEdit, onDelete, 
                     {item.isImportant && (
                       <Star className="h-4 w-4 text-yellow-500 mr-2" />
                     )}
-                    <div className="text-sm font-medium text-gray-900 max-w-xs truncate">
+                    <div className="text-sm text-gray-500 max-w-xs truncate">
                       {item.title}
                     </div>
                   </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {item.imageUrl ? (
+                    <a href={`${BACKEND_URL}/${item.imageUrl}`} target="_blank" rel="noopener noreferrer">
+                      <Image className="h-5 w-5 text-gray-500 cursor-pointer hover:text-gray-900" />
+                    </a>
+                  ) : (
+                    <span className="text-gray-300">—</span>
+                  )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {formatDate(item.publishedAt)}

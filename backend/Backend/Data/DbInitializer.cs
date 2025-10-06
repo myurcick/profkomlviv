@@ -7,11 +7,7 @@ namespace ProfkomBackend.Data
     {
         public static void Seed(AppDbContext db)
         {
-            // ✅ Створення таблиць, якщо їх ще нема
-            db.Database.EnsureCreated();
-
-            // ✅ Додаємо першого адміна, якщо таблиця пуста
-            if (!db.Admins.Any())
+            if (!db.Admins.Any()) //додаємо адміна якщо таблиця пуста
             {
                 var hash = BCrypt.Net.BCrypt.HashPassword("@Admin123");
                 db.Admins.Add(new Admin

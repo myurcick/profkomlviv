@@ -1,27 +1,5 @@
-import React from 'react';
-
-interface TeamFormData {
-  name: string;
-  position: string;
-  content: string;
-  email: string;
-  phone: string;
-  orderInd: number;
-  isActive: boolean;
-}
-
-interface TeamMember {
-  id: number;
-  name: string;
-  position: string;
-  content?: string;
-  imageUrl?: string;
-  email?: string;
-  phone?: string;
-  orderInd: number;
-  isActive: boolean;
-  createdAt: string;
-}
+import React, { useEffect } from 'react';
+import { TeamMember, TeamFormData } from '../../types/team';
 
 interface TeamModalProps {
   formData: TeamFormData;
@@ -36,32 +14,64 @@ interface TeamModalProps {
 const TeamModal: React.FC<TeamModalProps> = ({
   formData,
   setFormData,
-  selectedFile,
   setSelectedFile,
   editingItem,
   onSubmit,
   onClose
 }) => {
+  // Автоматично встановлюємо посаду для Голови Профбюро та Відділу
+  useEffect(() => {
+    if (formData.type === 1) {
+      // Профбюро
+      setFormData(prev => ({ ...prev, position: 'Голова Профбюро' }));
+    } else if (formData.type === 2) {
+      // Відділ
+      setFormData(prev => ({ ...prev, position: 'Голова Відділу' }));
+    }
+    // Для Апарату (type === 0) нічого не робимо - користувач вводить сам
+  }, [formData.type]);
+
+  const showPositionInput = formData.type === 0; // Показуємо тільки для Апарату
+
   return (
     <form onSubmit={onSubmit} className="p-6 space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Ім'я та прізвище *
-          </label>
-          <input
-            type="text"
-            required
-            value={formData.name}
-            onChange={(e) => {
-              const lettersOnly = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁ ЇїІіЄєҐґ\s]/g, '');
-              setFormData({ ...formData, name: lettersOnly })
-            }}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="Іван Петренко"
-          />
-        </div>
+      {/* Ім'я */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Ім'я та прізвище *
+        </label>
+        <input
+          type="text"
+          required
+          value={formData.name}
+          onChange={(e) => {
+            const lettersOnly = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁ ЇїІіЄєҐґ\s]/g, '');
+            setFormData({ ...formData, name: lettersOnly });
+          }}
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          placeholder="Іван Франко"
+        />
+      </div>
 
+      {/* Тип члена команди */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Тип члена команди *
+        </label>
+        <select
+          required
+          value={formData.type}
+          onChange={(e) => setFormData({ ...formData, type: parseInt(e.target.value) })}
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+          <option value={0}>Член Апарату Профкому</option>
+          <option value={1}>Голова Профбюро</option>
+          <option value={2}>Голова Відділу</option>
+        </select>
+      </div>
+
+      {/* Посада - показуємо тільки для Апарату */}
+      {showPositionInput ? (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Посада *
@@ -70,19 +80,40 @@ const TeamModal: React.FC<TeamModalProps> = ({
             type="text"
             required
             value={formData.position}
-            onChange={(e) => {
-              const lettersOnly = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁ ЇїІіЄєҐґ\s]/g, '');
-              setFormData({ ...formData, position: lettersOnly })
-            }}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            onChange={(e) => setFormData({ ...formData, position: e.target.value })}
             placeholder="Голова профкому"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
-      </div>
+      ) : (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <p className="text-sm text-blue-800">
+            <span className="font-semibold">Посада:</span> {formData.position}
+          </p>
+          <p className="text-xs text-blue-600 mt-1">
+            Посада встановлюється автоматично для обраного типу
+          </p>
+        </div>
+      )}
 
+      {/* Email */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Фото (необов’язково)
+          Email
+        </label>
+        <input
+          type="email"
+          value={formData.email || ''}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          placeholder="ivanfranko@lnu.edu.ua"
+        />
+      </div>
+
+      {/* Фото */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Фото
         </label>
         <input
           type="file"
@@ -91,59 +122,13 @@ const TeamModal: React.FC<TeamModalProps> = ({
           className="w-full border border-gray-300 rounded-lg px-3 py-2"
         />
         {editingItem && editingItem.imageUrl && (
-          <p className="mt-2 text-sm text-gray-500">Поточне: {editingItem.imageUrl}</p>
+          <p className="mt-2 text-sm text-gray-500">
+            Поточне: <a href={editingItem.imageUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">переглянути</a>
+          </p>
         )}
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Опис/Біографія *
-        </label>
-        <textarea
-          rows={4}
-          required
-          value={formData.content}
-          onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="Короткий опис діяльності та досвіду"
-        />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Email *
-          </label>
-          <input
-            type="email"
-            required
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="email@lnu.edu.ua"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Телефон *
-          </label>
-          <input
-            type="tel"
-            required
-            value={formData.phone}
-            onChange={(e) => {
-              const cleaned = e.target.value.replace(/[^0-9+()\-\s]/g, '');
-              setFormData({ ...formData, phone: cleaned })
-            }}
-            pattern="\+38\d{10}"
-            maxLength={13}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="+38 (067) 123-45-67"
-          />
-        </div>
-      </div>
-
+      {/* Порядок відображення та Активність */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -151,12 +136,15 @@ const TeamModal: React.FC<TeamModalProps> = ({
           </label>
           <input
             type="number"
-            min="0"
+            min={0}
             value={formData.orderInd}
             onChange={(e) => setFormData({ ...formData, orderInd: parseInt(e.target.value) || 0 })}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="0"
           />
+          <p className="mt-1 text-xs text-gray-500">
+            Індекс для сортування в межах типу
+          </p>
         </div>
 
         <div className="flex items-center pt-6">
@@ -173,6 +161,7 @@ const TeamModal: React.FC<TeamModalProps> = ({
         </div>
       </div>
 
+      {/* Кнопки */}
       <div className="flex justify-end space-x-4">
         <button
           type="button"

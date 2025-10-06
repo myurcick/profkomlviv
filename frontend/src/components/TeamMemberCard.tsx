@@ -1,17 +1,5 @@
 import React from "react";
-
-interface TeamMember {
-  id: number;
-  name: string;
-  position: string;
-  description?: string;
-  imageUrl?: string | null; // Змінено з photo_url
-  email?: string;
-  phone?: string;
-  orderIndex: number; // Змінено з order_index
-  isActive: boolean; // Змінено з is_active
-  createdAt: string; // Змінено з created_at
-}
+import { TeamMember } from '../types/team';
 
 interface TeamMemberCardProps {
   member: TeamMember;

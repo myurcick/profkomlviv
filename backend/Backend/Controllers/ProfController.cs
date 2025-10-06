@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProfkomBackend.Data;
 using ProfkomBackend.Models;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace ProfkomBackend.Controllers
 {
@@ -22,34 +26,53 @@ namespace ProfkomBackend.Controllers
             _env = env;
         }
 
-        // ✅ GET: api/prof - доступно всім
+        // GET: api/prof
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Prof>>> GetAll()
         {
+            // Підтягуємо Head з Team
             return await _db.Prof
-                .Where(p => p.isActive)
+                .Include(p => p.Head) // Team
                 .ToListAsync();
         }
 
-        // ✅ GET: api/prof/{id} - доступно всім
+        // GET: api/prof/{id}
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<Prof>> GetById(int id)
         {
-            var prof = await _db.Prof.FindAsync(id);
-            if (prof == null) return NotFound();
+            var prof = await _db.Prof
+                .Include(p => p.Head)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (prof == null)
+            {
+                return NotFound();
+            }
+
             return prof;
         }
 
-        // 🔒 POST: api/prof - тільки адмін
+        // POST: api/prof
         [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<Prof>> Create([FromForm] ProfFormData formData)
         {
-            string? imageUrl = null;
+            Team? headTeam = null;
+            if (formData.HeadId.HasValue)
+            {
+                headTeam = await _db.Team.FirstOrDefaultAsync(t => t.Id == formData.HeadId && t.IsActive);
+                if (headTeam == null)
+                {
+                    return BadRequest("Invalid HeadId or team member is inactive.");
+                }
 
-            // Обробка файлу, якщо він наданий
+                headTeam.IsChoosed = true;
+                _db.Team.Update(headTeam);
+            }
+
+            string? imageUrl = null;
             if (formData.Image != null && formData.Image.Length > 0)
             {
                 var uploadsDir = Path.Combine(_env.ContentRootPath, "Uploads");
@@ -72,16 +95,15 @@ namespace ProfkomBackend.Controllers
             var prof = new Prof
             {
                 Name = formData.Name,
-                Head = formData.Head,
-                email = formData.Email,
-                adress = formData.Adress,
-                schedule = formData.Schedule,
-                summary = formData.Summary,
-                facultyURL = formData.FacultyURL,
-                link = formData.Link,
-                orderInd = formData.OrderInd,
-                isActive = formData.IsActive,
+                Head = headTeam, // прив’язка до Team
+                Address = formData.Address,
+                Room = formData.Room,
+                Instagram_Link = formData.Instagram_Link,
+                Telegram_Link = formData.Telegram_Link,
                 ImageUrl = imageUrl ?? formData.ImageUrl,
+                Schedule = formData.Schedule,
+                Summary = formData.Summary,
+                IsActive = formData.IsActive,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -90,18 +112,48 @@ namespace ProfkomBackend.Controllers
             return CreatedAtAction(nameof(GetById), new { id = prof.Id }, prof);
         }
 
-        // 🔒 PUT: api/prof/{id} - тільки адмін
+        // PUT: api/prof/{id}
         [HttpPut("{id}")]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Update(int id, [FromForm] ProfFormData formData)
         {
-            var prof = await _db.Prof.FindAsync(id);
-            if (prof == null) return NotFound();
-            if (id != prof.Id) return BadRequest();
+            var prof = await _db.Prof
+                .Include(p => p.Head) // щоб завантажити старого голову
+                .FirstOrDefaultAsync(p => p.Id == id);
 
+            if (prof == null)
+            {
+                return NotFound();
+            }
+
+            Team? newHead = null;
+
+            if (formData.HeadId.HasValue)
+            {
+                newHead = await _db.Team.FirstOrDefaultAsync(t => t.Id == formData.HeadId && t.IsActive);
+                if (newHead == null)
+                {
+                    return BadRequest("Invalid HeadId or team member is inactive.");
+                }
+            }
+
+            // --- робота з головами ---
+            if (prof.Head != null && prof.Head.Id != formData.HeadId)
+            {
+                // звільняємо попереднього голову
+                prof.Head.IsChoosed = false;
+                _db.Team.Update(prof.Head);
+            }
+
+            if (newHead != null && newHead.Id != prof.Head?.Id)
+            {
+                // ставимо нового голову як обраного
+                newHead.IsChoosed = true;
+                _db.Team.Update(newHead);
+            }
+
+            // --- робота з картинкою ---
             string? imageUrl = prof.ImageUrl;
-
-            // Обробка нового файлу, якщо наданий
             if (formData.Image != null && formData.Image.Length > 0)
             {
                 var uploadsDir = Path.Combine(_env.ContentRootPath, "Uploads");
@@ -118,37 +170,59 @@ namespace ProfkomBackend.Controllers
                     await formData.Image.CopyToAsync(stream);
                 }
 
+                // видаляємо старе фото, якщо було
+                if (!string.IsNullOrEmpty(prof.ImageUrl))
+                {
+                    var oldPath = Path.Combine(_env.ContentRootPath, prof.ImageUrl.TrimStart('/'));
+                    if (System.IO.File.Exists(oldPath))
+                    {
+                        System.IO.File.Delete(oldPath);
+                    }
+                }
+
                 imageUrl = $"/Uploads/{fileName}";
             }
 
+            // --- оновлення профбюро ---
             prof.Name = formData.Name;
-            prof.Head = formData.Head;
-            prof.email = formData.Email;
-            prof.adress = formData.Adress;
-            prof.schedule = formData.Schedule;
-            prof.summary = formData.Summary;
-            prof.facultyURL = formData.FacultyURL;
-            prof.link = formData.Link;
-            prof.orderInd = formData.OrderInd;
-            prof.isActive = formData.IsActive;
+            prof.Head = newHead;
+            prof.Address = formData.Address;
+            prof.Room = formData.Room;
+            prof.Instagram_Link = formData.Instagram_Link;
+            prof.Telegram_Link = formData.Telegram_Link;
             prof.ImageUrl = imageUrl ?? formData.ImageUrl;
+            prof.Schedule = formData.Schedule;
+            prof.Summary = formData.Summary;
+            prof.IsActive = formData.IsActive;
             prof.UpdatedAt = DateTime.UtcNow;
 
-            _db.Entry(prof).State = EntityState.Modified;
             await _db.SaveChangesAsync();
             return NoContent();
         }
 
-        // 🔒 DELETE: api/prof/{id} - тільки адмін
+        // DELETE: api/prof/{id}
         [HttpDelete("{id}")]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int id)
         {
-            var prof = await _db.Prof.FindAsync(id);
-            if (prof == null) return NotFound();
+            var prof = await _db.Prof
+                .Include(p => p.Head) // Включаємо Head для можливості оновлення IsChoosed
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (prof == null)
+            {
+                return NotFound();
+            }
+
+            // Якщо є прив'язаний голова, звільняємо його
+            if (prof.Head != null)
+            {
+                prof.Head.IsChoosed = false;
+            }
 
             _db.Prof.Remove(prof);
             await _db.SaveChangesAsync();
+
             return NoContent();
         }
     }
@@ -156,17 +230,20 @@ namespace ProfkomBackend.Controllers
     // DTO для обробки вхідних даних
     public class ProfFormData
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string Head { get; set; } = string.Empty;
-        public string? Email { get; set; }
-        public string? Adress { get; set; }
+
+        // 🔹 Замість Head/Email вводимо HeadId з Team
+        public int? HeadId { get; set; }
+
+        public string? Address { get; set; }
+        public string? Room { get; set; }
+        public string? Instagram_Link { get; set; }
+        public string? Telegram_Link { get; set; }
+        public string? ImageUrl { get; set; }
         public string? Schedule { get; set; }
         public string? Summary { get; set; }
-        public string? FacultyURL { get; set; }
-        public string? Link { get; set; }
-        public int OrderInd { get; set; }
-        public bool IsActive { get; set; }
-        public string? ImageUrl { get; set; }
+        public bool IsActive { get; set; } = true;
         public IFormFile? Image { get; set; }
     }
 }

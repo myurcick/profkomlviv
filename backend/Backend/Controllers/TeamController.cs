@@ -71,12 +71,12 @@ namespace ProfkomBackend.Controllers
             {
                 Name = formData.Name,
                 Position = formData.Position,
-                Content = formData.Content,
+                Type = formData.Type,
                 Email = formData.Email,
-                Phone = formData.Phone,
                 OrderInd = formData.OrderInd,
                 IsActive = formData.IsActive,
                 ImageUrl = imageUrl ?? formData.ImageUrl,
+                IsChoosed = formData.IsChoosed,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -118,12 +118,12 @@ namespace ProfkomBackend.Controllers
 
             member.Name = formData.Name;
             member.Position = formData.Position;
-            member.Content = formData.Content;
+            member.Type = formData.Type;
             member.Email = formData.Email;
-            member.Phone = formData.Phone;
             member.OrderInd = formData.OrderInd;
             member.IsActive = formData.IsActive;
             member.ImageUrl = imageUrl ?? formData.ImageUrl;
+            member.IsChoosed = formData.IsChoosed;
             member.CreatedAt = DateTime.UtcNow;
 
             _db.Entry(member).State = EntityState.Modified;
@@ -150,12 +150,12 @@ namespace ProfkomBackend.Controllers
     {
         public string Name { get; set; } = string.Empty;
         public string Position { get; set; } = string.Empty;
-        public string? Content { get; set; }
+        public MemberType Type { get; set; }
         public string? Email { get; set; }
-        public string? Phone { get; set; }
         public int OrderInd { get; set; }
         public bool IsActive { get; set; }
         public string? ImageUrl { get; set; }
         public IFormFile? Image { get; set; }
+        public bool IsChoosed { get; set; } = false;
     }
 }

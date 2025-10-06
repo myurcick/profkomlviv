@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Search, Users, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
-import { motion } from "framer-motion";
 import axios from 'axios';
-import Card, { FacultyUnion } from "../components/ProfCard";
+import Card from "../components/ProfCard";
+import { FacultyUnion } from '../types/faculty';
 
 const ProfPage: React.FC = () => {
   const [facultyUnions, setFacultyUnions] = useState<FacultyUnion[]>([]);
@@ -40,7 +40,7 @@ const ProfPage: React.FC = () => {
     const q = searchTerm.toLowerCase();
     return (
       union.name.toLowerCase().includes(q) ||
-      union.head.toLowerCase().includes(q) ||
+      union.head?.name.toLowerCase().includes(q) ||
       (union.summary && union.summary.toLowerCase().includes(q))
     );
   });

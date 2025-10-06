@@ -1,8 +1,16 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace ProfkomBackend.Models
 {
+    public enum MemberType
+    {
+        Aparat,
+        Profburo,
+        Viddil
+    }
+
     public class Team
     {
         [Key]
@@ -14,10 +22,11 @@ namespace ProfkomBackend.Models
         [Required]
         public string Position { get; set; } = string.Empty;
 
-        public string? Content { get; set; }        // необов’язково
-        public string? ImageUrl { get; set; }       // необов’язково
-        public string? Email { get; set; }          // необов’язково
-        public string? Phone { get; set; }          // необов’язково
+        [Required]
+        public MemberType Type { get; set; }
+
+        public string? ImageUrl { get; set; }
+        public string? Email { get; set; }
 
         [Required]
         public int OrderInd { get; set; }           // number у фронті
@@ -26,5 +35,7 @@ namespace ProfkomBackend.Models
         public bool IsActive { get; set; } = true;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // created_at
+
+        public bool IsChoosed { get; set; } = false;
     }
 }

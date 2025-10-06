@@ -44,22 +44,16 @@ const NewsDetailPage: React.FC = () => {
   };
 
   const fetchRelatedNews = async () => {
-    try {
-      const response = await axios.get<News[]>('http://localhost:5068/api/news', {
-        params: {
-          excludeId: newsId,
-          limit: 6,
-        },
-      });
-      console.log('Related News:', response.data); // Логування для діагностики
-      setRelatedNews(response.data || []);
-    } catch (error) {
-      console.error('Помилка при отриманні пов’язаних новин:', error);
-      if (axios.isAxiosError(error)) {
-        console.error('Деталі помилки:', error.response?.data);
-      }
-    }
-  };
+  try {
+    const response = await axios.get<News[]>('http://localhost:5068/api/news', {
+      params: { excludeId: newsId },
+    });
+    const filteredNews = (response.data || []).filter(n => n.id !== newsId);
+    setRelatedNews(filteredNews.slice(0, 3)); // беремо максимум 3 різні новини
+  } catch (error) {
+    console.error('Помилка при отриманні пов’язаних новин:', error);
+  }
+};
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -127,7 +121,7 @@ const NewsDetailPage: React.FC = () => {
               <div className="bg-white rounded-lg shadow-sm p-6 animate-pulse">
                 <div className="h-6 bg-gray-300 rounded mb-6 w-1/2"></div>
                 <div className="space-y-4">
-                  {[...Array(4)].map((_, i) => (
+                  {[...Array(3)].map((_, i) => (
                     <div key={i} className="bg-gray-50 rounded-lg p-4">
                       <div className="aspect-[4/3] bg-gray-300 rounded-lg mb-3"></div>
                       <div className="h-4 bg-gray-300 rounded mb-2"></div>

@@ -3,19 +3,7 @@ import { UserPlus, X } from 'lucide-react';
 import axios, { AxiosError } from 'axios';
 import TeamTable from './TeamTable';
 import TeamModal from './TeamModal';
-
-interface TeamMember {
-  id: number;
-  name: string;
-  position: string;
-  content?: string;
-  imageUrl?: string;
-  email?: string;
-  phone?: string;
-  orderInd: number;
-  isActive: boolean;
-  createdAt: string;
-}
+import { TeamMember, TeamFormData } from '../../types/team';
 
 interface TeamManagerProps {
   data: TeamMember[];
@@ -27,14 +15,15 @@ const TeamManager: React.FC<TeamManagerProps> = ({ data, loading, fetchData }) =
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingTeamMember, setEditingTeamMember] = useState<TeamMember | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [teamFormData, setTeamFormData] = useState({
+  const [filterType, setFilterType] = useState<number>(0);
+  const [teamFormData, setTeamFormData] = useState<TeamFormData>({
     name: '',
     position: '',
-    content: '',
+    type: 0,
     email: '',
-    phone: '',
+    imageUrl: '',
     orderInd: 0,
-    isActive: true
+    isActive: true,
   });
 
   const handleTeamSubmit = async (e: React.FormEvent) => {
@@ -52,12 +41,12 @@ const TeamManager: React.FC<TeamManagerProps> = ({ data, loading, fetchData }) =
         });
         imageUrl = uploadRes.data.path;
       }
+
       const formData = new FormData();
       formData.append('Name', teamFormData.name);
       formData.append('Position', teamFormData.position);
-      formData.append('Content', teamFormData.content || '');
+      formData.append('Type', teamFormData.type.toString());
       formData.append('Email', teamFormData.email || '');
-      formData.append('Phone', teamFormData.phone || '');
       formData.append('OrderInd', teamFormData.orderInd.toString());
       formData.append('IsActive', teamFormData.isActive.toString());
 
@@ -66,6 +55,7 @@ const TeamManager: React.FC<TeamManagerProps> = ({ data, loading, fetchData }) =
       } else {
         formData.append('ImageUrl', imageUrl);
       }
+
       const headers = {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -80,6 +70,7 @@ const TeamManager: React.FC<TeamManagerProps> = ({ data, loading, fetchData }) =
         }
         await axios.post('http://localhost:5068/api/team', formData, { headers });
       }
+
       await fetchData();
       handleCloseModal();
     } catch (error) {
@@ -109,11 +100,11 @@ const TeamManager: React.FC<TeamManagerProps> = ({ data, loading, fetchData }) =
     setTeamFormData({
       name: member.name,
       position: member.position,
-      content: member.content || '',
+      type: member.type,
       email: member.email || '',
-      phone: member.phone || '',
+      imageUrl: member.imageUrl || '',
       orderInd: member.orderInd,
-      isActive: member.isActive
+      isActive: member.isActive,
     });
     setShowAddModal(true);
   };
@@ -125,13 +116,18 @@ const TeamManager: React.FC<TeamManagerProps> = ({ data, loading, fetchData }) =
     setTeamFormData({
       name: '',
       position: '',
-      content: '',
+      type: 0,
       email: '',
-      phone: '',
+      imageUrl: '',
       orderInd: 0,
-      isActive: true
+      isActive: true,
     });
   };
+
+  // Фільтруємо та сортуємо дані перед відображенням
+  const filteredData = data
+    .filter(member => member.type === filterType)
+    .sort((a, b) => a.orderInd - b.orderInd);
 
   return (
     <>
@@ -146,8 +142,21 @@ const TeamManager: React.FC<TeamManagerProps> = ({ data, loading, fetchData }) =
         </button>
       </div>
 
+      <div className="flex items-center mb-4 space-x-4">
+        <label className="text-sm font-medium text-gray900">Фільтр за типом:</label>
+        <select
+          value={filterType}
+          onChange={(e) => setFilterType(parseInt(e.target.value))}
+          className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+          <option value={0}>Апарат</option>
+          <option value={1}>Профбюро</option>
+          <option value={2}>Відділ</option>
+        </select>
+      </div>
+
       <TeamTable
-        data={data}
+        data={filteredData}
         loading={loading}
         onEdit={handleEditTeamMember}
         onDelete={handleDeleteTeamMember}

@@ -246,7 +246,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // EF Core
 var conn = builder.Configuration.GetConnectionString("DefaultConnection") ??
-           "Server=127.0.0.1;Port=3306;Database=profkomdb;User=root;Password=root;";
+           "localhost;Port=3306;Database=profkomdb;User=root;Password=password;";
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(conn, ServerVersion.AutoDetect(conn))
@@ -325,7 +325,6 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        db.Database.EnsureCreated();
         DbInitializer.Seed(db);
         Console.WriteLine("? Database initialized successfully");
     }

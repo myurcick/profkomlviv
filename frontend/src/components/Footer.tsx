@@ -21,10 +21,10 @@ const Footer: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
           {/* Grid Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
 
             {/* About */}
-            <div className="lg:col-span-6 flex">
+            <div className="lg:col-span-1 flex">
               <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 flex-1 flex flex-col justify-center transform transition-transform duration-500 ease-in-out
                 hover:-translate-y-2 hover:shadow-lg">
                 <h3 className="text-xl font-bold mb-6 text-blue-600">
@@ -39,13 +39,13 @@ const Footer: React.FC = () => {
             </div>
 
             {/* Contact Information */}
-            <div className="lg:col-span-6 flex">
+            <div className="lg:col-span-1 flex">
               <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 flex-1 flex flex-col justify-center transform transition-transform duration-500 ease-in-out
                 hover:-translate-y-2 hover:shadow-lg">
                 <h3 className="text-xl font-bold mb-6 text-blue-600">
                   Контактна інформація
                 </h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid xs:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4 text-sm">
                   <div className="group">
                     <div className="flex items-start space-x-2">
                       <div className="bg-blue-600/20 p-2 rounded-lg group-hover:bg-blue-600/30 transition-colors">
@@ -56,10 +56,10 @@ const Footer: React.FC = () => {
                           href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('вул. Університетська, 1, м. Львів')}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm text-gray-300 hover:text-blue-600 transition-colors block"
+                          className="text-gray-300 hover:text-blue-600 transition-colors block"
                         >
-                          вул. Університетська, 1<br />
-                          м. Львів, 79000
+                          м. Львів<br />
+                          вул. Університетська, 1
                         </a>
                       </div>
                     </div>
@@ -70,8 +70,8 @@ const Footer: React.FC = () => {
                       <div className="bg-orange-600/20 p-2 rounded-lg group-hover:bg-orange-600/30 transition-colors">
                         <Clock className="h-5 w-5 text-orange-400" />
                       </div>
-                      <div className="text-sm text-gray-300">
-                        <p>Пн-Пт: 10:00 - 16:00</p>
+                      <div className="text-gray-300">
+                        <p>Пн-Пт: 10:00–16:00</p>
                         <p>Сб-Нд: вихідні</p>
                       </div>
                     </div>
@@ -85,9 +85,9 @@ const Footer: React.FC = () => {
                       <div>
                         <a 
                           href="tel:+380322394132" 
-                          className="text-sm text-gray-300 hover:text-blue-600 transition-colors"
+                          className="text-gray-300 hover:text-blue-600 transition-colors"
                         >
-                          +38 (032) 239-41-32
+                          +380 32 239-41-32
                         </a>
                       </div>
                     </div>
@@ -101,7 +101,7 @@ const Footer: React.FC = () => {
                       <div>
                         <a 
                           href="mailto:profkom@lnu.edu.ua" 
-                          className="text-sm text-gray-300 hover:text-blue-600 transition-colors"
+                          className="text-gray-300 hover:text-blue-600 transition-colors"
                         >
                           profkom@lnu.edu.ua
                         </a>
@@ -119,12 +119,17 @@ const Footer: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="border-t-2 border-white/10"></div>
           </div>
-
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between">
-            <p className="text-gray-300 text-sm">
+            
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 
+            flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            
+            {/* Текст (великий екран) */}
+            <p className="hidden text-gray-300 text-sm text-center sm:text-left sm:block">
               © {new Date().getFullYear()} Профком студентів ЛНУ імені Івана Франка. Всі права захищені.
             </p>
-            <div className="flex gap-3">
+            
+            {/* Іконки */}
+            <div className="flex gap-3 justify-center sm:justify-start">
               {socialLinks.map((social, index) => {
                 const IconComponent = social.icon;
                 return (
@@ -133,14 +138,18 @@ const Footer: React.FC = () => {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`group bg-white/10 backdrop-blur-sm rounded-xl border border-white/10 transition-all duration-500 hover:scale-105 hover:border-white/20 
-                        ${social.color} flex items-center justify-center w-10 h-10`}
+                    className={`group bg-white/10 backdrop-blur-sm rounded-xl border border-white/10 transition-all duration-500 hover:scale-105 hover:border-white/20 ${social.color} flex items-center justify-center w-10 h-10`}
                   >
                     <IconComponent className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors duration-200" />
                   </a>
                 );
               })}
             </div>
+
+            {/* Текст (малий екран) */}
+            <p className="text-gray-300 text-sm text-center sm:hidden">
+              © {new Date().getFullYear()} Профком студентів ЛНУ імені Івана Франка. Всі права захищені.
+            </p>
           </div>
         </div>
       </div>

@@ -1,21 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Mail, MapPin, Clock, User } from "lucide-react";
-
-export interface FacultyUnion {
-  id: number;
-  name: string; // Змінено з faculty_name
-  head: string; // Змінено з union_head_name
-  imageUrl?: string | null; // Змінено з union_head_photo
-  logoUrl?: string | null;
-  email?: string; // Змінено з contact_email
-  adress?: string; // Змінено з office_location/building_location
-  schedule?: string | null; // Змінено з working_hours
-  summary?: string; // Змінено з description
-  facultyURL?: string; // Змінено з website_url
-  link?: string; // Змінено з social_links
-  orderInd: number; // Змінено з order_index
-  isActive: boolean; // Змінено з is_active
-}
+import { FacultyUnion } from '../types/faculty';
 
 interface CardProps {
   union: FacultyUnion;
@@ -25,15 +10,6 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ union, index }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-
-  const getInitials = (name: string) => {
-    return name
-      .split(" ")
-      .map((w) => w[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2);
-  };
 
   const getGradientColor = (i: number) => {
     const colors = [
@@ -49,6 +25,9 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
     return colors[i % colors.length];
   };
 
+  const headName = union.head?.name || "Наразі не призначений";
+  const headEmail = union.head?.email || "Наразі не доступний";
+
   return (
     <div
       className="bg-white rounded-xl transition-all duration-300 hover:-translate-y-2 shadow-sm hover:shadow-lg border border-gray-200 hover:border-blue-300 overflow-hidden"
@@ -57,51 +36,49 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
         animationDelay: `${index * 40}ms`,
       }}
     >
-      {/* Top card - Clickable area */}
       <div
-        className="flex items-center gap-4 md:gap-6"
-        style={{ minHeight: "140px" }}
+        className="relative flex flex-col md:flex-row items-start md:items-center cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         {/* Color line */}
         <div
-          className={`w-3 bg-gradient-to-b ${getGradientColor(index)} flex-shrink-0`}
-          style={{ minHeight: "140px" }}
+          className={`absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b ${getGradientColor(index)}`}
         />
 
-        {/* Photo */}
-        <div className="relative flex-shrink-0 " style={{ width: "140px", height: "140px" }}>
-          <div className="w-full h-full overflow-hidden">
-            {union.logoUrl ? (
+        <div className="flex w-full md:w-auto ml-4">
+          {/* Photo */}
+          <div className="relative flex-shrink-0 w-24 h-24 md:w-[140px] md:h-[140px]">
+            <div className="w-full h-full overflow-hidden">
               <img
-                src={union.logoUrl}
-                alt={union.head}
+                src={union.imageUrl ? `http://localhost:5068${union.imageUrl}` : `http://localhost:5068/uploads/default_profburo_logo.png`}
+                alt={headName}
                 loading="lazy"
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  target.style.display = "none";
+                  target.src = 'http://localhost:5068/uploads/default_profburo_logo.png';
                 }}
               />
-            ) : (
-              <div
-                className={`w-full h-full bg-gradient-to-br ${getGradientColor(
-                  index
-                )} flex items-center justify-center text-white font-bold text-2xl`}
-              >
-                {getInitials(union.head)}
-              </div>
-            )}
+            </div>
+          </div>
+
+          {/* Title on mobile */}
+          <div className="flex-1 min-w-0 px-4 py-2 flex items-center md:hidden text-left">
+            <h3 className="font-bold text-base text-[#1E2A5A] leading-tight break-words">
+              {union.name}
+            </h3>
           </div>
         </div>
 
-        {/* Description */}
-        <div className="flex-1 min-w-0 pr-4 md:pr-6 flex flex-col justify-center">
-          <h3 className="font-bold text-lg md:text-xl text-[#1E2A5A] leading-tight">
+        <div className="flex-1 min-w-0 px-4 pb-4 md:py-4 md:pr-6 w-full text-left">
+          {/* Title on desktop */}
+          <h3 className="hidden md:block font-bold text-lg text-[#1E2A5A] leading-tight mb-2 break-words">
             {union.name}
           </h3>
+          
+          {/* Summary */}
           {union.summary && (
-            <p className={"text-[#1E2A5A] italic text-sm md:text-base leading-relaxed mt-1"}>
+            <p className="text-[#1E2A5A] italic text-sm md:text-base leading-relaxed">
               {union.summary}
             </p>
           )}
@@ -116,7 +93,7 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
         }`}
       >
         <div className="px-4 md:px-6 pb-4 md:pb-6 border-t border-gray-100 bg-gray-50">
-          <div className="text-[#1E2A5A] pt-4 md:pt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="text-[#1E2A5A] pt-4 lg:pt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-blue-100 rounded-lg">
@@ -124,12 +101,12 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
                 </div>
                 <div>
                   <p className="text-sm">Голова профбюро</p>
-                  <p className="font-medium flex-shrink-0 italic">
-                    {union.head}
+                  <p className="font-medium text-sm flex-shrink-0 italic">
+                    {headName}
                   </p>
                 </div>
               </div>
-              {union.email && (
+              {headEmail && (
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-green-100 rounded-lg">
                     <Mail className="w-5 h-5 text-green-600" />
@@ -137,17 +114,17 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
                   <div>
                     <p className="text-sm">Електронна пошта</p>
                     <a
-                      href={`mailto:${union.email}`}
-                      className="font-medium hover:text-blue-600 transition-colors flex-shrink-0 italic"
+                      href={`mailto:${headEmail}`}
+                      className="font-medium text-sm hover:text-blue-600 transition-colors flex-shrink-0 italic break-words"
                     >
-                      {union.email}
+                      {headEmail}
                     </a>
                   </div>
                 </div>
               )}
             </div>
             <div className="space-y-3">
-              {(union.adress || union.adress) && (
+              {(union.address || union.room) && (
                 <div className="flex items-start gap-3">
                   <div className="p-2 bg-purple-100 rounded-lg">
                     <MapPin className="w-5 h-5 text-purple-600" />
@@ -155,12 +132,12 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
                   <div>
                     <p className="text-sm">Місцезнаходження</p>
                     <a
-                      href={`http://maps.google.com/?q=${encodeURIComponent(union.adress || "")}`}
+                      href={`http://maps.google.com/?q=${encodeURIComponent("м. Львів, " + (union.address || ""))}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-medium hover:text-blue-600 transition-colors italic"
+                      className="font-medium text-sm hover:text-blue-600 transition-colors italic"
                     >
-                      {union.adress}
+                      {union.address}{union.room ? `, ${union.room}` : ""}
                     </a>
                   </div>
                 </div>
@@ -172,7 +149,7 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
                   </div>
                   <div>
                     <p className="text-sm">Години роботи</p>
-                    <p className="font-medium italic">
+                    <p className="font-medium text-sm italic">
                       {union.schedule}
                     </p>
                   </div>

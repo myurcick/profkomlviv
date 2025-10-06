@@ -13,6 +13,16 @@ module.exports = {
         appear: 'appear 0.6s ease-out forwards',
       },
     },
+    screens: {
+      xxs: '320px',
+      xs: '495px',
+      xsm: '540px',
+      sm: '640px',
+      md: '768px',
+      mdl: '880px',
+      lg: '1024px',
+      xl: '1280px',
+    },
   },
   plugins: [],
 };
