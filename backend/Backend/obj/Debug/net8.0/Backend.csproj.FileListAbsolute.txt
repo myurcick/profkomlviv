@@ -1,0 +1,611 @@
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\appsettings.Development.json
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\appsettings.json
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Backend.staticwebassets.endpoints.json
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Backend.exe
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Backend.deps.json
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Backend.runtimeconfig.json
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Backend.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Backend.pdb
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\Backend.csproj.AssemblyReference.cache
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\Backend.GeneratedMSBuildEditorConfig.editorconfig
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\Backend.AssemblyInfoInputs.cache
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\Backend.AssemblyInfo.cs
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\Backend.csproj.CoreCompileInputs.cache
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\Backend.MvcApplicationPartsAssemblyInfo.cs
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\Backend.MvcApplicationPartsAssemblyInfo.cache
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\rjimswa.dswa.cache.json
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\scopedcss\bundle\Backend.styles.css
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\staticwebassets.build.json
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\staticwebassets.build.json.cache
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\staticwebassets.development.json
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\Backend.csproj.Up2Date
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\Backend.dll
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\refint\Backend.dll
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\Backend.pdb
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\Backend.genruntimeconfig.cache
+D:\web\Profkom\тnew\Backend\Backend\obj\Debug\net8.0\ref\Backend.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\MySqlConnector.dll
+D:\web\Profkom\тnew\Backend\Backend\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\appsettings.Development.json
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Backend.staticwebassets.endpoints.json
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\appsettings.json
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Backend.exe
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Backend.deps.json
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Backend.runtimeconfig.json
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Backend.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Backend.pdb
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\MySqlConnector.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\Backend.csproj.AssemblyReference.cache
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\Backend.GeneratedMSBuildEditorConfig.editorconfig
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\Backend.AssemblyInfoInputs.cache
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\Backend.AssemblyInfo.cs
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\Backend.csproj.CoreCompileInputs.cache
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\Backend.MvcApplicationPartsAssemblyInfo.cs
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\Backend.MvcApplicationPartsAssemblyInfo.cache
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\rjimswa.dswa.cache.json
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\scopedcss\bundle\Backend.styles.css
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\staticwebassets.build.json
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\staticwebassets.build.json.cache
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\staticwebassets.development.json
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\Backend.csproj.Up2Date
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\Backend.dll
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\refint\Backend.dll
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\Backend.pdb
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\Backend.genruntimeconfig.cache
+D:\web\Profkom\new\Backend\Backend\obj\Debug\net8.0\ref\Backend.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Humanizer.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\Mono.TextTemplating.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\System.CodeDom.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\System.Composition.Convention.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\System.Composition.Hosting.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\System.Composition.Runtime.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\System.Composition.TypedParts.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\web\Profkom\new\Backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\appsettings.Development.json
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\appsettings.json
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Backend.staticwebassets.endpoints.json
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Backend.exe
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Backend.deps.json
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Backend.runtimeconfig.json
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Backend.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Backend.pdb
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Humanizer.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Mono.TextTemplating.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\MySqlConnector.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.CodeDom.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Composition.Convention.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Composition.Hosting.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Composition.Runtime.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Composition.TypedParts.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.csproj.AssemblyReference.cache
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.GeneratedMSBuildEditorConfig.editorconfig
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.AssemblyInfoInputs.cache
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.AssemblyInfo.cs
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.csproj.CoreCompileInputs.cache
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.MvcApplicationPartsAssemblyInfo.cs
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.MvcApplicationPartsAssemblyInfo.cache
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.sourcelink.json
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\scopedcss\bundle\Backend.styles.css
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets.build.json
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets.development.json
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets\msbuild.Backend.Microsoft.AspNetCore.StaticWebAssets.props
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets\msbuild.Backend.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets\msbuild.build.Backend.props
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.Backend.props
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.Backend.props
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets.pack.json
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.csproj.Up2Date
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.dll
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\refint\Backend.dll
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.pdb
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.genruntimeconfig.cache
+D:\VSCode project\profkomlviv\backend\Backend\obj\Debug\net8.0\ref\Backend.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\appsettings.Development.json
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\appsettings.json
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Backend.staticwebassets.endpoints.json
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Backend.exe
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Backend.deps.json
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Backend.runtimeconfig.json
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Backend.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Backend.pdb
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Azure.Core.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Azure.Identity.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Humanizer.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.Bcl.Cryptography.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.Identity.Client.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Mono.TextTemplating.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\MySqlConnector.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.ClientModel.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.CodeDom.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Composition.Convention.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Composition.Hosting.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Composition.Runtime.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Composition.TypedParts.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Diagnostics.EventLog.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.IO.Pipelines.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Memory.Data.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Text.Encodings.Web.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\System.Text.Json.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\cs\Microsoft.Data.SqlClient.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\de\Microsoft.Data.SqlClient.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\es\Microsoft.Data.SqlClient.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\fr\Microsoft.Data.SqlClient.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\it\Microsoft.Data.SqlClient.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\ja\Microsoft.Data.SqlClient.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\ko\Microsoft.Data.SqlClient.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\pl\Microsoft.Data.SqlClient.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.Data.SqlClient.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\ru\Microsoft.Data.SqlClient.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\tr\Microsoft.Data.SqlClient.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.Data.SqlClient.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.Data.SqlClient.resources.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\runtimes\unix\lib\net8.0\Microsoft.Data.SqlClient.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\runtimes\win\lib\net8.0\Microsoft.Data.SqlClient.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+D:\VSC Project\profkomlviv\backend\Backend\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.csproj.AssemblyReference.cache
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.GeneratedMSBuildEditorConfig.editorconfig
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.AssemblyInfoInputs.cache
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.AssemblyInfo.cs
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.csproj.CoreCompileInputs.cache
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.MvcApplicationPartsAssemblyInfo.cs
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.MvcApplicationPartsAssemblyInfo.cache
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.sourcelink.json
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\scopedcss\bundle\Backend.styles.css
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets.build.json
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets.development.json
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets\msbuild.Backend.Microsoft.AspNetCore.StaticWebAssets.props
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets\msbuild.Backend.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets\msbuild.build.Backend.props
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.Backend.props
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.Backend.props
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\staticwebassets.pack.json
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.csproj.Up2Date
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.dll
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\refint\Backend.dll
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.pdb
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\Backend.genruntimeconfig.cache
+D:\VSC Project\profkomlviv\backend\Backend\obj\Debug\net8.0\ref\Backend.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\appsettings.Development.json
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\appsettings.json
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Backend.staticwebassets.endpoints.json
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Backend.exe
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Backend.deps.json
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Backend.runtimeconfig.json
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Backend.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Backend.pdb
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Azure.Core.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Azure.Identity.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Humanizer.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.Bcl.Cryptography.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.Identity.Client.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Mono.TextTemplating.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\MySqlConnector.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.ClientModel.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.CodeDom.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.Composition.Convention.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.Composition.Hosting.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.Composition.Runtime.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.Composition.TypedParts.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.Diagnostics.EventLog.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.IO.Pipelines.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.Memory.Data.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.Text.Encodings.Web.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\System.Text.Json.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\cs\Microsoft.Data.SqlClient.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\de\Microsoft.Data.SqlClient.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\es\Microsoft.Data.SqlClient.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\fr\Microsoft.Data.SqlClient.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\it\Microsoft.Data.SqlClient.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\ja\Microsoft.Data.SqlClient.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\ko\Microsoft.Data.SqlClient.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\pl\Microsoft.Data.SqlClient.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\pt-BR\Microsoft.Data.SqlClient.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\ru\Microsoft.Data.SqlClient.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\tr\Microsoft.Data.SqlClient.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\zh-Hans\Microsoft.Data.SqlClient.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\zh-Hant\Microsoft.Data.SqlClient.resources.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\runtimes\unix\lib\net8.0\Microsoft.Data.SqlClient.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\runtimes\win\lib\net8.0\Microsoft.Data.SqlClient.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+D:\VSCode project\dep-main\backend\Backend\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\Backend.csproj.AssemblyReference.cache
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\Backend.GeneratedMSBuildEditorConfig.editorconfig
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\Backend.AssemblyInfoInputs.cache
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\Backend.AssemblyInfo.cs
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\Backend.csproj.CoreCompileInputs.cache
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\Backend.MvcApplicationPartsAssemblyInfo.cs
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\Backend.MvcApplicationPartsAssemblyInfo.cache
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\scopedcss\bundle\Backend.styles.css
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\staticwebassets.build.json
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\staticwebassets.development.json
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\staticwebassets\msbuild.Backend.Microsoft.AspNetCore.StaticWebAssets.props
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\staticwebassets\msbuild.Backend.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\staticwebassets\msbuild.build.Backend.props
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.Backend.props
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.Backend.props
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\staticwebassets.pack.json
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\Backend.csproj.Up2Date
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\Backend.dll
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\refint\Backend.dll
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\Backend.pdb
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\Backend.genruntimeconfig.cache
+D:\VSCode project\dep-main\backend\Backend\obj\Debug\net8.0\ref\Backend.dll
